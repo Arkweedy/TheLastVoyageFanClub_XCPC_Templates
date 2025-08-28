@@ -9,7 +9,8 @@
 \PYG{+w}{    }\PYG{n}{string}\PYG{+w}{ }\PYG{n}{out}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{s}\PYG{+w}{ }\PYG{o}{+}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}.out\PYGZdq{}}\PYG{p}{;}
 \PYG{+w}{    }\PYG{n}{string}\PYG{+w}{ }\PYG{n}{err}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{s}\PYG{+w}{ }\PYG{o}{+}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}.err\PYGZdq{}}\PYG{p}{;}
 
-\PYG{+w}{    }\PYG{n}{string}\PYG{+w}{ }\PYG{n}{cp}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}g++ \PYGZhy{}std=c++20 \PYGZhy{}O2 \PYGZdq{}}\PYG{+w}{ }\PYG{o}{+}\PYG{+w}{ }\PYG{n}{cpp}\PYG{+w}{ }\PYG{o}{+}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{} \PYGZhy{}o \PYGZdq{}}\PYG{+w}{ }\PYG{o}{+}\PYG{+w}{ }\PYG{n}{exe}\PYG{p}{;}
+\PYG{+w}{    }\PYG{n}{string}\PYG{+w}{ }\PYG{n}{cp}\PYG{+w}{ }\PYG{o}{=}
+\PYG{+w}{        }\PYG{l+s}{\PYGZdq{}g++ \PYGZhy{}std=c++20 \PYGZhy{}O2 \PYGZhy{}Wl,\PYGZhy{}\PYGZhy{}stack,536870912 \PYGZdq{}}\PYG{+w}{ }\PYG{o}{+}\PYG{+w}{ }\PYG{n}{cpp}\PYG{+w}{ }\PYG{o}{+}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{} \PYGZhy{}o \PYGZdq{}}\PYG{+w}{ }\PYG{o}{+}\PYG{+w}{ }\PYG{n}{exe}\PYG{p}{;}\PYG{c+c1}{// 设置栈为 512 MB}
 
 \PYG{+w}{    }\PYG{k}{if}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{system}\PYG{p}{(}\PYG{n}{cp}\PYG{p}{.}\PYG{n}{c\PYGZus{}str}\PYG{p}{())}\PYG{+w}{ }\PYG{o}{!=}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
 \PYG{+w}{        }\PYG{n}{cerr}\PYG{+w}{ }\PYG{o}{\PYGZlt{}\PYGZlt{}}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}Compile Failed!\PYGZdq{}}\PYG{+w}{ }\PYG{o}{\PYGZlt{}\PYGZlt{}}\PYG{+w}{ }\PYG{n}{endl}\PYG{p}{;}
@@ -37,9 +38,4 @@
 
 \PYG{+w}{    }\PYG{k}{return}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{;}
 \PYG{p}{\PYGZcb{}}
-\PYG{c+cm}{/*}
-\PYG{c+cm}{首先编译运行脚本，这只需要执行一次: g++ r.cpp \PYGZhy{}o r.exe}
-\PYG{c+cm}{以文件内容作为输入: r a a.in (文件名可以随意指定)}
-\PYG{c+cm}{手动输入: r a}
-\PYG{c+cm}{*/}
 \end{MintedVerbatim}
