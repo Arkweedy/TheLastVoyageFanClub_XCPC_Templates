@@ -1,10 +1,12 @@
 /*
-用于求解无向图的点双连通分量（V-BCCs），并能构建对应的圆方树。
+用于求解无向图的点双连通分量（VBCC），并能构建对应的圆方树。
 圆方树是一个新图，其中包含两种类型的节点：
 1. 方点：代表原始图中的一个点双连通分量。
-2. 圆点：代表原始图中的一个割点。
-树中的边连接一个圆点和一个方点，当且仅当该割点属于该点双连通分量。
- */
+2. 圆点：代表原始图中的一个点。
+树中的边连接一个圆点和一个方点，当且仅当该点属于该点双连通分量。
+
+当然也有给割点单独新建一个点的建树方法。
+*/
 struct VBCC {
     int n;  // 原始图的节点数
     vector<vector<int>> adj;
@@ -13,7 +15,6 @@ struct VBCC {
     vector<int> stk;
     int cur, cnt;     // 时间戳计数器和点双连通分量计数器
     vector<int> cut;  // 标记每个节点是否为割点
-    vector<int> bel;  // 映射：原始图节点 -> 新图节点编号
 
     VBCC(int n) { init(n); }
 
@@ -24,7 +25,6 @@ struct VBCC {
         low.resize(n);
         col.assign(n, {});
         cut.assign(n, 0);
-        bel.assign(n, -1);
         stk.clear();
         cnt = cur = 0;
     }
@@ -84,27 +84,16 @@ struct VBCC {
 
     Graph compress() {
         // 节点编号规则：
-        // 0 到 cnt-1 是 "方点"，代表 V-BCC
-        // cnt 开始是 "圆点"，代表割点
-        int m = cnt;
-        bel.assign(n, -1);
-
-        // 为所有割点分配新编号
-        for (int i = 0; i < n; i++) {
-            if (cut[i]) {
-                bel[i] = m++;
-            }
-        }
+        // 0 到 n - 1 是 圆点 代表原图中的点
+        // n 开始是 方点 代表点双连通分量
 
         Graph g;
-        g.n = m;
+        g.n = n + cnt;
 
         // 构建新图的边
         for (int i = 0; i < cnt; i++) {
             for (auto u : col[i]) {
-                if (cut[u]) {
-                    g.edges.emplace_back(i, bel[u]);
-                }
+                g.edges.emplace_back(u, i + n);
             }
         }
 

@@ -93,6 +93,8 @@ struct MaxFlow {
         T cap;
         T flow;
     };
+
+    // 返回每条边的流量情况，按照添加边的顺序
     std::vector<Edge> edges() {
         std::vector<Edge> a;
         for (int i = 0; i < e.size(); i += 2) {
