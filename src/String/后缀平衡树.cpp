@@ -8,8 +8,12 @@ struct cmp{
 };set<int,cmp>S;set<int,cmp>::iterator il,ir;
 void del(){S.erase(L--);}//在后面删字符 
 void add(char ch){//在后面加字符 
-	s[++L]=ch;mx=0;il=ir=S.lower_bound(L);
+	s[++L]=ch;
+	mx=0;
+	il=ir=S.lower_bound(L);
 	if(il!=S.begin())mx=max(mx,lcp(L,*--il));
 	if(ir!=S.end())mx=max(mx,lcp(L,*ir));
-	an[L]=an[L-1]+L-mx;S.insert(L); }
+	an[L]=an[L-1]+L-mx;
+	S.insert(L);
+}
 LL getan(){printf("%lld\n",an[L]);}//询问不同子串个数 

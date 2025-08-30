@@ -428,18 +428,25 @@
 					\newpage
 			\section{String}
 				\subsection{最小表示法}
+					两种不同方法实现的最小表示法
 					\inputminted{cpp}{src/String/最小表示法.cpp}
 				\subsection{Manacher}
 					\inputminted{cpp}{src/String/Manacher.cpp}
 				\subsection{KMP, exKMP}
 					\inputminted{cpp}{src/String/KMP.cpp}
+				\subsection{Border树}
+					实际上还是kmp构建的失配树(Border树),加上了slink指针等附加结构\\
+					slink的含义与PAM+dp 中的slink相似,都是指向公差diff与自身不等的上一个border。\\
+					slink将原串的border结构划分成 $\log n$ 段等差数列,diff是公差。
+					\inputminted{cpp}{src/String/BorderTree.cpp}
 				% \subsection{exKMP (zjj)}
 				% 	\inputminted{cpp}{src/zjj/exkmp.cpp}
 				\subsection{AC 自动机}
 					注意代码是以 0 为根的，如果要 1-base 的话要改一下没有儿子时的逻辑。
 					\inputminted{cpp}{src/String/AC 自动机.cpp}
-				\subsection{Lydon Word Decomposition}
+				\subsection{Lyndon Word Decomposition}
 					\inputminted{cpp}{src/String/Lyndon Word.cpp}
+					\inputminted{cpp}{src/String/Lyndon_CFL.cpp}
 				\subsection{后缀自动机}
 					\inputminted{cpp}{src/String/SAM.cpp}
 				\subsection{后缀数组}
@@ -448,6 +455,9 @@
 					\inputminted{cpp}{src/String/后缀平衡树.cpp}
 				%\subsection{Total LCS 子串对目标求 LCS}
 				%\inputminted{cpp}{src/String/Total LCS.cpp}
+				\subsection{广义后缀自动机(离线)}
+					使用insert方法插入。全部插入完后需要build。
+					\inputminted{cpp}{src/String/GSAM.cpp}
 				\subsection{广义在线 SAM}
 					\inputminted{cpp}{src/String/generalizedSAM.cpp}
 				\subsection{回文自动机}

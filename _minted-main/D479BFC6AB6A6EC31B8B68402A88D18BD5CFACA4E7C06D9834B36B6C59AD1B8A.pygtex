@@ -1,0 +1,23 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8\relax}]
+\PYG{c+c1}{//Duval 算法实现的Chen–Fox–Lyndon 分解}
+\PYG{c+c1}{//返回所有的CFL分解中Lyndon串的位置}
+\PYG{c+c1}{//0 base 闭区间}
+\PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{n}{pair}\PYG{o}{\PYGZlt{}}\PYG{k+kt}{int}\PYG{p}{,}\PYG{k+kt}{int}\PYG{o}{\PYGZgt{}\PYGZgt{}}\PYG{n}{Duval}\PYG{p}{(}\PYG{k}{const}\PYG{+w}{ }\PYG{n}{string}\PYG{o}{\PYGZam{}}\PYG{+w}{ }\PYG{n}{s}\PYG{p}{)}
+\PYG{p}{\PYGZob{}}
+\PYG{+w}{    }\PYG{k+kt}{int}\PYG{+w}{ }\PYG{n}{n}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{s}\PYG{p}{.}\PYG{n}{length}\PYG{p}{();}
+\PYG{+w}{    }\PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{n}{pair}\PYG{o}{\PYGZlt{}}\PYG{k+kt}{int}\PYG{p}{,}\PYG{k+kt}{int}\PYG{o}{\PYGZgt{}\PYGZgt{}}\PYG{n}{lyn}\PYG{p}{;}\PYG{c+c1}{//}
+\PYG{+w}{    }\PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int}\PYG{+w}{ }\PYG{n}{i}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{i}\PYG{+w}{ }\PYG{o}{\PYGZlt{}}\PYG{+w}{ }\PYG{n}{n}\PYG{p}{;)\PYGZob{}}
+\PYG{+w}{        }\PYG{k+kt}{int}\PYG{+w}{ }\PYG{n}{j}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{i}\PYG{+w}{ }\PYG{o}{+}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{k}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{i}\PYG{p}{;}
+\PYG{+w}{        }\PYG{k}{while}\PYG{p}{(}\PYG{n}{j}\PYG{+w}{ }\PYG{o}{\PYGZlt{}}\PYG{+w}{ }\PYG{n}{n}\PYG{+w}{ }\PYG{o}{\PYGZam{}\PYGZam{}}\PYG{+w}{ }\PYG{n}{s}\PYG{p}{[}\PYG{n}{k}\PYG{p}{]}\PYG{+w}{ }\PYG{o}{\PYGZlt{}=}\PYG{+w}{ }\PYG{n}{s}\PYG{p}{[}\PYG{n}{j}\PYG{p}{])\PYGZob{}}
+\PYG{+w}{            }\PYG{k}{if}\PYG{p}{(}\PYG{n}{s}\PYG{p}{[}\PYG{n}{j}\PYG{p}{]}\PYG{+w}{ }\PYG{o}{\PYGZgt{}}\PYG{+w}{ }\PYG{n}{s}\PYG{p}{[}\PYG{n}{k}\PYG{p}{])}\PYG{n}{k}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{i}\PYG{p}{;}
+\PYG{+w}{            }\PYG{k}{else}\PYG{+w}{ }\PYG{n}{k}\PYG{o}{++}\PYG{p}{;}
+\PYG{+w}{            }\PYG{n}{j}\PYG{o}{++}\PYG{p}{;}
+\PYG{+w}{        }\PYG{p}{\PYGZcb{}}
+\PYG{+w}{        }\PYG{k}{while}\PYG{p}{(}\PYG{n}{i}\PYG{+w}{ }\PYG{o}{\PYGZlt{}=}\PYG{+w}{ }\PYG{n}{k}\PYG{p}{)\PYGZob{}}\PYG{c+c1}{//i + j \PYGZhy{} k \PYGZlt{}= j}
+\PYG{+w}{            }\PYG{n}{lyn}\PYG{p}{.}\PYG{n}{emplace\PYGZus{}back}\PYG{p}{(}\PYG{n}{i}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{i}\PYG{+w}{ }\PYG{o}{+}\PYG{+w}{ }\PYG{n}{j}\PYG{+w}{ }\PYG{o}{\PYGZhy{}}\PYG{+w}{ }\PYG{n}{k}\PYG{+w}{ }\PYG{o}{\PYGZhy{}}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{);}
+\PYG{+w}{            }\PYG{n}{i}\PYG{+w}{ }\PYG{o}{+=}\PYG{+w}{ }\PYG{n}{j}\PYG{+w}{ }\PYG{o}{\PYGZhy{}}\PYG{+w}{ }\PYG{n}{k}\PYG{p}{;}
+\PYG{+w}{        }\PYG{p}{\PYGZcb{}}
+\PYG{+w}{    }\PYG{p}{\PYGZcb{}}
+\PYG{+w}{    }\PYG{k}{return}\PYG{+w}{ }\PYG{n}{lyn}\PYG{p}{;}
+\PYG{p}{\PYGZcb{};}
+\end{Verbatim}
