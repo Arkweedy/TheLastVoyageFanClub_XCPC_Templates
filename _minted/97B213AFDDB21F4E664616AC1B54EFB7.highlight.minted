@@ -1,4 +1,4 @@
-\begin{MintedVerbatim}[commandchars=\\\{\}]
+\begin{MintedVerbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8\relax}]
 \PYG{k}{def}\PYG{+w}{ }\PYG{n+nf}{fib}\PYG{p}{(}\PYG{n}{n}\PYG{p}{):} \PYG{c+c1}{\PYGZsh{} F(n), F(n + 1)}
     \PYG{k}{if} \PYG{o+ow}{not} \PYG{n}{n}\PYG{p}{:} \PYG{k}{return} \PYG{p}{(}\PYG{l+m+mi}{0}\PYG{p}{,} \PYG{l+m+mi}{1}\PYG{p}{)}
     \PYG{n}{a}\PYG{p}{,} \PYG{n}{b} \PYG{o}{=} \PYG{n}{fib}\PYG{p}{(}\PYG{n}{n} \PYG{o}{\PYGZgt{}\PYGZgt{}} \PYG{l+m+mi}{1}\PYG{p}{)}

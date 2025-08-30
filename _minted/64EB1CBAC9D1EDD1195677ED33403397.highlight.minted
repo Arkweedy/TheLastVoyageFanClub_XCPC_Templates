@@ -1,4 +1,4 @@
-\begin{MintedVerbatim}[commandchars=\\\{\}]
+\begin{MintedVerbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8\relax}]
 \PYG{k}{def}\PYG{+w}{ }\PYG{n+nf}{penta}\PYG{p}{(}\PYG{n}{k}\PYG{p}{):}
   \PYG{k}{return} \PYG{n}{k}\PYG{o}{*}\PYG{p}{(}\PYG{l+m+mi}{3}\PYG{o}{*}\PYG{n}{k}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{)}\PYG{o}{//}\PYG{l+m+mi}{2}
 \PYG{k}{def}\PYG{+w}{ }\PYG{n+nf}{compute\PYGZus{}partition}\PYG{p}{(}\PYG{n}{goal}\PYG{p}{):}
