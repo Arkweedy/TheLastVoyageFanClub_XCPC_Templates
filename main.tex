@@ -1,4 +1,5 @@
-\documentclass[titlepage, a4paper, 11pt]{article}
+\documentclass[titlepage, a4paper, 11pt, twoside]{article} %双面打印设置，添加偏移
+%\documentclass[titlepage, a4paper, 11pt]{article}
 %\usepackage{euler}
 \usepackage{graphicx, amssymb, amsmath, textcomp, booktabs}
 \usepackage[libertine,vvarbb]{newtxmath}
@@ -9,7 +10,7 @@
 \usepackage{listings, color, setspace, titlesec, fancyhdr, mdframed, multicol}
 % \usepackage{ucharclasses}
 % \usepackage{xunicode, xltxtra}
-\usepackage[a4paper, margin=2.2cm]{geometry}
+\usepackage[a4paper, margin=2.2cm,bindingoffset=7mm]{geometry} %bindingoffset=7mm 偏移量
 \usepackage{pdfpages}
 \usepackage{tocloft}
 \usepackage{nameref}
@@ -20,6 +21,8 @@
 \usepackage[table]{xcolor}
 \usepackage{tabularx}
 \usepackage{enumitem}
+\usepackage{imakeidx} % 若没有 xindy，改成 \usepackage{imakeidx}
+\makeindex[columns=2, intoc, title=关键词索引, program=texindy, options=-z pinyin -C utf8]  % 两栏；目录中显示“索引”条目
 % configure fonts
 % if not using CJK
 % \newfontfamily\substitutefont{SimSun}[Scale=0.8,BoldFont=SimHei]
@@ -33,12 +36,13 @@
 % 3. 设置所有字体
 % 将英文字体和中文字体设置放在一起
 \setmainfont{Linux Libertine O}[Scale=0.925]
-\setmonofont{Consolas}[Scale=0.775]
+\setmonofont{Consolas}[Scale=0.88]
 %\setsansfont{Gill Sans Medium}
 
-\setCJKmainfont{Microsoft YaHei}[Scale=0.8]
-\setCJKmonofont{SimHei}[Scale=0.8]
-\setCJKsansfont{KaiTi}[Scale=0.8]
+\setCJKmainfont{Microsoft YaHei}[Scale=0.9]
+%\setCJKmainfont{Source Han Serif SC}[Scale=0.9]
+\setCJKmonofont{SimHei}[Scale=0.9]
+\setCJKsansfont{KaiTi}[Scale=0.9]
 
 %\setsansfont{Gill Sans Medium}
 
@@ -60,7 +64,7 @@
 %configure the top corners
 \pagestyle{fancy}
 \setlength{\headheight}{14pt}
-\setlength{\headsep}{0.1cm}
+\setlength{\headsep}{0.6cm}
 
 \chead{Hust114514}
 \rhead{Page \thepage}
@@ -84,14 +88,59 @@
 {\thesection.}				% a prefix
 {4pt}						% How much space exists between the prefix and the title
 {}					% How the section is represented
+
+%修改subsection 标题样式
+\titleformat{\subsection}{\Large\bfseries}{\thesubsection}{6pt}{}
+
+
 % \titleformat{\section}{\huge}{}{0pt}{}
-\titlespacing{\section}{0pt}{0pt}{0pt}
-\titlespacing{\subsection}{0pt}{0pt}{0pt}
-\titlespacing{\subsubsection}{0pt}{0pt}{0pt}
+\titlespacing{\section}{0pt}{.7\baselineskip}{.35\baselineskip}
+\titlespacing{\subsection}{0pt}{4pt}{3pt}
+\titlespacing{\subsubsection}{0pt}{3pt}{2pt}
+
+%给“前/后间距”加 plus/minus：
+%TeX 遇到“尴尬分页”会自动把留白稍微伸缩，从而减少“孤零零一行挤在页底”的情况。
+%版面仍保持整体比例，不会出现肉眼可见的大跳动。
+\titlespacing{\section}{0pt}{.7\baselineskip plus .15\baselineskip minus .1\baselineskip}{.35\baselineskip plus .1\baselineskip}
+
+
 
 %enable section to start new page automatically
-%\let\stdsection\section
-%\renewcommand\section{\penalty-100\vfilneg\stdsection}
+% \let\stdsection\section
+% \renewcommand\section{\penalty-100\vfilneg\stdsection}
+
+% --- Pagination hygiene: widows & orphans ---
+\clubpenalty=10000        % 禁止段首单行（寡行）
+\widowpenalty=10000       % 禁止段末单行（孤行）
+\displaywidowpenalty=10000
+% \interlinepenalty 也可加，但一般上面三条已足够
+
+% --- Major sections should start a fresh page (no titlesec) ---
+% --- Section: clear page (if not at top) + auto index; Subsection: auto index ---
+\makeatletter
+% 清页：只有在当前页已经有内容时才换页，避免空白页
+\newcommand{\SectionClearPage}{\ifdim\pagetotal=0pt\relax\else\newpage\fi}
+
+% 保存 titlesec 已设好的 \section 形态
+\let\SectionOrig\section
+\renewcommand{\section}{\@ifstar\SectionStar\SectionNoStar}
+\newcommand{\SectionStar}[1]{%
+  \SectionClearPage
+  \SectionOrig*{#1}%
+}
+\newcommand{\SectionNoStar}[1]{%
+  \SectionClearPage
+  \SectionOrig{#1}%
+  \index{#1}%
+}
+
+% Subsection 只做索引（不清页）
+\let\SubsectionOrig\subsection
+\renewcommand{\subsection}{\@ifstar\SubsectionStar\SubsectionNoStar}
+\newcommand{\SubsectionStar}[1]{\SubsectionOrig*{#1}}
+\newcommand{\SubsectionNoStar}[1]{\SubsectionOrig{#1}\index{#1}}
+\makeatother
+
 
 %\renewcommand\theFancyVerbLine{\arabic{FancyVerbLine}}
 \renewcommand{\theFancyVerbLine}{\sffamily \textcolor[rgb]{0.5,0.5,0.5}{\scriptsize {\arabic{FancyVerbLine}}}}
@@ -101,8 +150,8 @@
 	mathescape,
 	linenos,
 	autogobble,
-	baselinestretch=0.8,
-	tabsize=3,
+	baselinestretch=0.9,
+	tabsize=4,
 	fontsize=\normalsize,
 	%bgcolor=Gray,
 	frame=single,
@@ -122,8 +171,8 @@
 	mathescape,
 	linenos,
 	autogobble,
-	baselinestretch=0.8,
-	tabsize=3,
+	baselinestretch=0.9,
+	tabsize=4,
 	fontsize=\small,
 	%bgcolor=Gray,
 	frame=single,
@@ -143,8 +192,8 @@
 	mathescape,
 	linenos,
 	autogobble,
-	baselinestretch=0.8,
-	tabsize=3,
+	baselinestretch=0.9,
+	tabsize=4,
 	fontsize=\small,
 	%bgcolor=Gray,
 	frame=single,
@@ -165,8 +214,8 @@
 	mathescape,
 	linenos,
 	autogobble,
-	baselinestretch=0.8,
-	tabsize=2,
+	baselinestretch=0.9,
+	tabsize=4,
 	fontsize=\normalsize,
 	%bgcolor=Gray,
 	frame=single,
@@ -184,8 +233,8 @@
 	mathescape,
 	linenos,
 	autogobble,
-	baselinestretch=0.8,
-	tabsize=2,
+	baselinestretch=0.9,
+	tabsize=4,
 	fontsize=\normalsize,
 	%bgcolor=Gray,
 	frame=single,
@@ -683,6 +732,8 @@
 		%\end{comment}
 		\end{spacing}
 		\endgroup
+		\clearpage
+ 	\printindex
 	\newpage
 	\includegraphics{src/Miscellany/Grid_Paper.pdf}
 	
