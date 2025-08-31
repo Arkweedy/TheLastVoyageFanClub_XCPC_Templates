@@ -80,26 +80,27 @@
 \indexentry{Math 数学}{97}
 \indexentry{Long Long $O(1)$ 乘, Barrett}{97}
 \indexentry{exgcd, 逆元}{97}
+\indexentry{同余方程}{98}
 \indexentry{CRT 中国剩余定理}{98}
 \indexentry{Miller Rabin, Pollard Rho}{99}
-\indexentry{线性基}{99}
+\indexentry{线性基}{100}
 \indexentry{扩展卢卡斯}{101}
 \indexentry{阶乘取模}{101}
 \indexentry{类欧几里得 直线下格点统计}{102}
 \indexentry{万能欧几里德}{102}
 \indexentry{平方剩余}{102}
-\indexentry{线性同余不等式}{102}
+\indexentry{线性同余不等式}{103}
 \indexentry{原根}{103}
-\indexentry{多项式}{103}
+\indexentry{多项式}{104}
 \indexentry{FFT}{107}
 \indexentry{NTT}{107}
 \indexentry{MTT 任意模数卷积}{108}
-\indexentry{多项式运算}{108}
+\indexentry{多项式运算}{109}
 \indexentry{线性递推}{111}
 \indexentry{Berlekamp-Massey 最小多项式}{112}
 \indexentry{FWT}{114}
 \indexentry{K 进制 FWT}{114}
-\indexentry{Simplex 单纯形}{114}
+\indexentry{Simplex 单纯形}{115}
 \indexentry{高斯消元最小范数解}{115}
 \indexentry{Pell 方程}{116}
 \indexentry{解一元三次方程}{116}

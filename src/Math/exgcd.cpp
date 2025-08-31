@@ -1,15 +1,3 @@
-ll exgcd(ll a, ll b, ll &x, ll &y) {
-    if (b == 0) return x = 1, y = 0, a;
-    ll t = exgcd(b, a % b, y, x);
-    y -= a / b * x;
-    return t;
-}
-ll inv(ll x, ll m) {
-    ll a, b;
-    exgcd(x, m, a, b);
-    return (a % m + m) % m;
-}
-
 /**
  * @brief 求解 ax + by = c，返回 x 的最小非负整数解和对应的 y
  * @return 返回一个 pair<ll, ll>。如果方程有解，返回 {x, y}，其中 x
@@ -18,11 +6,9 @@ ll inv(ll x, ll m) {
 std::pair<ll, ll> exgcd(ll a, ll b, ll c) {
     assert(a || b);
     // 迭代基：如果 b=0，方程为 ax=c，解为 x=c/a, y=0 (y可为任意值，取0)
-    if (!b) return {c / a, 0};
-
     ll d = std::gcd(a, b);
     if (c % d) return {-1, -1};  // c 不是 gcd(a,b) 的倍数，无整数解
-
+    if (!b) return {c / a, 0};
     // p, q 保存原始的 a, b 值
     ll x = 1, x1 = 0, p = a, q = b, k;
 
