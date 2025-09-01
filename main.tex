@@ -264,22 +264,30 @@
 			
 			\section{Geometry}
 				\subsection{二维几何基础操作}
-				%\subsection{凸包}
-					\inputminted{cpp}{src/Geometry/凸包.cpp}
-					\inputminted{cpp}{src/Geometry/闵可夫斯基和.cpp}
-					\inputminted{cpp}{src/Geometry/geo.cpp}
+					\subsubsection{点和向量}
+						\inputminted{cpp}{src/Geometry/点和向量.cpp}
+					\subsubsection{极角排序}
+						\inputminted{cpp}{src/Geometry/极角排序.cpp}
+					\subsubsection{直线}
+						\inputminted{cpp}{src/Geometry/直线.cpp}
+					\subsubsection{线段}
+						\inputminted{cpp}{src/Geometry/线段.cpp}
+					\subsubsection{多边形}
+						\inputminted{cpp}{src/Geometry/多边形.cpp}
+					%\inputminted{cpp}{src/Geometry/凸包.cpp}
+					%\inputminted{cpp}{src/Geometry/闵可夫斯基和.cpp}
+					%$\inputminted{cpp}{src/Geometry/geo.cpp}
 				%	\inputminted{cpp}{src/Geometry/far_pair.cpp}
 				% \subsection{直线半平面交}
+					%\inputminted{cpp}{src/Geometry/半平面交.cpp}
+				\subsection{凸包}
+					\inputminted{cpp}{src/Geometry/my_convex.cpp}
+				\subsection{半平面交}
 					\inputminted{cpp}{src/Geometry/半平面交.cpp}
 				\subsection{整数半平面交}
 					\inputminted{cpp}{src/Geometry/integral_hpi.cpp}
-				\subsection{凸包询问：凸包内、切点、交点、最近点}
-					\inputminted{cpp}{src/Geometry/convex_findmax.cpp}
-				
-
-				
-				 \subsection{点、线段在简单多边形内}
-					\inputminted{cpp}{src/Geometry/AirportConstruction.cpp}
+				%\subsection{凸包询问：凸包内、切点、交点、最近点}
+					%\inputminted{cpp}{src/Geometry/convex_findmax.cpp}
 				\subsection{$O(n ^ 2)$ Ear Clipping 三角剖分}
 				\inputminted{cpp}{src/Geometry/Triangulation.cpp}
 				\subsection{单插入动态凸包}
@@ -295,15 +303,14 @@
 				% \inputminted{cpp}{src/Geometry/DelaunayTriangulation.cpp}
 				
 				\subsection{圆}
-					\inputminted[highlightlines={7}]{cpp}{src/Geometry/circle.cpp}
-				\subsection{圆反演、阿波罗尼茨圆}
-				\begin{small}
+				\subsubsection{基础操作}
+					\inputminted{cpp}{src/Geometry/circle.cpp}
+				\subsubsection{圆反演、阿波罗尼茨圆}
 					\input{src/Geometry/阿波罗尼茨圆.tex}
-				\end{small}
 					\inputminted{cpp}{src/yzh/circle_inversion.cpp}
-				\subsection{圆并}
+				\subsubsection{圆面积并}
 					\inputminted{cpp}{src/Geometry/圆并.cpp}
-				\subsection{多边形与圆交}
+				\subsubsection{多边形与圆面积交}
 					\inputminted{cpp}{src/Geometry/多边形和圆的交.cpp}
 				
 				%\subsection{圆幂~圆反演~根轴}
@@ -317,19 +324,31 @@
 %				\inputminted{cpp}{src/Geometry/最近点对.cpp}
 				%\subsection{长方体表面两点最短距离}
 				%\inputminted{cpp}{src/Geometry/长方体表面两点最短距离.cpp}
-				\subsection{圆上整点}
+				
+				\subsection{三维几何基础操作}
+				\inputminted{cpp}{src/Geometry/三维几何.cpp}
+				\subsection{三维凸包}
+				\inputminted{cpp}{src/Geometry/三维凸包.cpp}
+				\subsection{相关技巧}
+				\subsubsection{点集的最小最大三角形}
+					\inputminted{cpp}{src/Geometry/点集的最大最小三角形.cpp}
+				\subsubsection{平面最近点对}
+					\inputminted{cpp}{src/Geometry/平面最近点对.cpp}
+				\subsubsection{判断多条线段是否有交点}
+					\inputminted{cpp}{src/Geometry/判断多条线段是否有交点.cpp}
+				\subsubsection{多边形面积并}
+				\inputminted{cpp}{src/Geometry/多边形面积并.cpp}
+				\subsubsection{点、线段在简单多边形内}
+				\inputminted{cpp}{src/Geometry/AirportConstruction.cpp}
+				\subsubsection{最小覆盖球}
+				\inputminted{cpp}{src/Geometry/最小覆盖球.cpp}
+				\subsubsection{圆上整点}
 					\inputminted{cpp}{src/Geometry/圆上整点.cpp}
-				\subsection{三相之力}
+				\subsubsection{三相之力}
 				\inputminted{cpp}{src/Geometry/三角形.cpp}
 				\subsection{相关公式}
 					\input{src/Geometry/Formula(Saga).tex}
-				\subsection{三维几何基础操作}
-					\inputminted{cpp}{src/Geometry/三维几何.cpp}
-				\subsection{三维凸包}
-					\inputminted{cpp}{src/Geometry/三维凸包.cpp}
-				\subsection{最小覆盖球}
-					\inputminted{cpp}{src/Geometry/最小覆盖球.cpp}
-					\newpage
+				
 					
 			\section{Tree \& Graph}
 				\input{src/TreeandGraph/tree_properties.tex}

@@ -1,19 +1,47 @@
-LD angle (cp u, cp v) {
-	return 2 * asin(dis(u.unit(), v.unit()) / 2); }
-LD area(cp s, cp t, LD r) { // 2 * area
-	LD theta = angle(s, t);
-	LD dis = p2s ({0, 0}, {s, t});
-	if (sgn(dis - r) >= 0) return theta * r * r;
-	auto [u, v] = line_circle_inter({s, t}, {{0, 0}, r});
-	point lo = sgn(det(s, u)) >= 0 ? u : s;
-	point hi = sgn(det(v, t)) >= 0 ? v : t;
-	return det(lo, hi) + (theta - angle(lo, hi)) * r * r; }
-LD solve(vector<point> &p, cc c) {
-	LD ret = 0;
-	for (int i = 0; i < (int) p.size (); ++i) {
-		auto u = p[i] - c.c;
-		auto v = p[(i + 1) % p.size()] - c.c;
-		int s = sgn(det(u, v));
-		if      (s > 0) ret += area (u, v, c.r);
-		else if (s < 0) ret -= area (v, u, c.r);
-	} return abs (ret) / 2; } //ret在p逆时针时为正
+// 圆与多边形面积交
+T area_inter(const Circle &circ, const Polygon &poly) {
+    const auto cal = [](const Circle &circ, const Point &a, const Point &b) {
+        if ((a - circ.c).toleft(b - circ.c) == 0) return 0.0l;
+        const auto ina = circ.is_in(a), inb = circ.is_in(b);
+        const Line ab = {a, b - a};
+        if (ina && inb) return ((a - circ.c) ^ (b - circ.c)) / 2;
+        if (ina && !inb) {
+            const auto t = circ.inter(ab);
+            const Point p = t.size() == 1 ? t[0] : t[1];
+            const T ans = ((a - circ.c) ^ (p - circ.c)) / 2;
+            const T th = (p - circ.c).ang(b - circ.c);
+            const T d = circ.r * circ.r * th / 2;
+            if ((a - circ.c).toleft(b - circ.c) == 1) return ans + d;
+            return ans - d;
+        }
+        if (!ina && inb) {
+            const Point p = circ.inter(ab)[0];
+            const T ans = ((p - circ.c) ^ (b - circ.c)) / 2;
+            const T th = (a - circ.c).ang(p - circ.c);
+            const T d = circ.r * circ.r * th / 2;
+            if ((a - circ.c).toleft(b - circ.c) == 1) return ans + d;
+            return ans - d;
+        }
+        const auto p = circ.inter(ab);
+        if (p.size() == 2 && Segment{a, b}.dis(circ.c) <= circ.r + eps) {
+            const T ans = ((p[0] - circ.c) ^ (p[1] - circ.c)) / 2;
+            const T th1 = (a - circ.c).ang(p[0] - circ.c),
+                    th2 = (b - circ.c).ang(p[1] - circ.c);
+            const T d1 = circ.r * circ.r * th1 / 2,
+                    d2 = circ.r * circ.r * th2 / 2;
+            if ((a - circ.c).toleft(b - circ.c) == 1) return ans + d1 + d2;
+            return ans - d1 - d2;
+        }
+        const T th = (a - circ.c).ang(b - circ.c);
+        if ((a - circ.c).toleft(b - circ.c) == 1)
+            return circ.r * circ.r * th / 2;
+        return -circ.r * circ.r * th / 2;
+    };
+
+    T ans = 0;
+    for (size_t i = 0; i < poly.p.size(); i++) {
+        const Point a = poly.p[i], b = poly.p[poly.nxt(i)];
+        ans += cal(circ, a, b);
+    }
+    return ans;
+}

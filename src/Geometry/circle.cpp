@@ -1,77 +1,154 @@
-struct circle { point c; LD r;};
-bool in_circle(cp a, const circle &b) {
-	return sgn(b.r - dis(b.c, a)) >= 0; }
-circle make_circle(cp a, cp b) { // 以 a b 为直径的圆
-	point p = (a + b) / 2;
-	return {p, dis(a, p)}; }
-circle make_circle(cp a, cp b, cp c) { // 三点共线 inf / nan
-	point bc = c - b, ca = a - c, ab = b - a;
-	point o = (b + c - bc.rot90()*dot(ca,ab)/det(ca,ab)) / 2;
-	return {o, dis(o, a)}; } // 检查上一行正负号
-circle min_circle (vector <point> p) { // 最小覆盖圆
- circle ret({0, 0}, 0);
- shuffle (p.begin (), p.end (), rng);
- for (int i = 0; i < (int) p.size (); i++)
-  if (!in_circle(p[i], ret)) {
-   ret = circle (p[i], 0);
-   for (int j = 0; j < i; j++) if (!in_circle(p[j], ret)) {
-    ret = make_circle (p[i], p[j]);
-    for (int k = 0; k < j; k++) if (!in_circle(p[k], ret))
-     ret = make_circle (p[i], p[j], p[k]);
-  } } return ret; }
-pair <point, point> line_circle_inter (cl a, circle c) {
-	LD d = p2l (c.c, a);
-	// 需要的话返回 vector <point>
-	/* if (sgn (d - R) >= 0) return {}; */
-	LD x = sqrt (sqr(c.r) - sqr(d)); // sqrt(max(0., ...))
-	return {
-		proj_to_line (c.c, a) + (a.s - a.t).unit() * x,
-		proj_to_line (c.c, a) - (a.s - a.t).unit() * x }; }
-LD circle_inter_area (circle a, circle b) { // 圆面积交
-	LD d = dis (a.c, b.c);
-	if (sgn (d - (a.r + b.r)) >= 0) return 0;
-	if (sgn (d - abs(a.r - b.r)) <= 0) {
-		LD r = min (a.r, b.r);
-		return r * r * PI; }
-	LD x = (d * d + a.r * a.r - b.r * b.r) / (2 * d),
-		   t1 = acos (min (1., max (-1., x / a.r))),
-		   t2 = acos (min (1., max (-1., (d - x) / b.r)));
-	return sqr(a.r)*t1 + sqr(b.r)*t2 - d*a.r*sin(t1);}
-vector <point> circle_inter (circle a, circle b) { // 圆交点
-	if (a.c == b.c || sgn (dis (a.c, b.c) - a.r - b.r) > 0
-		|| sgn (dis (a.c, b.c) - abs (a.r - b.r)) < 0)
-		return {};
-	point r = (b.c - a.c).unit();
-	LD d = dis (a.c, b.c);
-	LD x = ((sqr (a.r) - sqr (b.r)) / d + d) / 2;
-	LD h = sqrt (sqr (a.r) - sqr (x));
-	if (sgn (h) == 0) return {a.c + r * x};
-	return {a.c + r * x + r.rot90 () * h,
-	        a.c + r * x - r.rot90 () * h}; }
-// 返回按照顺时针方向
-vector <point> tangent (cp a, circle b) {
-	return circle_inter (make_circle (a, b.c), b); }
-vector <line> extangent (circle a, circle b) {
-	vector <line> ret; // 未考虑两圆内切的一条外切线
-	if (sgn(dis(a.c, b.c)-abs(a.r - b.r))<=0) return ret;
-	if (sgn(a.r - b.r) == 0) {
-		point dir = b.c - a.c;
-		dir = (dir * a.r / dir.len()).rot90();
-		ret.push_back({a.c + dir, b.c + dir});
-		ret.push_back({a.c - dir, b.c - dir});
-	} else {
-		point p = (b.c * a.r - a.c * b.r) / (a.r - b.r); 
-		auto u = tangent(p, a), v = tangent(p, b);
-		if (u.size() == 2 && v.size() == 2) {
-			if (sgn(a.r-b.r) < 0)
-				swap(u[0], u[1]), swap(v[0], v[1]);
-			ret.push_back({u[0], v[0]});
-			ret.push_back({u[1], v[1]}); } }
-	return ret; }
-vector <line> intangent(circle a, circle b) {
-	vector <line> ret; // 未考虑两圆外切的一条内切线
-	point p = (b.c * a.r + a.c * b.r) / (a.r + b.r); 
-	vector u = tangent(p, a), v = tangent(p, b);
-	if (u.size() == 2 && v.size() == 2) {
-		ret.push_back({u[0], v[0]});
-		ret.push_back({u[1], v[1]}); } return ret; }
+struct Circle {
+    Point c;
+    T r;  // 一般来说必须用浮点数
+
+    bool operator==(const Circle &a) const {
+        return c == a.c && abs(r - a.r) <= eps;
+    }
+    T circ() const { return 2 * PI * r; }  // 周长
+    T area() const { return PI * r * r; }  // 面积
+
+    // 点与圆的关系
+    // -1 圆上 | 0 圆外 | 1 圆内
+    int is_in(const Point &p) const {
+        const T d = p.dis(c);
+        return abs(d - r) <= eps ? -1 : d < r - eps;
+    }
+
+    // 直线与圆关系
+    // 0 相离 | 1 相切 | 2 相交
+    int relation(const Line &l) const {
+        const T d = l.dis(c);
+        if (d > r + eps) return 0;
+        if (abs(d - r) <= eps) return 1;
+        return 2;
+    }
+
+    // 圆与圆关系
+    // -1 相同 | 0 相离 | 1 外切 | 2 相交 | 3 内切 | 4 内含
+    int relation(const Circle &a) const {
+        if (*this == a) return -1;
+        const T d = c.dis(a.c);
+        if (d > r + a.r + eps) return 0;
+        if (abs(d - r - a.r) <= eps) return 1;
+        if (abs(d - abs(r - a.r)) <= eps) return 3;
+        if (d < abs(r - a.r) - eps) return 4;
+        return 2;
+    }
+
+    // 直线与圆的交点
+    vector<Point> inter(const Line &l) const {
+        const T d = l.dis(c);
+        const Point p = l.proj(c);
+        const int t = relation(l);
+        if (t == 0) return vector<Point>();
+        if (t == 1) return vector<Point>{p};
+        const T k = sqrt(r * r - d * d);
+        return vector<Point>{p - (l.v / l.v.len()) * k,
+                             p + (l.v / l.v.len()) * k};
+    }
+
+    // 圆与圆交点
+    vector<Point> inter(const Circle &a) const {
+        const T d = c.dis(a.c);
+        const int t = relation(a);
+        if (t == -1 || t == 0 || t == 4) return vector<Point>();
+        Point e = a.c - c;
+        e = e / e.len() * r;
+        if (t == 1 || t == 3) {
+            if (r * r + d * d - a.r * a.r >= -eps) return vector<Point>{c + e};
+            return vector<Point>{c - e};
+        }
+        const T costh = (r * r + d * d - a.r * a.r) / (2 * r * d),
+                sinth = sqrt(1 - costh * costh);
+        return vector<Point>{c + e.rot(costh, -sinth), c + e.rot(costh, sinth)};
+    }
+
+    // 圆与圆交面积
+    T inter_area(const Circle &a) const {
+        const T d = c.dis(a.c);
+        const int t = relation(a);
+        if (t == -1) return area();
+        if (t < 2) return 0;
+        if (t > 2) return min(area(), a.area());
+        const T costh1 = (r * r + d * d - a.r * a.r) / (2 * r * d),
+                costh2 = (a.r * a.r + d * d - r * r) / (2 * a.r * d);
+        const T sinth1 = sqrt(1 - costh1 * costh1),
+                sinth2 = sqrt(1 - costh2 * costh2);
+        const T th1 = acos(costh1), th2 = acos(costh2);
+        return r * r * (th1 - costh1 * sinth1) +
+               a.r * a.r * (th2 - costh2 * sinth2);
+    }
+
+    // 过圆外一点圆的切线
+    vector<Line> tangent(const Point &a) const {
+        const int t = is_in(a);
+        if (t == 1) return vector<Line>();
+        if (t == -1) {
+            const Point v = {-(a - c).y, (a - c).x};
+            return vector<Line>{{a, v}};
+        }
+        Point e = a - c;
+        e = e / e.len() * r;
+        const T costh = r / c.dis(a), sinth = sqrt(1 - costh * costh);
+        const Point t1 = c + e.rot(costh, -sinth), t2 = c + e.rot(costh, sinth);
+        return vector<Line>{{a, t1 - a}, {a, t2 - a}};
+    }
+
+    // 两圆的公切线
+    vector<Line> tangent(const Circle &a) const {
+        const int t = relation(a);
+        vector<Line> lines;
+        if (t == -1 || t == 4) return lines;
+        if (t == 1 || t == 3) {
+            const Point p = inter(a)[0], v = {-(a.c - c).y, (a.c - c).x};
+            lines.push_back({p, v});
+        }
+        const T d = c.dis(a.c);
+        const Point e = (a.c - c) / (a.c - c).len();
+        if (t <= 2) {
+            const T costh = (r - a.r) / d, sinth = sqrt(1 - costh * costh);
+            const Point d1 = e.rot(costh, -sinth), d2 = e.rot(costh, sinth);
+            const Point u1 = c + d1 * r, u2 = c + d2 * r, v1 = a.c + d1 * a.r,
+                        v2 = a.c + d2 * a.r;
+            lines.push_back({u1, v1 - u1});
+            lines.push_back({u2, v2 - u2});
+        }
+        if (t == 0) {
+            const T costh = (r + a.r) / d, sinth = sqrt(1 - costh * costh);
+            const Point d1 = e.rot(costh, -sinth), d2 = e.rot(costh, sinth);
+            const Point u1 = c + d1 * r, u2 = c + d2 * r, v1 = a.c - d1 * a.r,
+                        v2 = a.c - d2 * a.r;
+            lines.push_back({u1, v1 - u1});
+            lines.push_back({u2, v2 - u2});
+        }
+        return lines;
+    }
+
+    // 圆的反演
+    // auto result = circle.inverse(line);
+    // if (std::holds_alternative<Circle>(result))
+    // Circle c = std::get<Circle>(result);
+    std::variant<Circle, Line> inverse(const Line &l) const {
+        if (l.toleft(c) == 0) return l;
+        const Point v =
+            l.toleft(c) == 1 ? Point{l.v.y, -l.v.x} : Point{-l.v.y, l.v.x};
+        const T d = r * r / l.dis(c);
+        const Point p = c + v / v.len() * d;
+        return Circle{(c + p) / 2, d / 2};
+    }
+
+    std::variant<Circle, Line> inverse(const Circle &a) const {
+        const Point v = a.c - c;
+        if (a.is_in(c) == -1) {
+            const T d = r * r / (a.r + a.r);
+            const Point p = c + v / v.len() * d;
+            return Line{p, {-v.y, v.x}};
+        }
+        if (c == a.c) return Circle{c, r * r / a.r};
+        const T d1 = r * r / (c.dis(a.c) - a.r),
+                d2 = r * r / (c.dis(a.c) + a.r);
+        const Point p = c + v / v.len() * d1, q = c + v / v.len() * d2;
+        return Circle{(p + q) / 2, p.dis(q) / 2};
+    }
+};

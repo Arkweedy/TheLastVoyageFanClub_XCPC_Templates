@@ -1,27 +1,34 @@
-int half(cp a){return a.y > 0||(a.y == 0 && a.x > 0)?1:0;}
-bool turn_left(cl a, cl b, cl c) {
-  return turn(a.s, a.t, line_inter(b, c)) > 0; }
-bool is_para(cl a, cl b){return!sgn(det(a.t-a.s,b.t-b.s));}
-bool cmp(cl a, cl b) {
-  int sign = half(a.t - a.s) - half(b.t - b.s);
-  int dir = sgn(det(a.t - a.s, b.t - b.s));
-  if (!dir && !sign) return turn(a.s, a.t, b.t) < 0;
-  else return sign ? sign > 0 : dir > 0; }
-vector <point> hpi(vector <line> h) { // 半平面交
-  sort(h.begin(), h.end(), cmp);
-  vector <line> q(h.size()); int l = 0, r = -1;
-  for(auto &i : h) {
-   while (l < r && !turn_left(i, q[r - 1], q[r])) --r;
-   while (l < r && !turn_left(i, q[l], q[l + 1])) ++l;
-   if (l <= r && is_para(i, q[r])) continue;
-   q[++r] = i; }
-  while (r - l > 1 && !turn_left(q[l], q[r - 1], q[r])) --r;
-  while (r - l > 1 && !turn_left(q[r], q[l], q[l + 1])) ++l;
-  if(r - l < 2) return {};
-  vector <point> ret(r - l + 1);
-  for(int i = l; i <= r; i++) 
-    ret[i - l] = line_inter(q[i], q[i == r ? l : i + 1]);
-  return ret; }
-// 空集会在队列里留下一个开区域；开区域会被判定为空集。
-// 为了保证正确性，一定要加足够大的框，尽可能避免零面积区域。
-// 实在需要零面积区域边缘，需要仔细考虑 turn_left 的实现。
+// 半平面交
+// 排序增量法，复杂度 O(nlogn)
+// 输入与返回值都是用直线表示的半平面集合
+vector<Line> halfinter(vector<Line> l, const T lim = 1e9) {
+    const auto check = [](const Line &a, const Line &b, const Line &c) {
+        return a.toleft(b.inter(c)) < 0;
+    };
+    // 无精度误差的方法，但注意取值范围会扩大到三次方
+    /*const auto check=[](const Line &a,const Line &b,const Line &c)
+    {
+        const Point
+    p=a.v*(b.v^c.v),q=b.p*(b.v^c.v)+b.v*(c.v^(b.p-c.p))-a.p*(b.v^c.v); return
+    p.toleft(q)<0;
+    };*/
+    l.push_back({{-lim, 0}, {0, -1}});
+    l.push_back({{0, -lim}, {1, 0}});
+    l.push_back({{lim, 0}, {0, 1}});
+    l.push_back({{0, lim}, {-1, 0}});
+    sort(l.begin(), l.end());
+    deque<Line> q;
+    for (size_t i = 0; i < l.size(); i++) {
+        if (i > 0 && l[i - 1].v.toleft(l[i].v) == 0 &&
+            l[i - 1].v * l[i].v > eps)
+            continue;
+        while (q.size() > 1 && check(l[i], q.back(), q[q.size() - 2]))
+            q.pop_back();
+        while (q.size() > 1 && check(l[i], q[0], q[1])) q.pop_front();
+        if (!q.empty() && q.back().v.toleft(l[i].v) <= 0) return vector<Line>();
+        q.push_back(l[i]);
+    }
+    while (q.size() > 1 && check(q[0], q.back(), q[q.size() - 2])) q.pop_back();
+    while (q.size() > 1 && check(q.back(), q[0], q[1])) q.pop_front();
+    return vector<Line>(q.begin(), q.end());
+}
