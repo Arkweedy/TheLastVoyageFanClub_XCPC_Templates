@@ -1,0 +1,59 @@
+\begin{MintedVerbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8\relax}]
+\PYG{c+cp}{\PYGZsh{}include}\PYG{+w}{ }\PYG{c+cpf}{\PYGZlt{}bits/stdc++.h\PYGZgt{}}
+\PYG{k}{using}\PYG{+w}{ }\PYG{k}{namespace}\PYG{+w}{ }\PYG{n+nn}{std}\PYG{p}{;}
+
+\PYG{k+kt}{int}\PYG{+w}{ }\PYG{n+nf}{main}\PYG{p}{()}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{    }\PYG{k+kt}{unsigned}\PYG{+w}{ }\PYG{k+kt}{int}\PYG{+w}{ }\PYG{n}{a}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{99}\PYG{p}{;}\PYG{+w}{                            }\PYG{c+c1}{// 32位无符号整数}
+\PYG{+w}{    }\PYG{k+kt}{unsigned}\PYG{+w}{ }\PYG{k+kt}{long}\PYG{+w}{ }\PYG{k+kt}{long}\PYG{+w}{ }\PYG{n}{b}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{1234567890123456789ULL}\PYG{p}{;}\PYG{+w}{  }\PYG{c+c1}{// 64位无符号长整型}
+
+\PYG{+w}{    }\PYG{c+c1}{// \PYGZhy{}\PYGZhy{}\PYGZhy{} 1. \PYGZus{}\PYGZus{}builtin\PYGZus{}clz / \PYGZus{}\PYGZus{}builtin\PYGZus{}clzll \PYGZhy{}\PYGZhy{}\PYGZhy{}}
+\PYG{+w}{    }\PYG{c+c1}{// 计算前导零的个数}
+
+\PYG{+w}{    }\PYG{c+c1}{// 对于 a = 99 (二进制 ...01100011)}
+\PYG{+w}{    }\PYG{c+c1}{// 32位表示: 00000000 00000000 00000000 01100011}
+\PYG{+w}{    }\PYG{c+c1}{// 最高位的 \PYGZsq{}1\PYGZsq{} 在第7位（从右往左，0开始），所以前面有 32 \PYGZhy{} 7 = 25 个零。}
+\PYG{+w}{    }\PYG{k+kt}{int}\PYG{+w}{ }\PYG{n}{clz\PYGZus{}a}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{\PYGZus{}\PYGZus{}builtin\PYGZus{}clz}\PYG{p}{(}\PYG{n}{a}\PYG{p}{);}\PYG{+w}{  }\PYG{c+c1}{// 25}
+
+\PYG{+w}{    }\PYG{c+c1}{// 对于 b = 1234567890123456789ULL}
+\PYG{+w}{    }\PYG{c+c1}{// 64位表示: 00010001 00101101 01001011 10000010 11010010 01010101 01100011}
+\PYG{+w}{    }\PYG{c+c1}{// 00010101 最高位的 \PYGZsq{}1\PYGZsq{} 在第60位，所以前面有 64 \PYGZhy{} 61 = 3 个零。}
+\PYG{+w}{    }\PYG{k+kt}{int}\PYG{+w}{ }\PYG{n}{clz\PYGZus{}b}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{\PYGZus{}\PYGZus{}builtin\PYGZus{}clzll}\PYG{p}{(}\PYG{n}{b}\PYG{p}{);}\PYG{+w}{  }\PYG{c+c1}{// 3}
+\PYG{+w}{    }\PYG{c+c1}{// 对 0 调用 clz 是未定义行为}
+
+\PYG{+w}{    }\PYG{c+c1}{// \PYGZhy{}\PYGZhy{}\PYGZhy{} 2. \PYGZus{}\PYGZus{}builtin\PYGZus{}ctz / \PYGZus{}\PYGZus{}builtin\PYGZus{}ctzll \PYGZhy{}\PYGZhy{}\PYGZhy{}}
+\PYG{+w}{    }\PYG{c+c1}{// 计算末尾零的个数}
+
+\PYG{+w}{    }\PYG{k+kt}{unsigned}\PYG{+w}{ }\PYG{k+kt}{int}\PYG{+w}{ }\PYG{n}{c}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{120}\PYG{p}{;}
+\PYG{+w}{    }\PYG{c+c1}{// 32位表示: 00000000 00000000 00000000 01111000}
+\PYG{+w}{    }\PYG{c+c1}{// 最低位的 \PYGZsq{}1\PYGZsq{} 在第3位，所以后面有 3 个零。}
+\PYG{+w}{    }\PYG{k+kt}{int}\PYG{+w}{ }\PYG{n}{ctz\PYGZus{}c}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{\PYGZus{}\PYGZus{}builtin\PYGZus{}ctz}\PYG{p}{(}\PYG{n}{c}\PYG{p}{);}\PYG{+w}{  }\PYG{c+c1}{// 3}
+
+\PYG{+w}{    }\PYG{k+kt}{unsigned}\PYG{+w}{ }\PYG{k+kt}{long}\PYG{+w}{ }\PYG{k+kt}{long}\PYG{+w}{ }\PYG{n}{d}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{96ULL}\PYG{p}{;}\PYG{+w}{    }\PYG{c+c1}{// ...01100000}
+\PYG{+w}{    }\PYG{k+kt}{int}\PYG{+w}{ }\PYG{n}{ctz\PYGZus{}d}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{\PYGZus{}\PYGZus{}builtin\PYGZus{}ctzll}\PYG{p}{(}\PYG{n}{d}\PYG{p}{);}\PYG{+w}{  }\PYG{c+c1}{// 5}
+\PYG{+w}{    }\PYG{c+c1}{// 对 0 调用 ctz 是未定义行为}
+
+\PYG{+w}{    }\PYG{c+c1}{// \PYGZhy{}\PYGZhy{}\PYGZhy{} 3. \PYGZus{}\PYGZus{}builtin\PYGZus{}popcount / \PYGZus{}\PYGZus{}builtin\PYGZus{}popcountll \PYGZhy{}\PYGZhy{}\PYGZhy{}}
+\PYG{+w}{    }\PYG{c+c1}{// 计算二进制中 \PYGZsq{}1\PYGZsq{} 的个数}
+
+\PYG{+w}{    }\PYG{c+c1}{// 对于 a = 99}
+\PYG{+w}{    }\PYG{c+c1}{// 32位表示: 00000000 00000000 00000000 01100011, 共有4个\PYGZsq{}1\PYGZsq{}}
+\PYG{+w}{    }\PYG{k+kt}{int}\PYG{+w}{ }\PYG{n}{popcount\PYGZus{}a}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{\PYGZus{}\PYGZus{}builtin\PYGZus{}popcount}\PYG{p}{(}\PYG{n}{a}\PYG{p}{);}\PYG{+w}{  }\PYG{c+c1}{// 4}
+
+\PYG{+w}{    }\PYG{c+c1}{// 对于 b = 1234567890123456789ULL}
+\PYG{+w}{    }\PYG{c+c1}{// 64位表示: 00010001 00101101 01001011 10000010 11010010 01010101 01100011}
+\PYG{+w}{    }\PYG{c+c1}{// 00010101 共有32个\PYGZsq{}1\PYGZsq{}}
+\PYG{+w}{    }\PYG{k+kt}{int}\PYG{+w}{ }\PYG{n}{popcount\PYGZus{}b}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{\PYGZus{}\PYGZus{}builtin\PYGZus{}popcountll}\PYG{p}{(}\PYG{n}{b}\PYG{p}{);}\PYG{+w}{  }\PYG{c+c1}{// 32}
+
+\PYG{+w}{    }\PYG{c+c1}{// \PYGZhy{}\PYGZhy{}\PYGZhy{} 4. \PYGZus{}\PYGZus{}builtin\PYGZus{}parity / \PYGZus{}\PYGZus{}builtin\PYGZus{}parityll \PYGZhy{}\PYGZhy{}\PYGZhy{}}
+\PYG{+w}{    }\PYG{c+c1}{// 检查 \PYGZsq{}1\PYGZsq{} 的个数是奇数还是偶数}
+
+\PYG{+w}{    }\PYG{k+kt}{unsigned}\PYG{+w}{ }\PYG{k+kt}{int}\PYG{+w}{ }\PYG{n}{f}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{103}\PYG{p}{;}\PYG{+w}{  }\PYG{c+c1}{// ...01100111, 有5个\PYGZsq{}1\PYGZsq{} (奇数)}
+
+\PYG{+w}{    }\PYG{k+kt}{int}\PYG{+w}{ }\PYG{n}{parity\PYGZus{}f}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{\PYGZus{}\PYGZus{}builtin\PYGZus{}parity}\PYG{p}{(}\PYG{n}{f}\PYG{p}{);}\PYG{+w}{  }\PYG{c+c1}{// 1}
+
+\PYG{+w}{    }\PYG{c+c1}{// b 有32个\PYGZsq{}1\PYGZsq{} (偶数)}
+\PYG{+w}{    }\PYG{k+kt}{int}\PYG{+w}{ }\PYG{n}{parity\PYGZus{}b}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{\PYGZus{}\PYGZus{}builtin\PYGZus{}parityll}\PYG{p}{(}\PYG{n}{b}\PYG{p}{);}\PYG{+w}{  }\PYG{c+c1}{// 0}
+
+\PYG{+w}{    }\PYG{k}{return}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\end{MintedVerbatim}

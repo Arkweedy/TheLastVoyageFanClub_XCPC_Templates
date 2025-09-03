@@ -115,13 +115,13 @@
 \indexentry{Calculus, Integration Table 导数积分表}{151}
 \indexentry{Python Hint}{153}
 \indexentry{Miscellany}{157}
+\indexentry{初始模板}{157}
 \indexentry{WIN 运行脚本}{157}
-\indexentry{Zeller 日期公式}{157}
+\indexentry{Zeller 日期公式}{158}
 \indexentry{有理数二分: Stern-Brocot 树, Farey 序列}{158}
 \indexentry{黄金三分}{158}
 \indexentry{DP 优化}{158}
-\indexentry{Hash Table}{160}
-\indexentry{基数排序}{160}
-\indexentry{Hacks: O3, 读入优化, Bitset, builtin}{160}
-\indexentry{试机赛与纪律文件}{160}
-\indexentry{Constant Table 常数表}{161}
+\indexentry{O3, 读入优化}{160}
+\indexentry{builtin}{160}
+\indexentry{试机赛与纪律文件}{161}
+\indexentry{Constant Table 常数表}{162}
