@@ -55,72 +55,73 @@
 \indexentry{PBDS 实现平衡树}{86}
 \indexentry{PBDS 实现可并堆}{87}
 \indexentry{手写 bitset}{89}
-\indexentry{String}{92}
-\indexentry{最小表示法}{92}
-\indexentry{Manacher}{92}
-\indexentry{KMP, exKMP}{93}
-\indexentry{Border树}{93}
-\indexentry{AC 自动机}{94}
-\indexentry{Lyndon Word Decomposition}{96}
-\indexentry{后缀自动机}{97}
-\indexentry{后缀数组}{98}
-\indexentry{Suffix Balanced Tree 后缀平衡树}{100}
-\indexentry{广义后缀自动机(离线)}{100}
-\indexentry{广义在线 SAM}{102}
-\indexentry{回文自动机}{103}
-\indexentry{回文自动机 + dp}{106}
-\indexentry{Runs}{107}
-\indexentry{字符串 Hash}{108}
-\indexentry{String Conclusions}{108}
-\indexentry{Math 数学}{110}
-\indexentry{Long Long $O(1)$ 乘, Barrett}{110}
-\indexentry{exgcd, 逆元}{110}
-\indexentry{同余方程}{111}
-\indexentry{CRT 中国剩余定理}{111}
-\indexentry{Miller Rabin, Pollard Rho}{112}
-\indexentry{线性基}{113}
-\indexentry{扩展卢卡斯}{114}
-\indexentry{阶乘取模}{114}
-\indexentry{类欧几里得 直线下格点统计}{115}
-\indexentry{万能欧几里德}{115}
-\indexentry{平方剩余}{115}
-\indexentry{线性同余不等式}{116}
-\indexentry{原根}{116}
-\indexentry{多项式}{117}
-\indexentry{FFT}{120}
-\indexentry{NTT}{120}
-\indexentry{MTT 任意模数卷积}{121}
-\indexentry{多项式运算}{121}
-\indexentry{线性递推}{124}
-\indexentry{Berlekamp-Massey 最小多项式}{125}
-\indexentry{FWT}{126}
-\indexentry{K 进制 FWT}{127}
-\indexentry{Simplex 单纯形}{127}
-\indexentry{高斯消元最小范数解}{128}
-\indexentry{Pell 方程}{129}
-\indexentry{解一元三次方程}{129}
-\indexentry{自适应 Simpson}{129}
-\indexentry{Tricks}{131}
-\indexentry{线性预处理左边第 k 大}{131}
-\indexentry{二维支配前驱查询}{131}
-\indexentry{区间众数}{131}
-\indexentry{区间 $mex$ }{131}
-\indexentry{平面不相交矩形建树}{132}
-\indexentry{无穷字符串匹配/比较}{132}
-\indexentry{曼哈顿和切比雪夫}{134}
-\indexentry{接受有效日期的最小状态自动机}{134}
-\indexentry{Appendix}{135}
-\indexentry{Formulas 公式表}{135}
-\indexentry{Calculus, Integration Table 导数积分表}{144}
-\indexentry{Python Hint}{146}
-\indexentry{Miscellany}{150}
-\indexentry{WIN 运行脚本}{150}
-\indexentry{Zeller 日期公式}{150}
-\indexentry{有理数二分: Stern-Brocot 树, Farey 序列}{151}
-\indexentry{黄金三分}{151}
-\indexentry{DP 优化}{151}
-\indexentry{Hash Table}{153}
-\indexentry{基数排序}{153}
-\indexentry{Hacks: O3, 读入优化, Bitset, builtin}{153}
-\indexentry{试机赛与纪律文件}{153}
-\indexentry{Constant Table 常数表}{154}
+\indexentry{珂朵莉树}{91}
+\indexentry{String}{93}
+\indexentry{最小表示法}{93}
+\indexentry{Manacher}{93}
+\indexentry{KMP, exKMP}{94}
+\indexentry{Border树}{94}
+\indexentry{AC 自动机}{95}
+\indexentry{Lyndon Word Decomposition}{97}
+\indexentry{后缀自动机}{98}
+\indexentry{后缀数组}{99}
+\indexentry{Suffix Balanced Tree 后缀平衡树}{101}
+\indexentry{广义后缀自动机(离线)}{101}
+\indexentry{广义在线 SAM}{103}
+\indexentry{回文自动机}{104}
+\indexentry{回文自动机 + dp}{107}
+\indexentry{Runs}{108}
+\indexentry{字符串 Hash}{109}
+\indexentry{String Conclusions}{109}
+\indexentry{Math 数学}{111}
+\indexentry{Long Long $O(1)$ 乘, Barrett}{111}
+\indexentry{exgcd, 逆元}{111}
+\indexentry{同余方程}{112}
+\indexentry{CRT 中国剩余定理}{112}
+\indexentry{Miller Rabin, Pollard Rho}{113}
+\indexentry{线性基}{114}
+\indexentry{扩展卢卡斯}{115}
+\indexentry{阶乘取模}{115}
+\indexentry{类欧几里得 直线下格点统计}{116}
+\indexentry{万能欧几里德}{116}
+\indexentry{平方剩余}{116}
+\indexentry{线性同余不等式}{117}
+\indexentry{原根}{117}
+\indexentry{多项式}{118}
+\indexentry{FFT}{121}
+\indexentry{NTT}{121}
+\indexentry{MTT 任意模数卷积}{122}
+\indexentry{多项式运算}{122}
+\indexentry{线性递推}{125}
+\indexentry{Berlekamp-Massey 最小多项式}{126}
+\indexentry{FWT}{127}
+\indexentry{K 进制 FWT}{128}
+\indexentry{Simplex 单纯形}{128}
+\indexentry{高斯消元最小范数解}{129}
+\indexentry{Pell 方程}{130}
+\indexentry{解一元三次方程}{130}
+\indexentry{自适应 Simpson}{130}
+\indexentry{Tricks}{132}
+\indexentry{线性预处理左边第 k 大}{132}
+\indexentry{二维支配前驱查询}{132}
+\indexentry{区间众数}{132}
+\indexentry{区间 $mex$ }{132}
+\indexentry{平面不相交矩形建树}{133}
+\indexentry{无穷字符串匹配/比较}{133}
+\indexentry{曼哈顿和切比雪夫}{135}
+\indexentry{接受有效日期的最小状态自动机}{135}
+\indexentry{Appendix}{136}
+\indexentry{Formulas 公式表}{136}
+\indexentry{Calculus, Integration Table 导数积分表}{145}
+\indexentry{Python Hint}{147}
+\indexentry{Miscellany}{151}
+\indexentry{WIN 运行脚本}{151}
+\indexentry{Zeller 日期公式}{151}
+\indexentry{有理数二分: Stern-Brocot 树, Farey 序列}{152}
+\indexentry{黄金三分}{152}
+\indexentry{DP 优化}{152}
+\indexentry{Hash Table}{154}
+\indexentry{基数排序}{154}
+\indexentry{Hacks: O3, 读入优化, Bitset, builtin}{154}
+\indexentry{试机赛与纪律文件}{154}
+\indexentry{Constant Table 常数表}{155}
