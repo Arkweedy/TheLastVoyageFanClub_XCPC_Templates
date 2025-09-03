@@ -37,5 +37,5 @@
 \PYG{p}{\PYGZcb{}}
 \PYG{c+c1}{// 清空：cnt=0,tr[0].clear();}
 \PYG{c+c1}{// for(int i=1;i\PYGZlt{}=n;i++) insert(s[i]);}
-\PYG{c+c1}{// for(Int i=1;i\PYGZlt{}=cnt;i++) e[i].clear();}
+\PYG{c+c1}{// for(int i=0;i\PYGZlt{}=cnt;i++) e[i].clear();}
 \end{MintedVerbatim}

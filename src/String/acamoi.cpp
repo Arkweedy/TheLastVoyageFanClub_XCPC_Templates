@@ -36,4 +36,4 @@ void getfail() {
 }
 // 清空：cnt=0,tr[0].clear();
 // for(int i=1;i<=n;i++) insert(s[i]);
-// for(Int i=1;i<=cnt;i++) e[i].clear();
+// for(int i=0;i<=cnt;i++) e[i].clear();
