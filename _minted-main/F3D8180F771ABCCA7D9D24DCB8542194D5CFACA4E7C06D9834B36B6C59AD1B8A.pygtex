@@ -1,0 +1,48 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8\relax}]
+\PYG{k}{struct}\PYG{+w}{ }\PYG{n+nc}{Segment}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{    }\PYG{n}{Point}\PYG{+w}{ }\PYG{n}{a}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{b}\PYG{p}{;}
+
+\PYG{+w}{    }\PYG{k+kt}{bool}\PYG{+w}{ }\PYG{k}{operator}\PYG{o}{\PYGZlt{}}\PYG{p}{(}\PYG{k}{const}\PYG{+w}{ }\PYG{n}{Segment}\PYG{+w}{ }\PYG{o}{\PYGZam{}}\PYG{n}{s}\PYG{p}{)}\PYG{+w}{ }\PYG{k}{const}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{        }\PYG{k}{return}\PYG{+w}{ }\PYG{n}{make\PYGZus{}pair}\PYG{p}{(}\PYG{n}{a}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{b}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{\PYGZlt{}}\PYG{+w}{ }\PYG{n}{make\PYGZus{}pair}\PYG{p}{(}\PYG{n}{s}\PYG{p}{.}\PYG{n}{a}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{s}\PYG{p}{.}\PYG{n}{b}\PYG{p}{);}
+\PYG{+w}{    }\PYG{p}{\PYGZcb{}}
+
+\PYG{+w}{    }\PYG{c+c1}{// 判定性函数建议在整数域使用}
+
+\PYG{+w}{    }\PYG{c+c1}{// 判断点是否在线段上}
+\PYG{+w}{    }\PYG{c+c1}{// \PYGZhy{}1 点在线段端点 | 0 点不在线段上 | 1 点严格在线段上}
+\PYG{+w}{    }\PYG{k+kt}{int}\PYG{+w}{ }\PYG{n}{is\PYGZus{}on}\PYG{p}{(}\PYG{k}{const}\PYG{+w}{ }\PYG{n}{Point}\PYG{+w}{ }\PYG{o}{\PYGZam{}}\PYG{n}{p}\PYG{p}{)}\PYG{+w}{ }\PYG{k}{const}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{        }\PYG{k}{if}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{p}\PYG{+w}{ }\PYG{o}{==}\PYG{+w}{ }\PYG{n}{a}\PYG{+w}{ }\PYG{o}{||}\PYG{+w}{ }\PYG{n}{p}\PYG{+w}{ }\PYG{o}{==}\PYG{+w}{ }\PYG{n}{b}\PYG{p}{)}\PYG{+w}{ }\PYG{k}{return}\PYG{+w}{ }\PYG{l+m+mi}{\PYGZhy{}1}\PYG{p}{;}
+\PYG{+w}{        }\PYG{k}{return}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{p}\PYG{+w}{ }\PYG{o}{\PYGZhy{}}\PYG{+w}{ }\PYG{n}{a}\PYG{p}{).}\PYG{n}{toleft}\PYG{p}{(}\PYG{n}{p}\PYG{+w}{ }\PYG{o}{\PYGZhy{}}\PYG{+w}{ }\PYG{n}{b}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{==}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{+w}{ }\PYG{o}{\PYGZam{}\PYGZam{}}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{p}\PYG{+w}{ }\PYG{o}{\PYGZhy{}}\PYG{+w}{ }\PYG{n}{a}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{*}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{p}\PYG{+w}{ }\PYG{o}{\PYGZhy{}}\PYG{+w}{ }\PYG{n}{b}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{\PYGZlt{}}\PYG{+w}{ }\PYG{o}{\PYGZhy{}}\PYG{n}{eps}\PYG{p}{;}
+\PYG{+w}{    }\PYG{p}{\PYGZcb{}}
+
+\PYG{+w}{    }\PYG{c+c1}{// 判断线段直线是否相交}
+\PYG{+w}{    }\PYG{c+c1}{// \PYGZhy{}1 直线经过线段端点 | 0 线段和直线不相交 | 1 线段和直线严格相交}
+\PYG{+w}{    }\PYG{k+kt}{int}\PYG{+w}{ }\PYG{n}{is\PYGZus{}inter}\PYG{p}{(}\PYG{k}{const}\PYG{+w}{ }\PYG{n}{Line}\PYG{+w}{ }\PYG{o}{\PYGZam{}}\PYG{n}{l}\PYG{p}{)}\PYG{+w}{ }\PYG{k}{const}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{        }\PYG{k}{if}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{l}\PYG{p}{.}\PYG{n}{toleft}\PYG{p}{(}\PYG{n}{a}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{==}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{+w}{ }\PYG{o}{||}\PYG{+w}{ }\PYG{n}{l}\PYG{p}{.}\PYG{n}{toleft}\PYG{p}{(}\PYG{n}{b}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{==}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{)}\PYG{+w}{ }\PYG{k}{return}\PYG{+w}{ }\PYG{l+m+mi}{\PYGZhy{}1}\PYG{p}{;}
+\PYG{+w}{        }\PYG{k}{return}\PYG{+w}{ }\PYG{n}{l}\PYG{p}{.}\PYG{n}{toleft}\PYG{p}{(}\PYG{n}{a}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{!=}\PYG{+w}{ }\PYG{n}{l}\PYG{p}{.}\PYG{n}{toleft}\PYG{p}{(}\PYG{n}{b}\PYG{p}{);}
+\PYG{+w}{    }\PYG{p}{\PYGZcb{}}
+
+\PYG{+w}{    }\PYG{c+c1}{// 判断两线段是否相交}
+\PYG{+w}{    }\PYG{c+c1}{// \PYGZhy{}1 在某一线段端点处相交 | 0 两线段不相交 | 1 两线段严格相交}
+\PYG{+w}{    }\PYG{k+kt}{int}\PYG{+w}{ }\PYG{n}{is\PYGZus{}inter}\PYG{p}{(}\PYG{k}{const}\PYG{+w}{ }\PYG{n}{Segment}\PYG{+w}{ }\PYG{o}{\PYGZam{}}\PYG{n}{s}\PYG{p}{)}\PYG{+w}{ }\PYG{k}{const}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{        }\PYG{k}{if}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{is\PYGZus{}on}\PYG{p}{(}\PYG{n}{s}\PYG{p}{.}\PYG{n}{a}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{||}\PYG{+w}{ }\PYG{n}{is\PYGZus{}on}\PYG{p}{(}\PYG{n}{s}\PYG{p}{.}\PYG{n}{b}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{||}\PYG{+w}{ }\PYG{n}{s}\PYG{p}{.}\PYG{n}{is\PYGZus{}on}\PYG{p}{(}\PYG{n}{a}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{||}\PYG{+w}{ }\PYG{n}{s}\PYG{p}{.}\PYG{n}{is\PYGZus{}on}\PYG{p}{(}\PYG{n}{b}\PYG{p}{))}\PYG{+w}{ }\PYG{k}{return}\PYG{+w}{ }\PYG{l+m+mi}{\PYGZhy{}1}\PYG{p}{;}
+\PYG{+w}{        }\PYG{k}{const}\PYG{+w}{ }\PYG{n}{Line}\PYG{+w}{ }\PYG{n}{l}\PYG{p}{\PYGZob{}}\PYG{n}{a}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{b}\PYG{+w}{ }\PYG{o}{\PYGZhy{}}\PYG{+w}{ }\PYG{n}{a}\PYG{p}{\PYGZcb{},}\PYG{+w}{ }\PYG{n}{ls}\PYG{p}{\PYGZob{}}\PYG{n}{s}\PYG{p}{.}\PYG{n}{a}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{s}\PYG{p}{.}\PYG{n}{b}\PYG{+w}{ }\PYG{o}{\PYGZhy{}}\PYG{+w}{ }\PYG{n}{s}\PYG{p}{.}\PYG{n}{a}\PYG{p}{\PYGZcb{};}
+\PYG{+w}{        }\PYG{k}{return}\PYG{+w}{ }\PYG{n}{l}\PYG{p}{.}\PYG{n}{toleft}\PYG{p}{(}\PYG{n}{s}\PYG{p}{.}\PYG{n}{a}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{*}\PYG{+w}{ }\PYG{n}{l}\PYG{p}{.}\PYG{n}{toleft}\PYG{p}{(}\PYG{n}{s}\PYG{p}{.}\PYG{n}{b}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{==}\PYG{+w}{ }\PYG{l+m+mi}{\PYGZhy{}1}\PYG{+w}{ }\PYG{o}{\PYGZam{}\PYGZam{}}
+\PYG{+w}{               }\PYG{n}{ls}\PYG{p}{.}\PYG{n}{toleft}\PYG{p}{(}\PYG{n}{a}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{*}\PYG{+w}{ }\PYG{n}{ls}\PYG{p}{.}\PYG{n}{toleft}\PYG{p}{(}\PYG{n}{b}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{==}\PYG{+w}{ }\PYG{l+m+mi}{\PYGZhy{}1}\PYG{p}{;}
+\PYG{+w}{    }\PYG{p}{\PYGZcb{}}
+
+\PYG{+w}{    }\PYG{c+c1}{// 点到线段距离（必须用浮点数）}
+\PYG{+w}{    }\PYG{n}{ld}\PYG{+w}{ }\PYG{n}{dis}\PYG{p}{(}\PYG{k}{const}\PYG{+w}{ }\PYG{n}{Point}\PYG{+w}{ }\PYG{o}{\PYGZam{}}\PYG{n}{p}\PYG{p}{)}\PYG{+w}{ }\PYG{k}{const}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{        }\PYG{k}{if}\PYG{+w}{ }\PYG{p}{((}\PYG{n}{p}\PYG{+w}{ }\PYG{o}{\PYGZhy{}}\PYG{+w}{ }\PYG{n}{a}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{*}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{b}\PYG{+w}{ }\PYG{o}{\PYGZhy{}}\PYG{+w}{ }\PYG{n}{a}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{\PYGZlt{}}\PYG{+w}{ }\PYG{o}{\PYGZhy{}}\PYG{n}{eps}\PYG{+w}{ }\PYG{o}{||}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{p}\PYG{+w}{ }\PYG{o}{\PYGZhy{}}\PYG{+w}{ }\PYG{n}{b}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{*}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{a}\PYG{+w}{ }\PYG{o}{\PYGZhy{}}\PYG{+w}{ }\PYG{n}{b}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{\PYGZlt{}}\PYG{+w}{ }\PYG{o}{\PYGZhy{}}\PYG{n}{eps}\PYG{p}{)}
+\PYG{+w}{            }\PYG{k}{return}\PYG{+w}{ }\PYG{n}{min}\PYG{p}{(}\PYG{n}{p}\PYG{p}{.}\PYG{n}{dis}\PYG{p}{(}\PYG{n}{a}\PYG{p}{),}\PYG{+w}{ }\PYG{n}{p}\PYG{p}{.}\PYG{n}{dis}\PYG{p}{(}\PYG{n}{b}\PYG{p}{));}
+\PYG{+w}{        }\PYG{k}{const}\PYG{+w}{ }\PYG{n}{Line}\PYG{+w}{ }\PYG{n}{l}\PYG{p}{\PYGZob{}}\PYG{n}{a}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{b}\PYG{+w}{ }\PYG{o}{\PYGZhy{}}\PYG{+w}{ }\PYG{n}{a}\PYG{p}{\PYGZcb{};}
+\PYG{+w}{        }\PYG{k}{return}\PYG{+w}{ }\PYG{n}{l}\PYG{p}{.}\PYG{n}{dis}\PYG{p}{(}\PYG{n}{p}\PYG{p}{);}
+\PYG{+w}{    }\PYG{p}{\PYGZcb{}}
+
+\PYG{+w}{    }\PYG{c+c1}{// 两线段间距离（必须用浮点数）}
+\PYG{+w}{    }\PYG{n}{ld}\PYG{+w}{ }\PYG{n}{dis}\PYG{p}{(}\PYG{k}{const}\PYG{+w}{ }\PYG{n}{Segment}\PYG{+w}{ }\PYG{o}{\PYGZam{}}\PYG{n}{s}\PYG{p}{)}\PYG{+w}{ }\PYG{k}{const}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{        }\PYG{k}{if}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{is\PYGZus{}inter}\PYG{p}{(}\PYG{n}{s}\PYG{p}{))}\PYG{+w}{ }\PYG{k}{return}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{;}
+\PYG{+w}{        }\PYG{k}{return}\PYG{+w}{ }\PYG{n}{min}\PYG{p}{(\PYGZob{}}\PYG{n}{dis}\PYG{p}{(}\PYG{n}{s}\PYG{p}{.}\PYG{n}{a}\PYG{p}{),}\PYG{+w}{ }\PYG{n}{dis}\PYG{p}{(}\PYG{n}{s}\PYG{p}{.}\PYG{n}{b}\PYG{p}{),}\PYG{+w}{ }\PYG{n}{s}\PYG{p}{.}\PYG{n}{dis}\PYG{p}{(}\PYG{n}{a}\PYG{p}{),}\PYG{+w}{ }\PYG{n}{s}\PYG{p}{.}\PYG{n}{dis}\PYG{p}{(}\PYG{n}{b}\PYG{p}{)\PYGZcb{});}
+\PYG{+w}{    }\PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{};}
+\end{Verbatim}

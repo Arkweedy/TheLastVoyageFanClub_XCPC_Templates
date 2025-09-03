@@ -1,0 +1,36 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8\relax}]
+\PYG{c+c1}{// 半平面交}
+\PYG{c+c1}{// 排序增量法，复杂度 O(nlogn)}
+\PYG{c+c1}{// 输入与返回值都是用直线表示的半平面集合}
+\PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{n}{Line}\PYG{o}{\PYGZgt{}}\PYG{+w}{ }\PYG{n}{halfinter}\PYG{p}{(}\PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{n}{Line}\PYG{o}{\PYGZgt{}}\PYG{+w}{ }\PYG{n}{l}\PYG{p}{,}\PYG{+w}{ }\PYG{k}{const}\PYG{+w}{ }\PYG{n}{T}\PYG{+w}{ }\PYG{n}{lim}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mf}{1e9}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{    }\PYG{k}{const}\PYG{+w}{ }\PYG{k}{auto}\PYG{+w}{ }\PYG{n}{check}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{p}{[](}\PYG{k}{const}\PYG{+w}{ }\PYG{n}{Line}\PYG{+w}{ }\PYG{o}{\PYGZam{}}\PYG{n}{a}\PYG{p}{,}\PYG{+w}{ }\PYG{k}{const}\PYG{+w}{ }\PYG{n}{Line}\PYG{+w}{ }\PYG{o}{\PYGZam{}}\PYG{n}{b}\PYG{p}{,}\PYG{+w}{ }\PYG{k}{const}\PYG{+w}{ }\PYG{n}{Line}\PYG{+w}{ }\PYG{o}{\PYGZam{}}\PYG{n}{c}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{        }\PYG{k}{return}\PYG{+w}{ }\PYG{n}{a}\PYG{p}{.}\PYG{n}{toleft}\PYG{p}{(}\PYG{n}{b}\PYG{p}{.}\PYG{n}{inter}\PYG{p}{(}\PYG{n}{c}\PYG{p}{))}\PYG{+w}{ }\PYG{o}{\PYGZlt{}}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{;}
+\PYG{+w}{    }\PYG{p}{\PYGZcb{};}
+\PYG{+w}{    }\PYG{c+c1}{// 无精度误差的方法，但注意取值范围会扩大到三次方}
+\PYG{+w}{    }\PYG{c+cm}{/*const auto check=[](const Line \PYGZam{}a,const Line \PYGZam{}b,const Line \PYGZam{}c)}
+\PYG{c+cm}{    \PYGZob{}}
+\PYG{c+cm}{        const Point}
+\PYG{c+cm}{    p=a.v*(b.v\PYGZca{}c.v),q=b.p*(b.v\PYGZca{}c.v)+b.v*(c.v\PYGZca{}(b.p\PYGZhy{}c.p))\PYGZhy{}a.p*(b.v\PYGZca{}c.v); return}
+\PYG{c+cm}{    p.toleft(q)\PYGZlt{}0;}
+\PYG{c+cm}{    \PYGZcb{};*/}
+\PYG{+w}{    }\PYG{n}{l}\PYG{p}{.}\PYG{n}{push\PYGZus{}back}\PYG{p}{(\PYGZob{}\PYGZob{}}\PYG{o}{\PYGZhy{}}\PYG{n}{lim}\PYG{p}{,}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{\PYGZcb{},}\PYG{+w}{ }\PYG{p}{\PYGZob{}}\PYG{l+m+mi}{0}\PYG{p}{,}\PYG{+w}{ }\PYG{l+m+mi}{\PYGZhy{}1}\PYG{p}{\PYGZcb{}\PYGZcb{});}
+\PYG{+w}{    }\PYG{n}{l}\PYG{p}{.}\PYG{n}{push\PYGZus{}back}\PYG{p}{(\PYGZob{}\PYGZob{}}\PYG{l+m+mi}{0}\PYG{p}{,}\PYG{+w}{ }\PYG{o}{\PYGZhy{}}\PYG{n}{lim}\PYG{p}{\PYGZcb{},}\PYG{+w}{ }\PYG{p}{\PYGZob{}}\PYG{l+m+mi}{1}\PYG{p}{,}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{\PYGZcb{}\PYGZcb{});}
+\PYG{+w}{    }\PYG{n}{l}\PYG{p}{.}\PYG{n}{push\PYGZus{}back}\PYG{p}{(\PYGZob{}\PYGZob{}}\PYG{n}{lim}\PYG{p}{,}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{\PYGZcb{},}\PYG{+w}{ }\PYG{p}{\PYGZob{}}\PYG{l+m+mi}{0}\PYG{p}{,}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{\PYGZcb{}\PYGZcb{});}
+\PYG{+w}{    }\PYG{n}{l}\PYG{p}{.}\PYG{n}{push\PYGZus{}back}\PYG{p}{(\PYGZob{}\PYGZob{}}\PYG{l+m+mi}{0}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{lim}\PYG{p}{\PYGZcb{},}\PYG{+w}{ }\PYG{p}{\PYGZob{}}\PYG{l+m+mi}{\PYGZhy{}1}\PYG{p}{,}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{\PYGZcb{}\PYGZcb{});}
+\PYG{+w}{    }\PYG{n}{sort}\PYG{p}{(}\PYG{n}{l}\PYG{p}{.}\PYG{n}{begin}\PYG{p}{(),}\PYG{+w}{ }\PYG{n}{l}\PYG{p}{.}\PYG{n}{end}\PYG{p}{());}
+\PYG{+w}{    }\PYG{n}{deque}\PYG{o}{\PYGZlt{}}\PYG{n}{Line}\PYG{o}{\PYGZgt{}}\PYG{+w}{ }\PYG{n}{q}\PYG{p}{;}
+\PYG{+w}{    }\PYG{k}{for}\PYG{+w}{ }\PYG{p}{(}\PYG{k+kt}{size\PYGZus{}t}\PYG{+w}{ }\PYG{n}{i}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{+w}{ }\PYG{n}{i}\PYG{+w}{ }\PYG{o}{\PYGZlt{}}\PYG{+w}{ }\PYG{n}{l}\PYG{p}{.}\PYG{n}{size}\PYG{p}{();}\PYG{+w}{ }\PYG{n}{i}\PYG{o}{++}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{        }\PYG{k}{if}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{i}\PYG{+w}{ }\PYG{o}{\PYGZgt{}}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{+w}{ }\PYG{o}{\PYGZam{}\PYGZam{}}\PYG{+w}{ }\PYG{n}{l}\PYG{p}{[}\PYG{n}{i}\PYG{+w}{ }\PYG{o}{\PYGZhy{}}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{].}\PYG{n}{v}\PYG{p}{.}\PYG{n}{toleft}\PYG{p}{(}\PYG{n}{l}\PYG{p}{[}\PYG{n}{i}\PYG{p}{].}\PYG{n}{v}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{==}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{+w}{ }\PYG{o}{\PYGZam{}\PYGZam{}}
+\PYG{+w}{            }\PYG{n}{l}\PYG{p}{[}\PYG{n}{i}\PYG{+w}{ }\PYG{o}{\PYGZhy{}}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{].}\PYG{n}{v}\PYG{+w}{ }\PYG{o}{*}\PYG{+w}{ }\PYG{n}{l}\PYG{p}{[}\PYG{n}{i}\PYG{p}{].}\PYG{n}{v}\PYG{+w}{ }\PYG{o}{\PYGZgt{}}\PYG{+w}{ }\PYG{n}{eps}\PYG{p}{)}
+\PYG{+w}{            }\PYG{k}{continue}\PYG{p}{;}
+\PYG{+w}{        }\PYG{k}{while}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{q}\PYG{p}{.}\PYG{n}{size}\PYG{p}{()}\PYG{+w}{ }\PYG{o}{\PYGZgt{}}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{+w}{ }\PYG{o}{\PYGZam{}\PYGZam{}}\PYG{+w}{ }\PYG{n}{check}\PYG{p}{(}\PYG{n}{l}\PYG{p}{[}\PYG{n}{i}\PYG{p}{],}\PYG{+w}{ }\PYG{n}{q}\PYG{p}{.}\PYG{n}{back}\PYG{p}{(),}\PYG{+w}{ }\PYG{n}{q}\PYG{p}{[}\PYG{n}{q}\PYG{p}{.}\PYG{n}{size}\PYG{p}{()}\PYG{+w}{ }\PYG{o}{\PYGZhy{}}\PYG{+w}{ }\PYG{l+m+mi}{2}\PYG{p}{]))}
+\PYG{+w}{            }\PYG{n}{q}\PYG{p}{.}\PYG{n}{pop\PYGZus{}back}\PYG{p}{();}
+\PYG{+w}{        }\PYG{k}{while}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{q}\PYG{p}{.}\PYG{n}{size}\PYG{p}{()}\PYG{+w}{ }\PYG{o}{\PYGZgt{}}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{+w}{ }\PYG{o}{\PYGZam{}\PYGZam{}}\PYG{+w}{ }\PYG{n}{check}\PYG{p}{(}\PYG{n}{l}\PYG{p}{[}\PYG{n}{i}\PYG{p}{],}\PYG{+w}{ }\PYG{n}{q}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{],}\PYG{+w}{ }\PYG{n}{q}\PYG{p}{[}\PYG{l+m+mi}{1}\PYG{p}{]))}\PYG{+w}{ }\PYG{n}{q}\PYG{p}{.}\PYG{n}{pop\PYGZus{}front}\PYG{p}{();}
+\PYG{+w}{        }\PYG{k}{if}\PYG{+w}{ }\PYG{p}{(}\PYG{o}{!}\PYG{n}{q}\PYG{p}{.}\PYG{n}{empty}\PYG{p}{()}\PYG{+w}{ }\PYG{o}{\PYGZam{}\PYGZam{}}\PYG{+w}{ }\PYG{n}{q}\PYG{p}{.}\PYG{n}{back}\PYG{p}{().}\PYG{n}{v}\PYG{p}{.}\PYG{n}{toleft}\PYG{p}{(}\PYG{n}{l}\PYG{p}{[}\PYG{n}{i}\PYG{p}{].}\PYG{n}{v}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{\PYGZlt{}=}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{)}\PYG{+w}{ }\PYG{k}{return}\PYG{+w}{ }\PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{n}{Line}\PYG{o}{\PYGZgt{}}\PYG{p}{();}
+\PYG{+w}{        }\PYG{n}{q}\PYG{p}{.}\PYG{n}{push\PYGZus{}back}\PYG{p}{(}\PYG{n}{l}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]);}
+\PYG{+w}{    }\PYG{p}{\PYGZcb{}}
+\PYG{+w}{    }\PYG{k}{while}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{q}\PYG{p}{.}\PYG{n}{size}\PYG{p}{()}\PYG{+w}{ }\PYG{o}{\PYGZgt{}}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{+w}{ }\PYG{o}{\PYGZam{}\PYGZam{}}\PYG{+w}{ }\PYG{n}{check}\PYG{p}{(}\PYG{n}{q}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{],}\PYG{+w}{ }\PYG{n}{q}\PYG{p}{.}\PYG{n}{back}\PYG{p}{(),}\PYG{+w}{ }\PYG{n}{q}\PYG{p}{[}\PYG{n}{q}\PYG{p}{.}\PYG{n}{size}\PYG{p}{()}\PYG{+w}{ }\PYG{o}{\PYGZhy{}}\PYG{+w}{ }\PYG{l+m+mi}{2}\PYG{p}{]))}\PYG{+w}{ }\PYG{n}{q}\PYG{p}{.}\PYG{n}{pop\PYGZus{}back}\PYG{p}{();}
+\PYG{+w}{    }\PYG{k}{while}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{q}\PYG{p}{.}\PYG{n}{size}\PYG{p}{()}\PYG{+w}{ }\PYG{o}{\PYGZgt{}}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{+w}{ }\PYG{o}{\PYGZam{}\PYGZam{}}\PYG{+w}{ }\PYG{n}{check}\PYG{p}{(}\PYG{n}{q}\PYG{p}{.}\PYG{n}{back}\PYG{p}{(),}\PYG{+w}{ }\PYG{n}{q}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{],}\PYG{+w}{ }\PYG{n}{q}\PYG{p}{[}\PYG{l+m+mi}{1}\PYG{p}{]))}\PYG{+w}{ }\PYG{n}{q}\PYG{p}{.}\PYG{n}{pop\PYGZus{}front}\PYG{p}{();}
+\PYG{+w}{    }\PYG{k}{return}\PYG{+w}{ }\PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{n}{Line}\PYG{o}{\PYGZgt{}}\PYG{p}{(}\PYG{n}{q}\PYG{p}{.}\PYG{n}{begin}\PYG{p}{(),}\PYG{+w}{ }\PYG{n}{q}\PYG{p}{.}\PYG{n}{end}\PYG{p}{());}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

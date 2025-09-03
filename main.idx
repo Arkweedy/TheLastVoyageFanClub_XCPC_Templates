@@ -18,110 +18,110 @@
 \indexentry{prufer 与树的互相转化}{36}
 \indexentry{树哈希}{37}
 \indexentry{内向基环树}{40}
-\indexentry{Hopcroft-Karp $O(\sqrt  {V} E)$}{40}
+\indexentry{Hopcroft-Karp $O(\sqrt  {V} E)$}{41}
 \indexentry{Hungarian $O(V E / w)$}{41}
 \indexentry{Shuffle 一般图最大匹配 $O(V E)$}{42}
 \indexentry{KM 最大权匹配 $O(V^3)$}{42}
-\indexentry{有向图欧拉回路/路径}{44}
+\indexentry{有向图欧拉回路/路径}{45}
 \indexentry{2-SAT, 强连通分量}{47}
 \indexentry{Bitset Kosaraju}{48}
 \indexentry{边双连通分量}{49}
 \indexentry{点双连通分量}{50}
 \indexentry{Dominator Tree 支配树}{52}
-\indexentry{Dinic 最大流}{52}
+\indexentry{Dinic 最大流}{53}
 \indexentry{原始对偶费用流}{56}
 \indexentry{虚树}{59}
-\indexentry{网络流总结}{59}
+\indexentry{网络流总结}{60}
 \indexentry{Gomory-Hu 无向图最小割树\,$O(V ^ 3 E)$}{61}
 \indexentry{Stoer-Wagner\,无向图最小割\,$O(VE + V ^ 2 \log V)$}{61}
 \indexentry{弦图}{62}
 \indexentry{Minimum Mean Cycle 最小平均值环 $O(n^2)$}{63}
-\indexentry{一般图最大匹配 - Blossom}{63}
+\indexentry{一般图最大匹配 - Blossom}{64}
 \indexentry{图论结论}{64}
-\indexentry{Data Structure}{68}
-\indexentry{回滚并查集}{68}
-\indexentry{莫队合集}{69}
-\indexentry{树状数组}{75}
-\indexentry{单点修改线段树}{76}
-\indexentry{懒标记线段树}{78}
-\indexentry{线段树合并与分裂}{81}
-\indexentry{笛卡尔树}{82}
-\indexentry{点分治}{82}
-\indexentry{点分树}{83}
-\indexentry{树上启发式合并}{83}
-\indexentry{$O(n \log n) - O(1)\ \text  { LCA}$}{84}
-\indexentry{LCT 动态树}{85}
-\indexentry{可持久化 Treap}{85}
-\indexentry{PBDS 实现平衡树}{86}
-\indexentry{PBDS 实现可并堆}{87}
-\indexentry{手写 bitset}{89}
-\indexentry{珂朵莉树}{91}
-\indexentry{String}{93}
-\indexentry{最小表示法}{93}
-\indexentry{Manacher}{93}
-\indexentry{KMP, exKMP}{94}
-\indexentry{Border树}{94}
-\indexentry{AC 自动机}{95}
-\indexentry{Lyndon Word Decomposition}{97}
-\indexentry{后缀自动机}{98}
-\indexentry{后缀数组}{99}
-\indexentry{Suffix Balanced Tree 后缀平衡树}{101}
-\indexentry{广义后缀自动机(离线)}{101}
-\indexentry{广义在线 SAM}{103}
-\indexentry{回文自动机}{104}
-\indexentry{回文自动机 + dp}{107}
-\indexentry{Runs}{108}
-\indexentry{字符串 Hash}{109}
-\indexentry{String Conclusions}{109}
-\indexentry{Math 数学}{111}
-\indexentry{Long Long $O(1)$ 乘, Barrett}{111}
-\indexentry{exgcd, 逆元}{111}
-\indexentry{同余方程}{112}
-\indexentry{CRT 中国剩余定理}{112}
-\indexentry{Miller Rabin, Pollard Rho}{113}
-\indexentry{线性基}{114}
-\indexentry{扩展卢卡斯}{115}
-\indexentry{阶乘取模}{115}
-\indexentry{类欧几里得 直线下格点统计}{116}
-\indexentry{万能欧几里德}{116}
-\indexentry{平方剩余}{116}
-\indexentry{线性同余不等式}{117}
-\indexentry{原根}{117}
-\indexentry{多项式}{118}
-\indexentry{FFT}{121}
-\indexentry{NTT}{121}
-\indexentry{MTT 任意模数卷积}{122}
-\indexentry{多项式运算}{122}
-\indexentry{线性递推}{125}
-\indexentry{Berlekamp-Massey 最小多项式}{126}
-\indexentry{FWT}{127}
-\indexentry{K 进制 FWT}{128}
-\indexentry{Simplex 单纯形}{128}
-\indexentry{高斯消元最小范数解}{129}
-\indexentry{Pell 方程}{130}
-\indexentry{解一元三次方程}{130}
-\indexentry{自适应 Simpson}{130}
-\indexentry{Tricks}{132}
-\indexentry{线性预处理左边第 k 大}{132}
-\indexentry{二维支配前驱查询}{132}
-\indexentry{区间众数}{132}
-\indexentry{区间 $mex$ 和 $mex$ 区间}{132}
-\indexentry{平面不相交矩形建树}{134}
-\indexentry{无穷字符串匹配/比较}{135}
-\indexentry{曼哈顿和切比雪夫}{136}
-\indexentry{接受有效日期的最小状态自动机}{136}
-\indexentry{Appendix}{138}
-\indexentry{Formulas 公式表}{138}
-\indexentry{Calculus, Integration Table 导数积分表}{147}
-\indexentry{Python Hint}{149}
-\indexentry{Miscellany}{153}
-\indexentry{WIN 运行脚本}{153}
-\indexentry{Zeller 日期公式}{153}
-\indexentry{有理数二分: Stern-Brocot 树, Farey 序列}{154}
-\indexentry{黄金三分}{154}
-\indexentry{DP 优化}{154}
-\indexentry{Hash Table}{156}
-\indexentry{基数排序}{156}
-\indexentry{Hacks: O3, 读入优化, Bitset, builtin}{156}
-\indexentry{试机赛与纪律文件}{156}
-\indexentry{Constant Table 常数表}{157}
+\indexentry{Data Structure}{69}
+\indexentry{回滚并查集}{69}
+\indexentry{莫队合集}{70}
+\indexentry{树状数组}{76}
+\indexentry{单点修改线段树}{77}
+\indexentry{懒标记线段树}{80}
+\indexentry{线段树合并与分裂}{82}
+\indexentry{笛卡尔树}{83}
+\indexentry{点分治}{84}
+\indexentry{点分树}{84}
+\indexentry{树上启发式合并}{84}
+\indexentry{$O(n \log n) - O(1)\ \text  { LCA}$}{86}
+\indexentry{LCT 动态树}{86}
+\indexentry{可持久化 Treap}{87}
+\indexentry{PBDS 实现平衡树}{88}
+\indexentry{PBDS 实现可并堆}{89}
+\indexentry{手写 bitset}{90}
+\indexentry{珂朵莉树}{93}
+\indexentry{String}{94}
+\indexentry{最小表示法}{94}
+\indexentry{Manacher}{94}
+\indexentry{KMP, exKMP}{95}
+\indexentry{Border树}{95}
+\indexentry{AC 自动机}{96}
+\indexentry{Lyndon Word Decomposition}{98}
+\indexentry{后缀自动机}{99}
+\indexentry{后缀数组}{100}
+\indexentry{Suffix Balanced Tree 后缀平衡树}{102}
+\indexentry{广义后缀自动机(离线)}{102}
+\indexentry{广义在线 SAM}{104}
+\indexentry{回文自动机}{105}
+\indexentry{回文自动机 + dp}{108}
+\indexentry{Runs}{110}
+\indexentry{字符串 Hash}{113}
+\indexentry{String Conclusions}{115}
+\indexentry{Math 数学}{117}
+\indexentry{Long Long $O(1)$ 乘, Barrett}{117}
+\indexentry{exgcd, 逆元}{117}
+\indexentry{同余方程}{118}
+\indexentry{CRT 中国剩余定理}{118}
+\indexentry{Miller Rabin, Pollard Rho}{119}
+\indexentry{线性基}{120}
+\indexentry{扩展卢卡斯}{121}
+\indexentry{阶乘取模}{121}
+\indexentry{类欧几里得 直线下格点统计}{122}
+\indexentry{万能欧几里德}{122}
+\indexentry{平方剩余}{122}
+\indexentry{线性同余不等式}{123}
+\indexentry{原根}{123}
+\indexentry{多项式}{124}
+\indexentry{FFT}{127}
+\indexentry{NTT}{127}
+\indexentry{MTT 任意模数卷积}{128}
+\indexentry{多项式运算}{129}
+\indexentry{线性递推}{131}
+\indexentry{Berlekamp-Massey 最小多项式}{132}
+\indexentry{FWT}{134}
+\indexentry{K 进制 FWT}{134}
+\indexentry{Simplex 单纯形}{135}
+\indexentry{高斯消元最小范数解}{135}
+\indexentry{Pell 方程}{136}
+\indexentry{解一元三次方程}{136}
+\indexentry{自适应 Simpson}{137}
+\indexentry{Tricks}{138}
+\indexentry{线性预处理左边第 k 大}{138}
+\indexentry{二维支配前驱查询}{138}
+\indexentry{区间众数}{138}
+\indexentry{区间 $mex$ }{138}
+\indexentry{平面不相交矩形建树}{139}
+\indexentry{无穷字符串匹配/比较}{139}
+\indexentry{曼哈顿和切比雪夫}{141}
+\indexentry{接受有效日期的最小状态自动机}{141}
+\indexentry{Appendix}{142}
+\indexentry{Formulas 公式表}{142}
+\indexentry{Calculus, Integration Table 导数积分表}{151}
+\indexentry{Python Hint}{153}
+\indexentry{Miscellany}{157}
+\indexentry{WIN 运行脚本}{157}
+\indexentry{Zeller 日期公式}{157}
+\indexentry{有理数二分: Stern-Brocot 树, Farey 序列}{158}
+\indexentry{黄金三分}{158}
+\indexentry{DP 优化}{158}
+\indexentry{Hash Table}{160}
+\indexentry{基数排序}{160}
+\indexentry{Hacks: O3, 读入优化, Bitset, builtin}{160}
+\indexentry{试机赛与纪律文件}{160}
+\indexentry{Constant Table 常数表}{161}
