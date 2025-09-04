@@ -87,42 +87,43 @@
 \indexentry{万能欧几里德}{124}
 \indexentry{平方剩余}{124}
 \indexentry{线性同余不等式}{124}
-\indexentry{原根}{125}
-\indexentry{多项式}{125}
-\indexentry{FFT}{129}
-\indexentry{NTT}{129}
-\indexentry{MTT 任意模数卷积}{130}
-\indexentry{多项式运算}{130}
-\indexentry{线性递推}{133}
-\indexentry{Berlekamp-Massey 最小多项式}{134}
-\indexentry{FWT}{135}
-\indexentry{K 进制 FWT}{136}
-\indexentry{Simplex 单纯形}{136}
-\indexentry{高斯消元最小范数解}{137}
-\indexentry{Pell 方程}{138}
-\indexentry{解一元三次方程}{138}
-\indexentry{自适应 Simpson}{138}
-\indexentry{Tricks}{140}
-\indexentry{线性预处理左边第 k 大}{140}
-\indexentry{二维支配前驱查询}{140}
-\indexentry{区间众数}{140}
-\indexentry{区间 $mex$ 和 $mex$ 区间}{140}
-\indexentry{平面不相交矩形建树}{142}
-\indexentry{无穷字符串匹配/比较}{143}
-\indexentry{曼哈顿和切比雪夫}{144}
-\indexentry{接受有效日期的最小状态自动机}{144}
-\indexentry{Appendix}{146}
-\indexentry{Formulas 公式表}{146}
-\indexentry{Calculus, Integration Table 导数积分表}{155}
-\indexentry{Python Hint}{157}
-\indexentry{Miscellany}{161}
-\indexentry{初始模板}{161}
-\indexentry{WIN 运行脚本}{161}
-\indexentry{Zeller 日期公式}{162}
-\indexentry{有理数二分: Stern-Brocot 树, Farey 序列}{162}
-\indexentry{黄金三分}{162}
-\indexentry{DP 优化}{162}
-\indexentry{O3, 读入优化}{164}
-\indexentry{builtin}{164}
-\indexentry{试机赛与纪律文件}{165}
-\indexentry{Constant Table 常数表}{166}
+\indexentry{min25 筛}{125}
+\indexentry{原根}{128}
+\indexentry{多项式}{128}
+\indexentry{FFT}{132}
+\indexentry{NTT}{132}
+\indexentry{MTT 任意模数卷积}{133}
+\indexentry{多项式运算}{133}
+\indexentry{线性递推}{136}
+\indexentry{Berlekamp-Massey 最小多项式}{137}
+\indexentry{FWT}{138}
+\indexentry{K 进制 FWT}{139}
+\indexentry{Simplex 单纯形}{139}
+\indexentry{高斯消元最小范数解}{140}
+\indexentry{Pell 方程}{141}
+\indexentry{解一元三次方程}{141}
+\indexentry{自适应 Simpson}{141}
+\indexentry{Tricks}{143}
+\indexentry{线性预处理左边第 k 大}{143}
+\indexentry{二维支配前驱查询}{143}
+\indexentry{区间众数}{143}
+\indexentry{区间 $mex$ 和 $mex$ 区间}{143}
+\indexentry{平面不相交矩形建树}{145}
+\indexentry{无穷字符串匹配/比较}{146}
+\indexentry{曼哈顿和切比雪夫}{147}
+\indexentry{接受有效日期的最小状态自动机}{147}
+\indexentry{Appendix}{149}
+\indexentry{Formulas 公式表}{149}
+\indexentry{Calculus, Integration Table 导数积分表}{158}
+\indexentry{Python Hint}{160}
+\indexentry{Miscellany}{164}
+\indexentry{初始模板}{164}
+\indexentry{WIN 运行脚本}{164}
+\indexentry{Zeller 日期公式}{165}
+\indexentry{有理数二分: Stern-Brocot 树, Farey 序列}{165}
+\indexentry{黄金三分}{165}
+\indexentry{DP 优化}{165}
+\indexentry{O3, 读入优化}{167}
+\indexentry{builtin}{167}
+\indexentry{试机赛与纪律文件}{168}
+\indexentry{Constant Table 常数表}{169}

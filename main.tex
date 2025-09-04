@@ -589,7 +589,69 @@
 				% \inputminted{cpp}{src/Math/BSGS.cpp}
 				\subsection{线性同余不等式}
 					\inputminted{cpp}{src/Math/线性同余不等式.cpp}
-				% \subsection{min25 筛}
+				\subsection{min25 筛}
+					\[
+					S_t(x,a)\ :=\ \sum_{\substack{1\le n\le x\\ p_{\min}(n)>p_a}} b_t(n),
+					\qquad (t=1,\dots,r;\ a\ge 0),
+					\]
+					\[
+					S_t(x,0)\ =\ \widetilde B_t(x)\ =\ \sum_{n\le x} b_t(n)\ -\ b_t(1).
+					\]
+
+					% 对于 p=p_{a+1}，当 p^2\le x 时的递推（经典 min_25 “剔除第 a+1 个质数”的恒等式）：
+					\[
+					\boxed{%
+					S_t(x,a{+}1)\ =\ S_t(x,a)\ -\ b_t(p)\,\Big( S_t\!\big(\!\left\lfloor x/p\right\rfloor,a\big)\ -\ S_t(p{-}1,a)\Big)
+					}\qquad (p=p_{a+1},\ p^2\le x).
+					\]
+
+					% 经由上式对所有需要的 p 迭代后，得到“质数处前缀和”：
+					\[
+					\boxed{%
+					G_t(x)\ :=\ \sum_{p\le x} b_t(p)
+					\ =\ S_t(x,\text{after sieve})
+					}
+					\]
+					（实现中只在压缩值域 \(x\in\{1,\dots,\lfloor\sqrt N\rfloor\}\cup\{\lfloor N/j\rfloor\}\) 上维护 \(S_t\)，查询时
+					按 \(x\le \sqrt N\) 或 \(x>\sqrt N\) 分别从“小值域链”或“大值域链”取值。）
+
+					% 由基函数线性组合得到 F'(x)=\sum_{p\le x} f(p)：
+					\[
+					\boxed{%
+					F'(x)\ :=\ \sum_{p\le x} f(p)\ =\ \sum_{t=1}^{r} c_t\,G_t(x)
+					}.
+					\]
+
+					% ---------- 步骤 B：按最小质因子分层的总和递推 ----------
+					% 定义
+					\[
+					F(x,k)\ :=\ \sum_{\substack{m\ge 1\\ p_{\min}(m)\ \ge\ p_k\\ x\,m\ \le\ N}} f(m),
+					\qquad (x\in\mathbb N,\ k\ge 0;\ p_0:=1).
+					\]
+
+					% “只含质数的起始段”（把 p_k 之前的质数去掉）：
+					\[
+					\boxed{%
+					F(x,k)\ =\ \underbrace{ \Big( F'(\lfloor N/x\rfloor)\ -\ \mathbf 1_{k>0}\,F'(p_{k-1}) \Big) }_{\text{只含质数的部分}}
+					\ +\ \underbrace{\sum_{i\ge k}\ \sum_{\substack{c\ge 1\\ p_i^{\,c+1}\,x\ \le\ N}}
+					\Big( f(p_i^{\,c})\,F(x\,p_i^{\,c},\,i{+}1)\ +\ f(p_i^{\,c+1})\Big)}_{\text{把合数按 }p_i^c\cdot y\ (p_i< p_{\min}(y))\ \text{补回}}
+					}
+					\]
+
+					% 递推只在 p_i^2 x \le N 的范围内有效；当 p_k^2\,x>N 时递推终止：
+					\[
+					\boxed{%
+					\text{若 }p_k^{\,2}\,x > N,\quad F(x,k)\ =\ F'(\lfloor N/x\rfloor)\ -\ \mathbf 1_{k>0}\,F'(p_{k-1}).
+					}
+					\]
+
+					% 最终答案（多数积性函数满足 f(1)=1；若 f(1)=0 则去掉该项）：
+					\[
+					\boxed{%
+					\sum_{n\le N} f(n)\ =\ F(1,0)\ +\ f(1).
+					}
+					\]
+					\inputminted{cpp}{src/Math/min25_seive.cpp}
 				% \inputminted{cpp}{src/Math/TEES.cpp}
 				\subsection{原根}
 				% \inputminted{cpp}{src/Math/原根.cpp
@@ -770,8 +832,8 @@
 		\endgroup
 		\clearpage
  	\printindex
-	\newpage
-	\includegraphics{src/Miscellany/Grid_Paper.pdf}
+	%\newpage
+	%\includegraphics{src/Miscellany/Grid_Paper.pdf}
 	
 		\begin{spacing}{0.6}
 		\begin{small}
