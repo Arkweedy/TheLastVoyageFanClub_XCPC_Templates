@@ -5,6 +5,7 @@
 #define lowbit(x) ((x) & -(x))
 using namespace std;
 using ll = long long;
+std::mt19937 rng(std::chrono::steady_clock::now().time_since_epoch().count());
 constexpr ll INF = 1e18;
 constexpr int mod = 1e9 + 7;
 constexpr int N = 1e5 + 10;

@@ -8,6 +8,23 @@
 \newcommand{\bangle}[2]{\genfrac{\langle}{\rangle}{0pt}{}{#1}{#2}}
 \providecommand{\myfloor}[1]{ \left\lfloor #1 \right\rfloor }
 
+\subsubsection{常见数列的生成函数}
+
+
+
+\begin{align*}
+&\langle 1,1,1,1,\ldots \rangle \hspace{2cm} \sum_{k=0}^{+\infty} x^k \hspace{2cm} \frac{1}{1-x} \\
+&\langle 1,c,c^2,c^3,\ldots \rangle \hspace{2cm} \sum_{k=0}^{+\infty} c^k x^k \hspace{2cm} \frac{1}{1-cx} \\
+&\left\langle \binom{n}{0}, \binom{n}{1}, \binom{n}{2}, \ldots, \binom{n}{n} \right\rangle \hspace{2cm} \sum_{k=0}^{n} \binom{n}{k} x^k \hspace{2cm} (1+x)^n \\
+&\left\langle 1, n, \binom{n+1}{2}, \binom{n+2}{3}, \ldots \right\rangle \hspace{2cm} \sum_{k=0}^{+\infty} \binom{n+k-1}{k} x^k \hspace{2cm} \frac{1}{(1-x)^n} \\
+&\left\langle \binom{0}{n}, \binom{1}{n}, \binom{2}{n}, \binom{3}{n}, \ldots \right\rangle \hspace{2cm} \sum_{k=0}^{+\infty} \binom{k}{n} x^k \hspace{2cm} \frac{x^n}{(1-x)^{n+1}} \\
+&\left\langle \binom{\alpha}{0}, \binom{\alpha}{1}, \binom{\alpha}{2}, \binom{\alpha}{3}, \ldots \right\rangle \hspace{2cm} \sum_{k=0}^{+\infty} \binom{\alpha}{k} x^k \hspace{2cm} \frac{1}{(1+x)^\alpha} \\
+&\left\langle 0, 1, -\frac{1}{2}, \frac{1}{3}, -\frac{1}{4}, \ldots \right\rangle \hspace{2cm} \sum_{k=0}^{+\infty} \frac{(-1)^{k+1}}{k} x^k \hspace{2cm} \ln(1+x) \\
+&\left\langle 0, 1, \frac{1}{2}, \frac{1}{3}, \frac{1}{4}, \ldots \right\rangle \hspace{2cm} \sum_{k=0}^{+\infty} \frac{1}{k} x^k \hspace{2cm} \ln \frac{1}{1-x} \\
+&\left\langle 1, 1, \frac{1}{2}, \frac{1}{6}, \frac{1}{24}, \ldots \right\rangle \hspace{2cm} \sum_{k=0}^{+\infty} \frac{1}{k!} x^k \hspace{2cm} e^x \\
+\end{align*}
+
+
 \subsubsection{Mobius Inversion}
     \[F(n)=\sum_{d|n}f(d)\Rightarrow f(n)=\sum_{d|n}\mu(d)F\left(\frac{n}{d}\right)\]
     \[F(n)=\sum_{n|d}f(d)\Rightarrow f(n)=\sum_{n|d}\mu\left(\frac{d}{n}\right)F(d)\]

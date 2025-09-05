@@ -1,0 +1,120 @@
+\begin{MintedVerbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8\relax}]
+\PYG{c+c1}{// \PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}  这一段是模板化注释  \PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}}
+\PYG{c+c1}{// min\PYGZus{}25 主体：返回  sum\PYGZus{}\PYGZob{}n\PYGZlt{}=N\PYGZcb{} f(n)  的值（本题 f(p\PYGZca{}a)=p\PYGZca{}\PYGZob{}2a\PYGZcb{}\PYGZhy{}p\PYGZca{}a）。}
+\PYG{c+c1}{//}
+\PYG{c+c1}{// min\PYGZus{}25 的套路：}
+\PYG{c+c1}{//   (1) 先“只做质数处”的和：把  G(x)=sum\PYGZus{}\PYGZob{}p\PYGZlt{}=x\PYGZcb{} g(p), H(x)=sum\PYGZus{}\PYGZob{}p\PYGZlt{}=x\PYGZcb{} h(p) 这些}
+\PYG{c+c1}{//       通过“值域压缩 + 素数筛改写”得到（代码里的 g0/g1, h0/h1）。}
+\PYG{c+c1}{//       ——对当前这题：g(p)=p, h(p)=p\PYGZca{}2，于是  f(p)=h(p)\PYGZhy{}g(p)=p\PYGZca{}2\PYGZhy{}p。}
+\PYG{c+c1}{//   (2) 再用按“最小质因子分层”的递归，把合数按 p\PYGZca{}c·y（p\PYGZlt{}minpf(y)）拆回去。}
+\PYG{c+c1}{//       递归形态：}
+\PYG{c+c1}{//         F(x, k) = ∑\PYGZus{}\PYGZob{}p\PYGZus{}i \PYGZgt{}= p\PYGZus{}k, p\PYGZus{}i\PYGZca{}2 x \PYGZlt{}= N\PYGZcb{} [ ∑\PYGZus{}\PYGZob{}c\PYGZgt{}=1, p\PYGZus{}i\PYGZca{}\PYGZob{}c+1\PYGZcb{}x\PYGZlt{}=N\PYGZcb{} ( f(p\PYGZus{}i\PYGZca{}c)*F(x·p\PYGZus{}i\PYGZca{}c, i+1) + f(p\PYGZus{}i\PYGZca{}\PYGZob{}c+1\PYGZcb{}) ) ]}
+\PYG{c+c1}{//       并配上“只含质数”的起始段（即 ∑\PYGZus{}\PYGZob{}p\PYGZus{}k \PYGZlt{}= p \PYGZlt{}= N/x\PYGZcb{} f(p) ）。}
+\PYG{c+c1}{//       ——这一步就是下面 Lambda `F` 那个递归。}
+\PYG{c+c1}{// \PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}}
+\PYG{n}{Z}\PYG{+w}{ }\PYG{n+nf}{min\PYGZus{}25}\PYG{p}{(}\PYG{n}{ll}\PYG{+w}{ }\PYG{n}{n}\PYG{p}{)}
+\PYG{p}{\PYGZob{}}
+\PYG{+w}{    }\PYG{k}{const}\PYG{+w}{ }\PYG{k+kt}{int}\PYG{+w}{ }\PYG{n}{m}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{p}{(}\PYG{k+kt}{int}\PYG{p}{)}\PYG{n}{floorl}\PYG{p}{(}\PYG{n}{sqrtl}\PYG{p}{(}\PYG{n}{n}\PYG{p}{));}
+
+\PYG{+w}{    }\PYG{c+c1}{// \PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{} Step 0. 先在“整数处”初始化两套多项式型前缀和 \PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}}
+\PYG{+w}{    }\PYG{c+c1}{// 约定：}
+\PYG{+w}{    }\PYG{c+c1}{//   g0[t] = sum\PYGZus{}\PYGZob{}i\PYGZlt{}=t\PYGZcb{} g(i) \PYGZhy{} g(1)}
+\PYG{+w}{    }\PYG{c+c1}{//   g1[j] = sum\PYGZus{}\PYGZob{}i\PYGZlt{}=floor(N/j)\PYGZcb{} g(i) \PYGZhy{} g(1)}
+\PYG{+w}{    }\PYG{c+c1}{//   h0/h1 同理}
+\PYG{+w}{    }\PYG{c+c1}{// 注意：减去 g(1), h(1) 是为了后面“差分判素”的一致性（1 的贡献去掉）。}
+\PYG{+w}{    }\PYG{c+c1}{//}
+\PYG{+w}{    }\PYG{c+c1}{// 【本题】g(i)=i, h(i)=i\PYGZca{}2 （因为我们想要在“质数处”得到 ∑p 与 ∑p\PYGZca{}2）。}
+\PYG{+w}{    }\PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{n}{Z}\PYG{o}{\PYGZgt{}}\PYG{+w}{ }\PYG{n}{g0}\PYG{p}{(}\PYG{n}{m}\PYG{+w}{ }\PYG{o}{+}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{),}\PYG{+w}{ }\PYG{n}{g1}\PYG{p}{(}\PYG{n}{m}\PYG{+w}{ }\PYG{o}{+}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{),}\PYG{+w}{ }\PYG{n}{h0}\PYG{p}{(}\PYG{n}{m}\PYG{+w}{ }\PYG{o}{+}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{),}\PYG{+w}{ }\PYG{n}{h1}\PYG{p}{(}\PYG{n}{m}\PYG{+w}{ }\PYG{o}{+}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{);}
+\PYG{+w}{    }\PYG{k}{for}\PYG{+w}{ }\PYG{p}{(}\PYG{k+kt}{int}\PYG{+w}{ }\PYG{n}{i}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{+w}{ }\PYG{n}{i}\PYG{+w}{ }\PYG{o}{\PYGZlt{}=}\PYG{+w}{ }\PYG{n}{m}\PYG{p}{;}\PYG{+w}{ }\PYG{o}{++}\PYG{n}{i}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{        }\PYG{n}{ll}\PYG{+w}{ }\PYG{n}{x}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{n}\PYG{+w}{ }\PYG{o}{/}\PYG{+w}{ }\PYG{n}{i}\PYG{p}{;}
+\PYG{+w}{        }\PYG{n}{g0}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{Z}\PYG{p}{(}\PYG{n}{i}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{*}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{i}\PYG{+w}{ }\PYG{o}{+}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{/}\PYG{+w}{ }\PYG{l+m+mi}{2}\PYG{+w}{ }\PYG{o}{\PYGZhy{}}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{+w}{                     }\PYG{c+c1}{// ∑\PYGZus{}\PYGZob{}t\PYGZlt{}=i\PYGZcb{} t \PYGZhy{} 1}
+\PYG{+w}{        }\PYG{n}{g1}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{Z}\PYG{p}{(}\PYG{n}{x}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{*}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{x}\PYG{+w}{ }\PYG{o}{+}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{/}\PYG{+w}{ }\PYG{l+m+mi}{2}\PYG{+w}{ }\PYG{o}{\PYGZhy{}}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{+w}{                     }\PYG{c+c1}{// ∑\PYGZus{}\PYGZob{}t\PYGZlt{}=floor(N/i)\PYGZcb{} t \PYGZhy{} 1}
+\PYG{+w}{        }\PYG{n}{h0}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{Z}\PYG{p}{(}\PYG{n}{i}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{*}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{i}\PYG{+w}{ }\PYG{o}{+}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{*}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{i}\PYG{+w}{ }\PYG{o}{*}\PYG{+w}{ }\PYG{l+m+mi}{2}\PYG{+w}{ }\PYG{o}{+}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{/}\PYG{+w}{ }\PYG{l+m+mi}{6}\PYG{+w}{ }\PYG{o}{\PYGZhy{}}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{+w}{       }\PYG{c+c1}{// ∑\PYGZus{}\PYGZob{}t\PYGZlt{}=i\PYGZcb{} t\PYGZca{}2 \PYGZhy{} 1}
+\PYG{+w}{        }\PYG{n}{h1}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{Z}\PYG{p}{(}\PYG{n}{x}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{*}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{x}\PYG{+w}{ }\PYG{o}{+}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{*}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{x}\PYG{+w}{ }\PYG{o}{*}\PYG{+w}{ }\PYG{l+m+mi}{2}\PYG{+w}{ }\PYG{o}{+}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{/}\PYG{+w}{ }\PYG{l+m+mi}{6}\PYG{+w}{ }\PYG{o}{\PYGZhy{}}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{+w}{       }\PYG{c+c1}{// ∑\PYGZus{}\PYGZob{}t\PYGZlt{}=floor(N/i)\PYGZcb{} t\PYGZca{}2 \PYGZhy{} 1}
+\PYG{+w}{    }\PYG{p}{\PYGZcb{}}
+
+\PYG{+w}{    }\PYG{c+c1}{// \PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{} Step 1. 将整数和改写为“只含质数”的和 \PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}}
+\PYG{+w}{    }\PYG{c+c1}{// 经典分法：}
+\PYG{+w}{    }\PYG{c+c1}{//   A 段：用 h1/g1 改 h1/g1（大值域自洽，p*j\PYGZlt{}=m）}
+\PYG{+w}{    }\PYG{c+c1}{//   B 段：用 h0/g0 改 h1/g1（跨链，p*j\PYGZgt{}m）}
+\PYG{+w}{    }\PYG{c+c1}{//   C 段：用 h0/g0 改 h0/g0（小值域自洽）}
+\PYG{+w}{    }\PYG{c+c1}{// 递推等式（以 g 为例，h 同理）：}
+\PYG{+w}{    }\PYG{c+c1}{//   G(n, a+1) = G(n, a) \PYGZhy{} g(p) * ( G(floor(n/p), a) \PYGZhy{} G(p\PYGZhy{}1, a) ),}
+\PYG{+w}{    }\PYG{c+c1}{//   仅在 p\PYGZca{}2 \PYGZlt{}= n 时有效（否则“最小质因子为 p”的数不存在）。}
+\PYG{+w}{    }\PYG{k}{for}\PYG{+w}{ }\PYG{p}{(}\PYG{k+kt}{int}\PYG{+w}{ }\PYG{n}{p}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{prime}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{        }\PYG{n}{ll}\PYG{+w}{ }\PYG{n}{p2}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mf}{1l}\PYG{n}{l}\PYG{+w}{ }\PYG{o}{*}\PYG{+w}{ }\PYG{n}{p}\PYG{+w}{ }\PYG{o}{*}\PYG{+w}{ }\PYG{n}{p}\PYG{p}{;}
+\PYG{+w}{        }\PYG{k}{if}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{p2}\PYG{+w}{ }\PYG{o}{\PYGZgt{}}\PYG{+w}{ }\PYG{n}{n}\PYG{p}{)}\PYG{+w}{ }\PYG{k}{break}\PYG{p}{;}\PYG{+w}{            }\PYG{c+c1}{// 只需处理到 p\PYGZca{}2 \PYGZlt{}= N}
+\PYG{+w}{        }\PYG{n}{Z}\PYG{+w}{ }\PYG{n}{gp}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{Z}\PYG{p}{(}\PYG{n}{p}\PYG{p}{),}\PYG{+w}{ }\PYG{n}{hp}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{Z}\PYG{p}{(}\PYG{n}{p}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{*}\PYG{+w}{ }\PYG{n}{p}\PYG{p}{;}\PYG{+w}{   }\PYG{c+c1}{// g(p)=p, h(p)=p\PYGZca{}2}
+
+\PYG{+w}{        }\PYG{c+c1}{// \PYGZhy{}\PYGZhy{}\PYGZhy{} A + B：更新大值域链 g1/h1 \PYGZhy{}\PYGZhy{}\PYGZhy{}}
+\PYG{+w}{        }\PYG{k}{for}\PYG{+w}{ }\PYG{p}{(}\PYG{k+kt}{int}\PYG{+w}{ }\PYG{n}{j}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{+w}{ }\PYG{n}{j}\PYG{+w}{ }\PYG{o}{\PYGZlt{}=}\PYG{+w}{ }\PYG{n}{m}\PYG{+w}{ }\PYG{o}{\PYGZam{}\PYGZam{}}\PYG{+w}{ }\PYG{l+m+mf}{1l}\PYG{n}{l}\PYG{+w}{ }\PYG{o}{*}\PYG{+w}{ }\PYG{n}{p2}\PYG{+w}{ }\PYG{o}{*}\PYG{+w}{ }\PYG{n}{j}\PYG{+w}{ }\PYG{o}{\PYGZlt{}=}\PYG{+w}{ }\PYG{n}{n}\PYG{p}{;}\PYG{+w}{ }\PYG{o}{++}\PYG{n}{j}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{            }\PYG{c+c1}{// 加上 “+ g(p) * G(p\PYGZhy{}1)” 这一项（对应 \PYGZhy{}(\PYGZhy{}g(p)*G(p\PYGZhy{}1)) 的那部分）}
+\PYG{+w}{            }\PYG{n}{g1}\PYG{p}{[}\PYG{n}{j}\PYG{p}{]}\PYG{+w}{ }\PYG{o}{+=}\PYG{+w}{ }\PYG{n}{gp}\PYG{+w}{ }\PYG{o}{*}\PYG{+w}{ }\PYG{n}{g0}\PYG{p}{[}\PYG{n}{p}\PYG{+w}{ }\PYG{o}{\PYGZhy{}}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{];}
+\PYG{+w}{            }\PYG{n}{h1}\PYG{p}{[}\PYG{n}{j}\PYG{p}{]}\PYG{+w}{ }\PYG{o}{+=}\PYG{+w}{ }\PYG{n}{hp}\PYG{+w}{ }\PYG{o}{*}\PYG{+w}{ }\PYG{n}{h0}\PYG{p}{[}\PYG{n}{p}\PYG{+w}{ }\PYG{o}{\PYGZhy{}}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{];}
+
+\PYG{+w}{            }\PYG{c+c1}{// 再减去 g(p)*G(floor((N/j)/p)) —— 依据落点决定用 g1（大值域）还是 g0（小值域）}
+\PYG{+w}{            }\PYG{k}{if}\PYG{+w}{ }\PYG{p}{(}\PYG{l+m+mf}{1l}\PYG{n}{l}\PYG{+w}{ }\PYG{o}{*}\PYG{+w}{ }\PYG{n}{p}\PYG{+w}{ }\PYG{o}{*}\PYG{+w}{ }\PYG{n}{j}\PYG{+w}{ }\PYG{o}{\PYGZlt{}=}\PYG{+w}{ }\PYG{n}{m}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{\PYGZob{}}\PYG{+w}{               }\PYG{c+c1}{// A 段：仍在大值域}
+\PYG{+w}{                }\PYG{n}{g1}\PYG{p}{[}\PYG{n}{j}\PYG{p}{]}\PYG{+w}{ }\PYG{o}{\PYGZhy{}=}\PYG{+w}{ }\PYG{n}{gp}\PYG{+w}{ }\PYG{o}{*}\PYG{+w}{ }\PYG{n}{g1}\PYG{p}{[}\PYG{n}{p}\PYG{+w}{ }\PYG{o}{*}\PYG{+w}{ }\PYG{n}{j}\PYG{p}{];}\PYG{+w}{          }\PYG{c+c1}{// floor((N/j)/p) == floor(N/(p*j)) 映到 g1[p*j]}
+\PYG{+w}{                }\PYG{n}{h1}\PYG{p}{[}\PYG{n}{j}\PYG{p}{]}\PYG{+w}{ }\PYG{o}{\PYGZhy{}=}\PYG{+w}{ }\PYG{n}{hp}\PYG{+w}{ }\PYG{o}{*}\PYG{+w}{ }\PYG{n}{h1}\PYG{p}{[}\PYG{n}{p}\PYG{+w}{ }\PYG{o}{*}\PYG{+w}{ }\PYG{n}{j}\PYG{p}{];}
+\PYG{+w}{            }\PYG{p}{\PYGZcb{}}\PYG{+w}{ }\PYG{k}{else}\PYG{+w}{ }\PYG{p}{\PYGZob{}}\PYG{+w}{                               }\PYG{c+c1}{// B 段：跨回小值域}
+\PYG{+w}{                }\PYG{n}{g1}\PYG{p}{[}\PYG{n}{j}\PYG{p}{]}\PYG{+w}{ }\PYG{o}{\PYGZhy{}=}\PYG{+w}{ }\PYG{n}{gp}\PYG{+w}{ }\PYG{o}{*}\PYG{+w}{ }\PYG{n}{g0}\PYG{p}{[(}\PYG{n}{n}\PYG{+w}{ }\PYG{o}{/}\PYG{+w}{ }\PYG{n}{p}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{/}\PYG{+w}{ }\PYG{n}{j}\PYG{p}{];}\PYG{+w}{    }\PYG{c+c1}{// floor((N/j)/p) == floor((N/p)/j) 映到 g0[(N/p)/j]}
+\PYG{+w}{                }\PYG{n}{h1}\PYG{p}{[}\PYG{n}{j}\PYG{p}{]}\PYG{+w}{ }\PYG{o}{\PYGZhy{}=}\PYG{+w}{ }\PYG{n}{hp}\PYG{+w}{ }\PYG{o}{*}\PYG{+w}{ }\PYG{n}{h0}\PYG{p}{[(}\PYG{n}{n}\PYG{+w}{ }\PYG{o}{/}\PYG{+w}{ }\PYG{n}{p}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{/}\PYG{+w}{ }\PYG{n}{j}\PYG{p}{];}
+\PYG{+w}{            }\PYG{p}{\PYGZcb{}}
+\PYG{+w}{        }\PYG{p}{\PYGZcb{}}
+
+\PYG{+w}{        }\PYG{c+c1}{// \PYGZhy{}\PYGZhy{}\PYGZhy{} C：小值域自洽，更新 g0/h0 的 [p\PYGZca{}2..m] 区间 \PYGZhy{}\PYGZhy{}\PYGZhy{}}
+\PYG{+w}{        }\PYG{k}{for}\PYG{+w}{ }\PYG{p}{(}\PYG{k+kt}{int}\PYG{+w}{ }\PYG{n}{j}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{m}\PYG{p}{;}\PYG{+w}{ }\PYG{n}{j}\PYG{+w}{ }\PYG{o}{\PYGZgt{}=}\PYG{+w}{ }\PYG{p}{(}\PYG{k+kt}{int}\PYG{p}{)}\PYG{n}{p2}\PYG{p}{;}\PYG{+w}{ }\PYG{o}{\PYGZhy{}\PYGZhy{}}\PYG{n}{j}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{            }\PYG{n}{g0}\PYG{p}{[}\PYG{n}{j}\PYG{p}{]}\PYG{+w}{ }\PYG{o}{\PYGZhy{}=}\PYG{+w}{ }\PYG{n}{gp}\PYG{+w}{ }\PYG{o}{*}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{g0}\PYG{p}{[}\PYG{n}{j}\PYG{+w}{ }\PYG{o}{/}\PYG{+w}{ }\PYG{n}{p}\PYG{p}{]}\PYG{+w}{ }\PYG{o}{\PYGZhy{}}\PYG{+w}{ }\PYG{n}{g0}\PYG{p}{[}\PYG{n}{p}\PYG{+w}{ }\PYG{o}{\PYGZhy{}}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{]);}
+\PYG{+w}{            }\PYG{n}{h0}\PYG{p}{[}\PYG{n}{j}\PYG{p}{]}\PYG{+w}{ }\PYG{o}{\PYGZhy{}=}\PYG{+w}{ }\PYG{n}{hp}\PYG{+w}{ }\PYG{o}{*}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{h0}\PYG{p}{[}\PYG{n}{j}\PYG{+w}{ }\PYG{o}{/}\PYG{+w}{ }\PYG{n}{p}\PYG{p}{]}\PYG{+w}{ }\PYG{o}{\PYGZhy{}}\PYG{+w}{ }\PYG{n}{h0}\PYG{p}{[}\PYG{n}{p}\PYG{+w}{ }\PYG{o}{\PYGZhy{}}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{]);}
+\PYG{+w}{        }\PYG{p}{\PYGZcb{}}
+\PYG{+w}{    }\PYG{p}{\PYGZcb{}}
+
+\PYG{+w}{    }\PYG{c+c1}{// 到此，g0/g1, h0/h1 都已经变成“只含质数”的和：}
+\PYG{+w}{    }\PYG{c+c1}{//   g0[i] = sum\PYGZus{}\PYGZob{}p\PYGZlt{}=i\PYGZcb{} p,     g1[j] = sum\PYGZus{}\PYGZob{}p\PYGZlt{}=floor(N/j)\PYGZcb{} p}
+\PYG{+w}{    }\PYG{c+c1}{//   h0[i] = sum\PYGZus{}\PYGZob{}p\PYGZlt{}=i\PYGZcb{} p\PYGZca{}2,   h1[j] = sum\PYGZus{}\PYGZob{}p\PYGZlt{}=floor(N/j)\PYGZcb{} p\PYGZca{}2}
+\PYG{+w}{    }\PYG{c+c1}{// 因而“只在质数处的 f(p)”就可由它们线性组合得到：}
+\PYG{+w}{    }\PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{n}{Z}\PYG{o}{\PYGZgt{}}\PYG{+w}{ }\PYG{n}{fprime0}\PYG{p}{(}\PYG{n}{m}\PYG{+w}{ }\PYG{o}{+}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{),}\PYG{+w}{ }\PYG{n}{fprime1}\PYG{p}{(}\PYG{n}{m}\PYG{+w}{ }\PYG{o}{+}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{);}
+\PYG{+w}{    }\PYG{k}{for}\PYG{+w}{ }\PYG{p}{(}\PYG{k+kt}{int}\PYG{+w}{ }\PYG{n}{i}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{+w}{ }\PYG{n}{i}\PYG{+w}{ }\PYG{o}{\PYGZlt{}=}\PYG{+w}{ }\PYG{n}{m}\PYG{p}{;}\PYG{+w}{ }\PYG{o}{++}\PYG{n}{i}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{        }\PYG{n}{fprime0}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{h0}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{+w}{ }\PYG{o}{\PYGZhy{}}\PYG{+w}{ }\PYG{n}{g0}\PYG{p}{[}\PYG{n}{i}\PYG{p}{];}\PYG{+w}{             }\PYG{c+c1}{// ∑\PYGZus{}\PYGZob{}p\PYGZlt{}=i\PYGZcb{} (p\PYGZca{}2 \PYGZhy{} p)}
+\PYG{+w}{        }\PYG{n}{fprime1}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{h1}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{+w}{ }\PYG{o}{\PYGZhy{}}\PYG{+w}{ }\PYG{n}{g1}\PYG{p}{[}\PYG{n}{i}\PYG{p}{];}\PYG{+w}{             }\PYG{c+c1}{// ∑\PYGZus{}\PYGZob{}p\PYGZlt{}=floor(N/i)\PYGZcb{} (p\PYGZca{}2 \PYGZhy{} p)}
+\PYG{+w}{    }\PYG{p}{\PYGZcb{}}
+
+\PYG{+w}{    }\PYG{c+c1}{// \PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{} Step 2. 最小质因子分层递归，把“合数”补回来 \PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}}
+\PYG{+w}{    }\PYG{c+c1}{// 记 F(x,k) = ∑\PYGZus{}\PYGZob{} n : 1\PYGZlt{}=n , pmin(n) \PYGZgt{}= p\PYGZus{}k , x*n \PYGZlt{}= N \PYGZcb{} f(n)}
+\PYG{+w}{    }\PYG{c+c1}{// 我们传进来的 x 是“当前积”的分母（即在原式里考察 floor(N/(x·...)) 的那个 x）。}
+\PYG{+w}{    }\PYG{c+c1}{//}
+\PYG{+w}{    }\PYG{c+c1}{// 起始段（只含质数）：}
+\PYG{+w}{    }\PYG{c+c1}{//   ∑\PYGZus{}\PYGZob{}p\PYGZus{}k \PYGZlt{}= p \PYGZlt{}= floor(N/x)\PYGZcb{} f(p)}
+\PYG{+w}{    }\PYG{c+c1}{//   = (fprime1[x] or fprime0[N/x])  \PYGZhy{} (k\PYGZgt{}0 ? fprime0[p\PYGZus{}\PYGZob{}k\PYGZhy{}1\PYGZcb{}] : 0)}
+\PYG{+w}{    }\PYG{c+c1}{//}
+\PYG{+w}{    }\PYG{c+c1}{// 递推段（枚举最小质因子 p\PYGZus{}i 及其幂 p\PYGZus{}i\PYGZca{}c）：}
+\PYG{+w}{    }\PYG{c+c1}{//   对每个 i\PYGZgt{}=k, 只要 p\PYGZus{}i\PYGZca{}2 * x \PYGZlt{}= N：}
+\PYG{+w}{    }\PYG{c+c1}{//     对 c\PYGZgt{}=1，满足 p\PYGZus{}i\PYGZca{}\PYGZob{}c+1\PYGZcb{} * x \PYGZlt{}= N：}
+\PYG{+w}{    }\PYG{c+c1}{//       res += f(p\PYGZus{}i\PYGZca{}c) * F(x * p\PYGZus{}i\PYGZca{}c, i+1)   // 乘上“剩余”的贡献}
+\PYG{+w}{    }\PYG{c+c1}{//            + f(p\PYGZus{}i\PYGZca{}\PYGZob{}c+1\PYGZcb{});                  // 纯质数幂项的校正}
+\PYG{+w}{    }\PYG{c+c1}{//}
+\PYG{+w}{    }\PYG{c+c1}{// 【本题】f(p\PYGZca{}c) = p\PYGZca{}\PYGZob{}2c\PYGZcb{} \PYGZhy{} p\PYGZca{}c = (pc)*(pc\PYGZhy{}1)，直接代入即可。}
+\PYG{+w}{    }\PYG{k}{auto}\PYG{+w}{ }\PYG{n}{F}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{p}{[}\PYG{o}{\PYGZam{}}\PYG{p}{](}\PYG{k}{auto}\PYG{o}{\PYGZam{}\PYGZam{}}\PYG{+w}{ }\PYG{n}{self}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{ll}\PYG{+w}{ }\PYG{n}{x}\PYG{p}{,}\PYG{+w}{ }\PYG{k+kt}{int}\PYG{+w}{ }\PYG{n}{k}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{n}{Z}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{        }\PYG{n}{Z}\PYG{+w}{ }\PYG{n}{res}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{;}
+
+\PYG{+w}{        }\PYG{c+c1}{// \PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{} 起始段：只含质数 p in [p\PYGZus{}k, floor(N/x)] 的那一段 \PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}}
+\PYG{+w}{        }\PYG{k}{if}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{k}\PYG{+w}{ }\PYG{o}{\PYGZgt{}}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{)}\PYG{+w}{ }\PYG{n}{res}\PYG{+w}{ }\PYG{o}{\PYGZhy{}=}\PYG{+w}{ }\PYG{n}{fprime0}\PYG{p}{[}\PYG{+w}{ }\PYG{n}{prime}\PYG{p}{[}\PYG{n}{k}\PYG{+w}{ }\PYG{o}{\PYGZhy{}}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{]}\PYG{+w}{ }\PYG{p}{];}\PYG{+w}{      }\PYG{c+c1}{// 去掉 p \PYGZlt{} p\PYGZus{}k 的质数}
+\PYG{+w}{        }\PYG{k}{if}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{x}\PYG{+w}{ }\PYG{o}{\PYGZlt{}=}\PYG{+w}{ }\PYG{n}{m}\PYG{p}{)}\PYG{+w}{ }\PYG{n}{res}\PYG{+w}{ }\PYG{o}{+=}\PYG{+w}{ }\PYG{n}{fprime1}\PYG{p}{[}\PYG{n}{x}\PYG{p}{];}\PYG{+w}{                  }\PYG{c+c1}{// 加上 p \PYGZlt{}= floor(N/x)}
+\PYG{+w}{        }\PYG{k}{else}\PYG{+w}{        }\PYG{n}{res}\PYG{+w}{ }\PYG{o}{+=}\PYG{+w}{ }\PYG{n}{fprime0}\PYG{p}{[}\PYG{n}{n}\PYG{+w}{ }\PYG{o}{/}\PYG{+w}{ }\PYG{n}{x}\PYG{p}{];}
+
+\PYG{+w}{        }\PYG{c+c1}{// \PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{} 递推段：按最小质因子 p\PYGZus{}i ≥ p\PYGZus{}k 分层，枚举其幂 \PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}}
+\PYG{+w}{        }\PYG{k}{for}\PYG{+w}{ }\PYG{p}{(}\PYG{k+kt}{int}\PYG{+w}{ }\PYG{n}{i}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{k}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{p}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{prime}\PYG{p}{[}\PYG{n}{i}\PYG{p}{];}\PYG{+w}{ }\PYG{l+m+mf}{1l}\PYG{n}{l}\PYG{+w}{ }\PYG{o}{*}\PYG{+w}{ }\PYG{n}{p}\PYG{+w}{ }\PYG{o}{*}\PYG{+w}{ }\PYG{n}{p}\PYG{+w}{ }\PYG{o}{*}\PYG{+w}{ }\PYG{n}{x}\PYG{+w}{ }\PYG{o}{\PYGZlt{}=}\PYG{+w}{ }\PYG{n}{n}\PYG{p}{;}\PYG{+w}{ }\PYG{o}{++}\PYG{n}{i}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{p}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{prime}\PYG{p}{[}\PYG{n}{i}\PYG{p}{])}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{            }\PYG{n}{ll}\PYG{+w}{ }\PYG{n}{pc}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{p}\PYG{p}{;}\PYG{+w}{                                  }\PYG{c+c1}{// pc = p\PYGZca{}c}
+\PYG{+w}{            }\PYG{k}{for}\PYG{+w}{ }\PYG{p}{(}\PYG{k+kt}{int}\PYG{+w}{ }\PYG{n}{c}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{+w}{ }\PYG{n}{pc}\PYG{+w}{ }\PYG{o}{*}\PYG{+w}{ }\PYG{n}{p}\PYG{+w}{ }\PYG{o}{*}\PYG{+w}{ }\PYG{n}{x}\PYG{+w}{ }\PYG{o}{\PYGZlt{}=}\PYG{+w}{ }\PYG{n}{n}\PYG{p}{;}\PYG{+w}{ }\PYG{o}{++}\PYG{n}{c}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{pc}\PYG{+w}{ }\PYG{o}{*=}\PYG{+w}{ }\PYG{n}{p}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{                }\PYG{c+c1}{// f(p\PYGZca{}c) = pc\PYGZca{}2 \PYGZhy{} pc = pc*(pc\PYGZhy{}1)}
+\PYG{+w}{                }\PYG{n}{res}\PYG{+w}{ }\PYG{o}{+=}\PYG{+w}{ }\PYG{n}{Z}\PYG{p}{(}\PYG{n}{pc}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{*}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{pc}\PYG{+w}{ }\PYG{o}{\PYGZhy{}}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{*}\PYG{+w}{ }\PYG{n}{self}\PYG{p}{(}\PYG{n}{self}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{x}\PYG{+w}{ }\PYG{o}{*}\PYG{+w}{ }\PYG{n}{pc}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{i}\PYG{+w}{ }\PYG{o}{+}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{)}\PYG{+w}{   }\PYG{c+c1}{// 按 pc 分裂出的“剩余”}
+\PYG{+w}{                     }\PYG{o}{+}\PYG{+w}{  }\PYG{n}{Z}\PYG{p}{(}\PYG{n}{pc}\PYG{+w}{ }\PYG{o}{*}\PYG{+w}{ }\PYG{n}{p}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{*}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{pc}\PYG{+w}{ }\PYG{o}{*}\PYG{+w}{ }\PYG{n}{p}\PYG{+w}{ }\PYG{o}{\PYGZhy{}}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{);}\PYG{+w}{                      }\PYG{c+c1}{// 加上 f(p\PYGZca{}\PYGZob{}c+1\PYGZcb{}) 的纯质数幂校正}
+\PYG{+w}{            }\PYG{p}{\PYGZcb{}}
+\PYG{+w}{        }\PYG{p}{\PYGZcb{}}
+\PYG{+w}{        }\PYG{k}{return}\PYG{+w}{ }\PYG{n}{res}\PYG{p}{;}
+\PYG{+w}{    }\PYG{p}{\PYGZcb{};}
+
+\PYG{+w}{    }\PYG{c+c1}{// F(1,0) 覆盖了所有 n≥2 的贡献；若 f(1)≠0 需要手动补上， 积性函数均满足f(1) = 1}
+\PYG{+w}{    }\PYG{k}{return}\PYG{+w}{ }\PYG{n}{F}\PYG{p}{(}\PYG{n}{F}\PYG{p}{,}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{,}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{+}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{+w}{   }\PYG{c+c1}{// 这里 f(1)=1（约定），故 +1}
+\PYG{p}{\PYGZcb{}}
+\end{MintedVerbatim}

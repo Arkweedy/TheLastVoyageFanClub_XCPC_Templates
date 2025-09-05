@@ -284,13 +284,10 @@
 					\inputminted{cpp}{src/Geometry/my_convex.cpp}
 				\subsection{半平面交}
 					\inputminted{cpp}{src/Geometry/半平面交.cpp}
-				\subsection{整数半平面交}
-					\inputminted{cpp}{src/Geometry/integral_hpi.cpp}
 				%\subsection{凸包询问：凸包内、切点、交点、最近点}
 					%\inputminted{cpp}{src/Geometry/convex_findmax.cpp}
-				\subsection{$O(n ^ 2)$ Ear Clipping 三角剖分}
-				\inputminted{cpp}{src/Geometry/Triangulation.cpp}
 				\subsection{单插入动态凸包}
+				\input{src/Geometry/dynamic_convex_hull.tex}
 				\inputminted{cpp}{src/Geometry/dynamic_convex_hull.cpp}
 				%\input
 					% \subsection{凸包快速询问}
@@ -439,9 +436,9 @@
 					%\subsection{图论知识 - Nightfall}
 					\input{src/TreeandGraph/图论知识.tex}
 					\input{src/tbr/拟阵交问题.tex}
-					\subsubsection{双极定向}
-					\inputminted{cpp}{src/tbr/bipolar_orientation.cpp}
-					\input{src/TreeandGraph/shanghai19.tex}
+					%\subsubsection{双极定向}
+					%\inputminted{cpp}{src/tbr/bipolar_orientation.cpp}
+					%\input{src/TreeandGraph/shanghai19.tex}
 					\newpage
 			\section{Data Structure}
 				%\subsection{非递归线段树}
@@ -719,7 +716,7 @@
 			\section{Tricks}
 				\subsection{线性预处理左边第 k 大}
 					\inputminted{cpp}{src/tricks/initk.cpp}
-				\subsection{二维支配前驱查询}
+				\subsection{二维前驱查询}
 					\input{src/tricks/domi2.tex}
 				\subsection{区间众数}
 					\input{src/tricks/mass.tex}
