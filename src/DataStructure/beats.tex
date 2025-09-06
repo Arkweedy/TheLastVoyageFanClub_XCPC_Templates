@@ -1,0 +1,82 @@
+给出一个长度为 $n$ 的数列 $A$，同时定义一个辅助数组 $B$，$B$ 开始与 $A$ 完全相同。接下来进行了 $m$ 次操作，操作有五种类型，按以下格式给出：
+
+\begin{itemize}
+  \item \textbf{1 l r k}: 对于所有的 $i\in[l,r]$，将 $A_i$ 加上 $k$（$k$ 可以为负数）。
+  \item \textbf{2 l r v}: 对于所有的 $i\in[l,r]$，将 $A_i$ 变成 $\min(A_i,v)$。
+  \item \textbf{3 l r}: 求 $\sum_{i=l}^{r}A_i$。
+  \item \textbf{4 l r}: 对于所有的 $i\in[l,r]$，求 $A_i$ 的最大值。
+  \item \textbf{5 l r}: 对于所有的 $i\in[l,r]$，求 $B_i$ 的最大值。
+\end{itemize}
+
+在每一次操作后，我们都进行一次更新，让 $B_i\gets\max(B_i,A_i)$。
+
+\subsubsection*{1. 区间加、求和、求最大值 (操作 1, 3, 4)}
+这是标准线段树的操作。节点维护区间和 \texttt{sum}、区间最大值 \texttt{maxn}，并使用一个懒标记 \texttt{add} 记录区间加法。
+\begin{itemize}
+\item \textbf{区间加}：在线段树对应节点上更新 \texttt{sum}、\texttt{maxn} 和 \texttt{add} 标记。
+\item \textbf{查询}：正常查询即可。
+\end{itemize}
+
+\subsubsection*{2. 维护历史最大值 (操作 5)}
+历史最大值的挑战在于，一个节点的 \texttt{add} 标记在下传前会经历多次更新。为了正确更新子节点的历史最大值，我们必须记录下这个 \texttt{add} 标记在下传前的\textbf{峰值}。
+\begin{itemize}
+\item \textbf{引入新标记}：在节点上额外维护一个 \texttt{add\_max} 标记，记录该节点 \texttt{add} 标记曾达到过的最大值。
+\item \textbf{下传规则}：
+\begin{enumerate}
+\item 先用父节点的 \texttt{add\_max} 更新子节点的历史最大值 \texttt{max\_b} 和 \texttt{add\_max}。
+\item 再用父节点的 \texttt{add} 更新子节点的当前值 \texttt{maxn} 和 \texttt{add}。
+\end{enumerate}
+\end{itemize}
+\begin{quote}
+\textbf{关键}：必须先更新历史值，再更新当前值，确保更新历史值时使用的是正确的历史懒标记。
+\end{quote}
+
+\subsubsection*{3. 区间取min (操作 2)}
+暴力修改区间 \texttt{min} 操作是 $O(n)$ 的。为了优化，我们只在特定条件下应用懒更新。
+\begin{itemize}
+\item \textbf{节点额外信息}：
+\begin{itemize}
+\item \texttt{se}: 区间严格次大值。
+\item \texttt{cnt}: 区间最大值 \texttt{maxn} 的个数。
+\end{itemize}
+\item \textbf{修改逻辑 \texttt{change(v)}}：
+\begin{enumerate}
+\item \textbf{无效操作}：如果当前区间的 $maxn\le v$，则取min操作无影响，直接返回。
+\item \textbf{懒更新}：如果当前区间的 $\text{se}<v<maxn$，说明取min操作只会影响到区间内的最大值。此时，我们可以进行懒更新：
+\begin{itemize}
+\item 将所有最大值 \texttt{maxn} 修改为 $v$。
+\item 更新区间和 $\text{sum}-=\text{cnt}\cdot(maxn-v)$。
+\item 给最大值相关的懒标记打上 $v-maxn$ 的加法标记。
+\end{itemize}
+\item \textbf{继续递归}：如果不满足以上条件（即 $v\le\text{se}$），则无法进行懒更新（因为操作会影响至少两种值），必须递归到子节点处理。
+\end{enumerate}
+\end{itemize}
+该剪枝操作保证了整体复杂度为 $O(m\log^2 n)$
+
+\subsection*{懒标记设计}
+由于区间取 \texttt{min} 操作只对最大值生效，我们需要将\textbf{最大值}和\textbf{非最大值}的懒标记分开维护，历史最大值同理。因此，共需 4 个加法懒标记：
+\begin{itemize}
+\item \texttt{add1}: 作用于\textbf{最大值}的加法标记。
+\item \texttt{add2}: 作用于\textbf{非最大值}的加法标记。
+\item \texttt{add3}: \texttt{add1} 的历史最大值。
+\item \texttt{add4}: \texttt{add2} 的历史最大值。
+\end{itemize}
+\textbf{下传 \texttt{pushdown} 时的顺序至关重要}：
+\begin{enumerate}
+\item 用 \texttt{add3} 和 \texttt{add4} 更新子节点的历史最大值 \texttt{max\_b} 及历史标记 \texttt{add3}, \texttt{add4}。
+\item 用 \texttt{add1} 和 \texttt{add2} 更新子节点的当前值 \texttt{sum}, \texttt{maxn}, \texttt{se} 及当前标记 \texttt{add1}, \texttt{add2}。
+\end{enumerate}
+
+\subsection*{代码实现要点}
+\begin{itemize}
+\item \textbf{节点结构 \texttt{struct Node}}：
+\begin{itemize}
+\item \texttt{sum}: 区间和
+\item \texttt{maxn}, \texttt{se}: 区间最大值和严格次大值
+\item \texttt{max\_b}: 区间历史最大值
+\item \texttt{cnt}: 最大值个数
+\item \texttt{add1, add2, add3, add4}: 四个懒标记
+\end{itemize}
+\item \textbf{\texttt{pushup}}：通过左右子节点信息合并更新父节点。合并规则较为直接，注意 \texttt{maxn}, \texttt{se}, \texttt{cnt} 的正确合并逻辑。
+\item \textbf{特殊情况}：当一个区间内所有数都相同时，严格次大值不存在。可以将其设为一个极小值（如 \texttt{-INF}），方便代码处理。
+\end{itemize}
