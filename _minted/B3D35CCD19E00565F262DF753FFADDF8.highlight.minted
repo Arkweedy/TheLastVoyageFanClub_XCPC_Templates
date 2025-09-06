@@ -1,0 +1,126 @@
+\begin{MintedVerbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8\relax}]
+\PYG{c+c1}{// \PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}  这一段是模板化注释  \PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}}
+\PYG{c+c1}{// min\PYGZus{}25 主体：返回  sum\PYGZus{}\PYGZob{}n\PYGZlt{}=N\PYGZcb{} f(n)  的值（本题 f(p\PYGZca{}a)=p\PYGZca{}\PYGZob{}2a\PYGZcb{}\PYGZhy{}p\PYGZca{}a）。}
+\PYG{c+c1}{//}
+\PYG{c+c1}{// min\PYGZus{}25 的套路：}
+\PYG{c+c1}{//   (1) 先“只做质数处”的和：把  G(x)=sum\PYGZus{}\PYGZob{}p\PYGZlt{}=x\PYGZcb{} g(p), H(x)=sum\PYGZus{}\PYGZob{}p\PYGZlt{}=x\PYGZcb{} h(p) 这些}
+\PYG{c+c1}{//       通过“值域压缩 + 素数筛改写”得到（代码里的 g0/g1, h0/h1）。}
+\PYG{c+c1}{//       ——对当前这题：g(p)=p, h(p)=p\PYGZca{}2，于是  f(p)=h(p)\PYGZhy{}g(p)=p\PYGZca{}2\PYGZhy{}p。}
+\PYG{c+c1}{//   (2) 再用按“最小质因子分层”的递归，把合数按 p\PYGZca{}c·y（p\PYGZlt{}minpf(y)）拆回去。}
+\PYG{c+c1}{//       递归形态：}
+\PYG{c+c1}{//         F(x, k) = ∑\PYGZus{}\PYGZob{}p\PYGZus{}i \PYGZgt{}= p\PYGZus{}k, p\PYGZus{}i\PYGZca{}2 x \PYGZlt{}= N\PYGZcb{} [ ∑\PYGZus{}\PYGZob{}c\PYGZgt{}=1, p\PYGZus{}i\PYGZca{}\PYGZob{}c+1\PYGZcb{}x\PYGZlt{}=N\PYGZcb{} ( f(p\PYGZus{}i\PYGZca{}c)*F(x·p\PYGZus{}i\PYGZca{}c, i+1) + f(p\PYGZus{}i\PYGZca{}\PYGZob{}c+1\PYGZcb{}) ) ]}
+\PYG{c+c1}{//       并配上“只含质数”的起始段（即 ∑\PYGZus{}\PYGZob{}p\PYGZus{}k \PYGZlt{}= p \PYGZlt{}= N/x\PYGZcb{} f(p) ）。}
+\PYG{c+c1}{//       ——这一步就是下面 Lambda `F` 那个递归。}
+\PYG{c+c1}{// \PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}}
+
+\PYG{k}{constexpr}\PYG{+w}{ }\PYG{k+kt}{int}\PYG{+w}{ }\PYG{n}{P}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{1000000007}\PYG{p}{;}
+\PYG{k}{using}\PYG{+w}{ }\PYG{n}{Z}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{MInt}\PYG{o}{\PYGZlt{}}\PYG{n}{P}\PYG{o}{\PYGZgt{}}\PYG{p}{;}
+
+\PYG{k}{constexpr}\PYG{+w}{ }\PYG{k+kt}{int}\PYG{+w}{ }\PYG{n}{N}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mf}{1e5}\PYG{+w}{ }\PYG{o}{+}\PYG{+w}{ }\PYG{l+m+mi}{10}\PYG{p}{;}\PYG{c+c1}{//初始化sqrt以内的质数}
+\PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{k+kt}{int}\PYG{o}{\PYGZgt{}}\PYG{n}{prime}\PYG{p}{;}
+\PYG{n}{bitset}\PYG{o}{\PYGZlt{}}\PYG{n}{N}\PYG{+w}{ }\PYG{o}{+}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{o}{\PYGZgt{}}\PYG{n}{isprime}\PYG{p}{;}
+
+\PYG{c+c1}{//记得在main里面调用一下seive}
+\PYG{k+kt}{void}\PYG{+w}{ }\PYG{n+nf}{seive}\PYG{p}{()}
+\PYG{p}{\PYGZob{}}
+\PYG{+w}{    }\PYG{n}{isprime}\PYG{p}{.}\PYG{n}{set}\PYG{p}{();}
+\PYG{+w}{    }\PYG{n}{isprime}\PYG{p}{[}\PYG{l+m+mi}{1}\PYG{p}{]}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{;}
+\PYG{+w}{    }\PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int}\PYG{+w}{ }\PYG{n}{i}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{2}\PYG{p}{;}\PYG{n}{i}\PYG{+w}{ }\PYG{o}{\PYGZlt{}=}\PYG{+w}{ }\PYG{n}{N}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+\PYG{+w}{        }\PYG{k}{if}\PYG{p}{(}\PYG{n}{isprime}\PYG{p}{[}\PYG{n}{i}\PYG{p}{])\PYGZob{}}
+\PYG{+w}{            }\PYG{n}{prime}\PYG{p}{.}\PYG{n}{push\PYGZus{}back}\PYG{p}{(}\PYG{n}{i}\PYG{p}{);}
+\PYG{+w}{        }\PYG{p}{\PYGZcb{}}
+
+\PYG{+w}{        }\PYG{k}{for}\PYG{p}{(}\PYG{k}{auto}\PYG{+w}{ }\PYG{n}{p}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{prime}\PYG{p}{)\PYGZob{}}
+\PYG{+w}{            }\PYG{k}{if}\PYG{p}{(}\PYG{n}{i}\PYG{+w}{ }\PYG{o}{*}\PYG{+w}{ }\PYG{n}{p}\PYG{+w}{ }\PYG{o}{\PYGZgt{}}\PYG{+w}{ }\PYG{n}{N}\PYG{p}{)}\PYG{k}{break}\PYG{p}{;}
+\PYG{+w}{            }\PYG{n}{isprime}\PYG{p}{[}\PYG{n}{i}\PYG{+w}{ }\PYG{o}{*}\PYG{+w}{ }\PYG{n}{p}\PYG{p}{].}\PYG{n}{flip}\PYG{p}{();}
+\PYG{+w}{            }\PYG{k}{if}\PYG{p}{(}\PYG{n}{i}\PYG{+w}{ }\PYG{o}{\PYGZpc{}}\PYG{+w}{ }\PYG{n}{p}\PYG{+w}{ }\PYG{o}{==}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{)}\PYG{k}{break}\PYG{p}{;}
+\PYG{+w}{        }\PYG{p}{\PYGZcb{}}
+\PYG{+w}{    }\PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+
+\PYG{n}{Z}\PYG{+w}{ }\PYG{n+nf}{min\PYGZus{}25}\PYG{p}{(}\PYG{n}{ll}\PYG{+w}{ }\PYG{n}{n}\PYG{p}{)}\PYG{c+c1}{//若要加上其他参数，选一个不重复的，如t,mod等等,不要用k,m,c}
+\PYG{p}{\PYGZob{}}
+\PYG{+w}{    }\PYG{k+kt}{int}\PYG{+w}{ }\PYG{n}{m}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{floorl}\PYG{p}{(}\PYG{n}{sqrtl}\PYG{p}{(}\PYG{n}{n}\PYG{p}{));}
+\PYG{+w}{    }\PYG{c+c1}{// f(p\PYGZca{}k) = p\PYGZca{}k(p\PYGZca{}k \PYGZhy{} 1) }
+\PYG{+w}{    }\PYG{c+c1}{// g(p) = p,  h(p) = p\PYGZca{}2}
+
+\PYG{+w}{    }\PYG{c+c1}{// g(p) = p\PYGZca{}a ,可以用自然数的幂拼出来f在质数处的点值}
+\PYG{+w}{    }\PYG{c+c1}{// 其他的点值(质数幂和其他)不用管是什么形式，只关注质数处的点值形式即可}
+
+
+\PYG{+w}{    }\PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{n}{Z}\PYG{o}{\PYGZgt{}}\PYG{n}{g0}\PYG{p}{(}\PYG{n}{m}\PYG{+w}{ }\PYG{o}{+}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{),}\PYG{n}{g1}\PYG{p}{(}\PYG{n}{m}\PYG{+w}{ }\PYG{o}{+}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{),}\PYG{n}{h0}\PYG{p}{(}\PYG{n}{m}\PYG{+w}{ }\PYG{o}{+}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{),}\PYG{n}{h1}\PYG{p}{(}\PYG{n}{m}\PYG{+w}{ }\PYG{o}{+}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{);}
+
+\PYG{+w}{    }\PYG{c+c1}{//这里是 g(p) = p, h(p) = p\PYGZca{}2 }
+\PYG{+w}{    }\PYG{c+c1}{//也可以有g(p) = 1 等等}
+\PYG{+w}{    }\PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int}\PYG{+w}{ }\PYG{n}{i}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{n}{i}\PYG{+w}{ }\PYG{o}{\PYGZlt{}=}\PYG{+w}{ }\PYG{n}{m}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+\PYG{+w}{        }\PYG{n}{ll}\PYG{+w}{ }\PYG{n}{x}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{n}\PYG{+w}{ }\PYG{o}{/}\PYG{+w}{ }\PYG{n}{i}\PYG{p}{;}\PYG{+w}{ }\PYG{c+c1}{// long long !!!}
+\PYG{+w}{        }\PYG{n}{g0}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{Z}\PYG{p}{(}\PYG{n}{i}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{*}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{i}\PYG{+w}{ }\PYG{o}{+}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{/}\PYG{+w}{ }\PYG{l+m+mi}{2}\PYG{+w}{ }\PYG{o}{\PYGZhy{}}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{;}
+\PYG{+w}{        }\PYG{n}{g1}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{Z}\PYG{p}{(}\PYG{n}{x}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{*}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{x}\PYG{+w}{ }\PYG{o}{+}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{/}\PYG{+w}{ }\PYG{l+m+mi}{2}\PYG{+w}{ }\PYG{o}{\PYGZhy{}}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{;}
+\PYG{+w}{        }\PYG{n}{h0}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{Z}\PYG{p}{(}\PYG{n}{i}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{*}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{i}\PYG{+w}{ }\PYG{o}{+}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{*}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{i}\PYG{+w}{ }\PYG{o}{*}\PYG{+w}{ }\PYG{l+m+mi}{2}\PYG{+w}{ }\PYG{o}{+}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{/}\PYG{+w}{ }\PYG{l+m+mi}{6}\PYG{+w}{ }\PYG{o}{\PYGZhy{}}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{;}
+\PYG{+w}{        }\PYG{n}{h1}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{Z}\PYG{p}{(}\PYG{n}{x}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{*}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{x}\PYG{+w}{ }\PYG{o}{+}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{*}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{x}\PYG{+w}{ }\PYG{o}{*}\PYG{+w}{ }\PYG{l+m+mi}{2}\PYG{+w}{ }\PYG{o}{+}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{/}\PYG{+w}{ }\PYG{l+m+mi}{6}\PYG{+w}{ }\PYG{o}{\PYGZhy{}}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{;}
+\PYG{+w}{    }\PYG{p}{\PYGZcb{}}
+
+\PYG{+w}{    }\PYG{k}{for}\PYG{p}{(}\PYG{k}{auto}\PYG{+w}{ }\PYG{n}{p}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{prime}\PYG{p}{)\PYGZob{}}
+\PYG{+w}{        }\PYG{n}{ll}\PYG{+w}{ }\PYG{n}{pp}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mf}{1l}\PYG{n}{l}\PYG{+w}{ }\PYG{o}{*}\PYG{+w}{ }\PYG{n}{p}\PYG{+w}{ }\PYG{o}{*}\PYG{+w}{ }\PYG{n}{p}\PYG{p}{;}\PYG{c+c1}{//用来判定是否需要更新}
+\PYG{+w}{        }\PYG{n}{Z}\PYG{+w}{ }\PYG{n}{gp}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{p}\PYG{p}{;}\PYG{+w}{ }\PYG{c+c1}{// g(p),根据情况修改}
+\PYG{+w}{        }\PYG{n}{Z}\PYG{+w}{ }\PYG{n}{hp}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{Z}\PYG{p}{(}\PYG{n}{p}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{*}\PYG{+w}{ }\PYG{n}{p}\PYG{p}{;}\PYG{+w}{ }\PYG{c+c1}{// h(p),根据情况修改}
+\PYG{+w}{        }\PYG{k}{if}\PYG{p}{(}\PYG{n}{pp}\PYG{+w}{ }\PYG{o}{\PYGZgt{}}\PYG{+w}{ }\PYG{n}{n}\PYG{p}{)}\PYG{k}{break}\PYG{p}{;}
+
+\PYG{+w}{        }\PYG{c+c1}{//若 gp/hp = 1, 可省略}
+\PYG{+w}{        }\PYG{c+c1}{//update 1}
+\PYG{+w}{        }\PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int}\PYG{+w}{ }\PYG{n}{j}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{n}{j}\PYG{+w}{ }\PYG{o}{\PYGZlt{}=}\PYG{+w}{ }\PYG{n}{m}\PYG{+w}{ }\PYG{o}{\PYGZam{}\PYGZam{}}\PYG{+w}{ }\PYG{n}{j}\PYG{+w}{ }\PYG{o}{*}\PYG{+w}{ }\PYG{n}{pp}\PYG{+w}{ }\PYG{o}{\PYGZlt{}=}\PYG{+w}{ }\PYG{n}{n}\PYG{p}{;}\PYG{n}{j}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+\PYG{+w}{            }\PYG{n}{g1}\PYG{p}{[}\PYG{n}{j}\PYG{p}{]}\PYG{+w}{ }\PYG{o}{+=}\PYG{+w}{ }\PYG{n}{gp}\PYG{+w}{ }\PYG{o}{*}\PYG{+w}{ }\PYG{n}{g0}\PYG{p}{[}\PYG{n}{p}\PYG{+w}{ }\PYG{o}{\PYGZhy{}}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{];}
+\PYG{+w}{            }\PYG{n}{h1}\PYG{p}{[}\PYG{n}{j}\PYG{p}{]}\PYG{+w}{ }\PYG{o}{+=}\PYG{+w}{ }\PYG{n}{hp}\PYG{+w}{ }\PYG{o}{*}\PYG{+w}{ }\PYG{n}{h0}\PYG{p}{[}\PYG{n}{p}\PYG{+w}{ }\PYG{o}{\PYGZhy{}}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{];}
+\PYG{+w}{            }\PYG{k}{if}\PYG{p}{(}\PYG{l+m+mf}{1l}\PYG{n}{l}\PYG{+w}{ }\PYG{o}{*}\PYG{+w}{ }\PYG{n}{p}\PYG{+w}{ }\PYG{o}{*}\PYG{+w}{ }\PYG{n}{j}\PYG{+w}{ }\PYG{o}{\PYGZlt{}=}\PYG{+w}{ }\PYG{n}{m}\PYG{p}{)\PYGZob{}}
+\PYG{+w}{                }\PYG{n}{g1}\PYG{p}{[}\PYG{n}{j}\PYG{p}{]}\PYG{+w}{ }\PYG{o}{\PYGZhy{}=}\PYG{+w}{ }\PYG{n}{gp}\PYG{+w}{ }\PYG{o}{*}\PYG{+w}{ }\PYG{n}{g1}\PYG{p}{[}\PYG{n}{p}\PYG{+w}{ }\PYG{o}{*}\PYG{+w}{ }\PYG{n}{j}\PYG{p}{];}
+\PYG{+w}{                }\PYG{n}{h1}\PYG{p}{[}\PYG{n}{j}\PYG{p}{]}\PYG{+w}{ }\PYG{o}{\PYGZhy{}=}\PYG{+w}{ }\PYG{n}{hp}\PYG{+w}{ }\PYG{o}{*}\PYG{+w}{ }\PYG{n}{h1}\PYG{p}{[}\PYG{n}{p}\PYG{+w}{ }\PYG{o}{*}\PYG{+w}{ }\PYG{n}{j}\PYG{p}{];}
+\PYG{+w}{            }\PYG{p}{\PYGZcb{}}
+\PYG{+w}{            }\PYG{k}{else}\PYG{p}{\PYGZob{}}
+\PYG{+w}{                }\PYG{n}{g1}\PYG{p}{[}\PYG{n}{j}\PYG{p}{]}\PYG{+w}{ }\PYG{o}{\PYGZhy{}=}\PYG{+w}{ }\PYG{n}{gp}\PYG{+w}{ }\PYG{o}{*}\PYG{+w}{ }\PYG{n}{g0}\PYG{p}{[}\PYG{n}{n}\PYG{+w}{ }\PYG{o}{/}\PYG{+w}{ }\PYG{n}{p}\PYG{+w}{ }\PYG{o}{/}\PYG{+w}{ }\PYG{n}{j}\PYG{p}{];}
+\PYG{+w}{                }\PYG{n}{h1}\PYG{p}{[}\PYG{n}{j}\PYG{p}{]}\PYG{+w}{ }\PYG{o}{\PYGZhy{}=}\PYG{+w}{ }\PYG{n}{hp}\PYG{+w}{ }\PYG{o}{*}\PYG{+w}{ }\PYG{n}{h0}\PYG{p}{[}\PYG{n}{n}\PYG{+w}{ }\PYG{o}{/}\PYG{+w}{ }\PYG{n}{p}\PYG{+w}{ }\PYG{o}{/}\PYG{+w}{ }\PYG{n}{j}\PYG{p}{];}
+\PYG{+w}{            }\PYG{p}{\PYGZcb{}}\PYG{+w}{ }
+\PYG{+w}{        }\PYG{p}{\PYGZcb{}}
+
+\PYG{+w}{        }\PYG{c+c1}{//update 0}
+\PYG{+w}{        }\PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int}\PYG{+w}{ }\PYG{n}{j}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{m}\PYG{p}{;}\PYG{n}{j}\PYG{+w}{ }\PYG{o}{\PYGZgt{}=}\PYG{+w}{ }\PYG{n}{pp}\PYG{p}{;}\PYG{n}{j}\PYG{o}{\PYGZhy{}\PYGZhy{}}\PYG{p}{)\PYGZob{}}
+\PYG{+w}{            }\PYG{n}{g0}\PYG{p}{[}\PYG{n}{j}\PYG{p}{]}\PYG{+w}{ }\PYG{o}{\PYGZhy{}=}\PYG{+w}{ }\PYG{n}{gp}\PYG{+w}{ }\PYG{o}{*}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{g0}\PYG{p}{[}\PYG{n}{j}\PYG{+w}{ }\PYG{o}{/}\PYG{+w}{ }\PYG{n}{p}\PYG{p}{]}\PYG{+w}{ }\PYG{o}{\PYGZhy{}}\PYG{+w}{ }\PYG{n}{g0}\PYG{p}{[}\PYG{n}{p}\PYG{+w}{ }\PYG{o}{\PYGZhy{}}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{]);}
+\PYG{+w}{            }\PYG{n}{h0}\PYG{p}{[}\PYG{n}{j}\PYG{p}{]}\PYG{+w}{ }\PYG{o}{\PYGZhy{}=}\PYG{+w}{ }\PYG{n}{hp}\PYG{+w}{ }\PYG{o}{*}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{h0}\PYG{p}{[}\PYG{n}{j}\PYG{+w}{ }\PYG{o}{/}\PYG{+w}{ }\PYG{n}{p}\PYG{p}{]}\PYG{+w}{ }\PYG{o}{\PYGZhy{}}\PYG{+w}{ }\PYG{n}{h0}\PYG{p}{[}\PYG{n}{p}\PYG{+w}{ }\PYG{o}{\PYGZhy{}}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{]);}
+\PYG{+w}{        }\PYG{p}{\PYGZcb{}}
+\PYG{+w}{    }\PYG{p}{\PYGZcb{}}
+
+\PYG{+w}{    }\PYG{c+c1}{//迭代完后，这里的g,h只剩质数处的点值}
+\PYG{+w}{    }\PYG{c+c1}{//fprime 使用前面准备好的g，h， 拼出来即可}
+\PYG{+w}{    }\PYG{c+c1}{//如这里是f(p) = p\PYGZca{}2 \PYGZhy{} p}
+\PYG{+w}{    }\PYG{c+c1}{//如果需要特判一些位置的点值，记得处理好边界}
+\PYG{+w}{    }\PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{n}{Z}\PYG{o}{\PYGZgt{}}\PYG{n}{fprime0}\PYG{p}{(}\PYG{n}{m}\PYG{+w}{ }\PYG{o}{+}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{),}\PYG{n}{fprime1}\PYG{p}{(}\PYG{n}{m}\PYG{+w}{ }\PYG{o}{+}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{);}
+\PYG{+w}{    }\PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int}\PYG{+w}{ }\PYG{n}{i}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{n}{i}\PYG{+w}{ }\PYG{o}{\PYGZlt{}=}\PYG{+w}{ }\PYG{n}{m}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+\PYG{+w}{        }\PYG{n}{fprime0}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{h0}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{+w}{ }\PYG{o}{\PYGZhy{}}\PYG{+w}{ }\PYG{n}{g0}\PYG{p}{[}\PYG{n}{i}\PYG{p}{];}
+\PYG{+w}{        }\PYG{n}{fprime1}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{h1}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{+w}{ }\PYG{o}{\PYGZhy{}}\PYG{+w}{ }\PYG{n}{g1}\PYG{p}{[}\PYG{n}{i}\PYG{p}{];}
+\PYG{+w}{    }\PYG{p}{\PYGZcb{}}
+
+\PYG{+w}{    }\PYG{c+c1}{//calc f\PYGZus{}0}
+\PYG{+w}{    }\PYG{c+c1}{//F(n, k) = \PYGZbs{}sum\PYGZus{}p \PYGZbs{}sum c f(p\PYGZca{}c)F(n / p\PYGZca{}c, k + 1) + f(p \PYGZca{} (c + 1))}
+
+\PYG{+w}{    }\PYG{c+c1}{//这里要关注质数幂处的点值}
+\PYG{+w}{    }\PYG{k}{auto}\PYG{+w}{ }\PYG{n}{F}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{p}{[}\PYG{o}{\PYGZam{}}\PYG{p}{](}\PYG{k}{auto}\PYG{o}{\PYGZam{}\PYGZam{}}\PYG{n}{self}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{ll}\PYG{+w}{ }\PYG{n}{x}\PYG{p}{,}\PYG{+w}{ }\PYG{k+kt}{int}\PYG{+w}{ }\PYG{n}{k}\PYG{p}{)}\PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{n}{Z}\PYG{+w}{ }\PYG{c+c1}{//F(n / x, k)}
+\PYG{+w}{    }\PYG{p}{\PYGZob{}}
+\PYG{+w}{        }\PYG{n}{Z}\PYG{+w}{ }\PYG{n}{res}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{;}
+\PYG{+w}{        }\PYG{k}{if}\PYG{p}{(}\PYG{n}{k}\PYG{+w}{ }\PYG{o}{\PYGZgt{}}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{)}\PYG{n}{res}\PYG{+w}{ }\PYG{o}{\PYGZhy{}=}\PYG{+w}{ }\PYG{n}{fprime0}\PYG{p}{[}\PYG{n}{prime}\PYG{p}{[}\PYG{n}{k}\PYG{+w}{ }\PYG{o}{\PYGZhy{}}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{]];}
+\PYG{+w}{        }\PYG{k}{if}\PYG{p}{(}\PYG{n}{x}\PYG{+w}{ }\PYG{o}{\PYGZlt{}=}\PYG{+w}{ }\PYG{n}{m}\PYG{p}{)}\PYG{n}{res}\PYG{+w}{ }\PYG{o}{+=}\PYG{+w}{ }\PYG{n}{fprime1}\PYG{p}{[}\PYG{n}{x}\PYG{p}{];}
+\PYG{+w}{        }\PYG{k}{else}\PYG{+w}{ }\PYG{n}{res}\PYG{+w}{ }\PYG{o}{+=}\PYG{+w}{ }\PYG{n}{fprime0}\PYG{p}{[}\PYG{n}{n}\PYG{+w}{ }\PYG{o}{/}\PYG{+w}{ }\PYG{n}{x}\PYG{p}{];}
+
+\PYG{+w}{        }\PYG{c+c1}{//若f(p\PYGZca{}c) 需要O(log)直接求，可O(1)递推，可以在循环时维护}
+\PYG{+w}{        }\PYG{c+c1}{//像mu这种特殊的，c\PYGZgt{}1时为0，可以直接去掉第二重循环}
+\PYG{+w}{        }\PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int}\PYG{+w}{ }\PYG{n}{i}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{k}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{p}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{prime}\PYG{p}{[}\PYG{n}{i}\PYG{p}{];}\PYG{+w}{ }\PYG{l+m+mf}{1l}\PYG{n}{l}\PYG{+w}{ }\PYG{o}{*}\PYG{+w}{ }\PYG{n}{p}\PYG{+w}{ }\PYG{o}{*}\PYG{+w}{ }\PYG{n}{p}\PYG{+w}{ }\PYG{o}{*}\PYG{+w}{ }\PYG{n}{x}\PYG{+w}{ }\PYG{o}{\PYGZlt{}=}\PYG{+w}{ }\PYG{n}{n}\PYG{p}{;}\PYG{o}{++}\PYG{n}{i}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{p}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{prime}\PYG{p}{[}\PYG{n}{i}\PYG{p}{])\PYGZob{}}
+\PYG{+w}{            }\PYG{n}{ll}\PYG{+w}{ }\PYG{n}{pc}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{p}\PYG{p}{;}\PYG{c+c1}{//记录p\PYGZca{}c,以便判断什么时候终止}
+\PYG{+w}{            }\PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int}\PYG{+w}{ }\PYG{n}{c}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{+w}{ }\PYG{n}{pc}\PYG{+w}{ }\PYG{o}{*}\PYG{+w}{ }\PYG{n}{p}\PYG{+w}{ }\PYG{o}{*}\PYG{+w}{ }\PYG{n}{x}\PYG{+w}{ }\PYG{o}{\PYGZlt{}=}\PYG{+w}{ }\PYG{n}{n}\PYG{p}{;}\PYG{n}{c}\PYG{o}{++}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{pc}\PYG{+w}{ }\PYG{o}{*=}\PYG{+w}{ }\PYG{n}{p}\PYG{p}{)\PYGZob{}}
+\PYG{+w}{                }\PYG{n}{res}\PYG{+w}{ }\PYG{o}{+=}\PYG{+w}{ }\PYG{c+cm}{/* f(p\PYGZca{}c) */}\PYG{+w}{ }\PYG{o}{*}\PYG{+w}{ }\PYG{n}{self}\PYG{p}{(}\PYG{n}{self}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{x}\PYG{+w}{ }\PYG{o}{*}\PYG{+w}{ }\PYG{n}{pc}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{i}\PYG{+w}{ }\PYG{o}{+}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{+}\PYG{+w}{ }\PYG{c+cm}{/* f(p\PYGZca{}(c+1)) */}\PYG{p}{;}
+\PYG{+w}{            }\PYG{p}{\PYGZcb{}}
+\PYG{+w}{        }\PYG{p}{\PYGZcb{}}
+\PYG{+w}{        }\PYG{k}{return}\PYG{+w}{ }\PYG{n}{res}\PYG{p}{;}
+\PYG{+w}{    }\PYG{p}{\PYGZcb{};}
+
+\PYG{+w}{    }\PYG{c+c1}{//F(F,1,0)代表2\PYGZti{}(n/1)的值,要加上f(1) = 1}
+\PYG{+w}{    }\PYG{k}{return}\PYG{+w}{ }\PYG{n}{F}\PYG{p}{(}\PYG{n}{F}\PYG{p}{,}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{,}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{+}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\end{MintedVerbatim}
