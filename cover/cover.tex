@@ -1,1 +1,135 @@
-\newpage
+\documentclass[a4paper]{article}
+\usepackage[margin=16mm]{geometry}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\graphicspath{{./}{./Images/}{./HUST-logo/images/pdf/}}
+\usepackage{tikz}
+\usetikzlibrary{calc,shadows.blur,positioning}
+\usepackage{fontspec}
+
+% \usepackage{xeCJK}
+% \setCJKmainfont{Source Han Serif SC}
+% \setCJKsansfont{Source Han Sans SC}
+\setmainfont{TeX Gyre Heros}
+\newfontfamily\TitleFont{TeX Gyre Heros}[Scale=1.15]
+
+\pagestyle{empty}
+
+% 主题色
+\definecolor{team}{HTML}{0EA5B5}
+\definecolor{soft}{HTML}{EDF2F7}
+
+% 变量
+\newcommand{\SchoolName}{HUST}
+\newcommand{\CoverTitle}{ICPC Template}
+\newcommand{\Version}{v1.0}
+\newcommand{\CoverDate}{\today}
+
+% 图片文件（现在走 \graphicspath，保持这些文件名即可）
+\newcommand{\SchoolLogo}{hustclogo.pdf}
+\newcommand{\HeroImage}{AqoursYou.png}
+\newcommand{\AvatarA}{Arkweedy.jpg}
+\newcommand{\AvatarB}{ji_114514.jpg}
+\newcommand{\AvatarC}{blueMoon137.jpg}
+
+\newcommand{\HandleA}{Arkweedy}
+\newcommand{\HandleB}{ji\_114514}
+\newcommand{\HandleC}{blueMoon137}
+
+% —— 圆形头像样式（1 个参数=直径），关键：clip + keepaspectratio
+% —— 圆形头像样式（#1 = 直径）
+\tikzset{
+  avatar/.style n args={1}{
+    circle,
+    minimum size=#1,
+    inner sep=0pt,
+    outer sep=0pt,
+    draw=team!70!black,
+    line width=0.6pt,
+    path picture={
+      \begin{scope}
+        % 以节点圆心为中心进行圆形裁剪
+        \clip (path picture bounding box.center) circle[radius=#1/2];
+        % 关键：只给 height，保持等比；并且用中心锚点
+        \node[anchor=center, inner sep=0pt]
+          at (path picture bounding box.center)
+          {\includegraphics[height=#1]{\AvatarTemp}};
+      \end{scope}
+    }
+  }
+}
+
+
+
+\begin{document}
+\begin{tikzpicture}[remember picture, overlay]
+
+% 背景
+\node[fill=soft, rounded corners=14pt, inner sep=0pt,
+      minimum width=\paperwidth-10mm, minimum height=\paperheight-10mm,
+      anchor=center] at (current page.center) {};
+
+% 顶部
+\node[anchor=west, xshift=8mm, yshift=-8mm, text=team, font=\Large\bfseries]
+  at (current page.north west) {\SchoolName};
+\node[anchor=north east, xshift=-10mm, yshift=-8mm]
+  at (current page.north east) {\includegraphics[height=14mm]{\SchoolLogo}};
+
+% 标题
+\node[anchor=north, yshift=-22mm, text=black,
+      font=\TitleFont\bfseries\fontsize{28}{30}\selectfont]
+  at (current page.north) {\CoverTitle};
+
+% 中央大图
+\def\heroW{0.70\paperwidth}
+\def\heroH{0.33\paperheight}
+\node[rounded corners=16pt, draw=black!10, line width=0.6pt,
+      inner sep=0pt, minimum width=\heroW, minimum height=\heroH,
+      blur shadow={shadow xshift=1pt, shadow yshift=-1pt, opacity=0.08}]
+      (hero) at ($(current page.center)+(0mm,10mm)$) {};
+\begin{scope}
+  \clip (hero.south west) rectangle (hero.north east);
+  \node at (hero.center) {\includegraphics[width=\heroW,height=\heroH,keepaspectratio]{\HeroImage}};
+\end{scope}
+
+% 列坐标
+% 左侧头像列的 x
+\path ($(current page.west)+(0.18\paperwidth,0)$) coordinate (LeftCol);
+% 右侧“网名列”的 x（靠右，右对齐）
+\path ($(current page.east)+(-0.10\paperwidth,0)$) coordinate (RightCol);
+
+% 第一行 y：放在主图下方 14mm，避免重叠
+\path ($(hero.south)+(0,-14mm)$) coordinate (RowOneY);
+
+\def\rowGap{20mm}   % 行间距
+\def\avaSize{18mm}  % 头像直径
+\def\nameWidth{0.30\paperwidth} % 右侧名字文本宽度
+
+% ---------- 第一位 ----------
+\def\AvatarTemp{\AvatarA}
+\node[avatar=\avaSize, anchor=west] (ava1) at (LeftCol |- RowOneY) {};
+\node[anchor=east, font=\large\bfseries, text width=\nameWidth, align=right]
+     at (RightCol |- ava1) {\HandleA};
+
+% ---------- 第二位 ----------
+\path (ava1) ++(0,-\rowGap) coordinate (RowTwoY);
+\def\AvatarTemp{\AvatarB}
+\node[avatar=\avaSize, anchor=west] (ava2) at (LeftCol |- RowTwoY) {};
+\node[anchor=east, font=\large\bfseries, text width=\nameWidth, align=right]
+     at (RightCol |- ava2) {\HandleB};
+
+% ---------- 第三位 ----------
+\path (ava2) ++(0,-\rowGap) coordinate (RowThreeY);
+\def\AvatarTemp{\AvatarC}
+\node[avatar=\avaSize, anchor=west] (ava3) at (LeftCol |- RowThreeY) {};
+\node[anchor=east, font=\large\bfseries, text width=\nameWidth, align=right]
+     at (RightCol |- ava3) {\HandleC};
+
+% 底部版本/日期
+\node[anchor=south west, xshift=8mm, yshift=8mm, text=black!70]
+  at (current page.south west) {\small Version: \textbf{\Version}};
+\node[anchor=south east, xshift=-8mm, yshift=8mm, text=black!70]
+  at (current page.south east) {\small Date: \textbf{\CoverDate}};
+
+\end{tikzpicture}
+\end{document}

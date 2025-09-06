@@ -22,7 +22,7 @@
 \usepackage{tabularx}
 \usepackage{enumitem}
 \usepackage{imakeidx} % 若没有 xindy，改成 \usepackage{imakeidx}
-\makeindex[columns=2, intoc, title=关键词索引, program=texindy, options=-z pinyin -C utf8]  % 两栏；目录中显示“索引”条目
+\makeindex[columns=2, intoc, title=关键词索引]  % 两栏；目录中显示“索引”条目 , program=texindy , options=-z pinyin -C utf8
 % configure fonts
 % if not using CJK
 % \newfontfamily\substitutefont{SimSun}[Scale=0.8,BoldFont=SimHei]
@@ -252,7 +252,7 @@
 %THE SCL BEGINS
 \begin{document}
 	\begin{titlepage}
-		\input{cover/cover.tex}
+		\includepdf[pages=1]{cover/cover.pdf}
 	\end{titlepage}
 		\setcounter{tocdepth}{3}
 		\begingroup
@@ -830,16 +830,19 @@
 		%\end{comment}
 		\end{spacing}
 		\endgroup
-		\clearpage
- 	\printindex
+	
 	%\newpage
 	%\includegraphics{src/Miscellany/Grid_Paper.pdf}
 	
-		\begin{spacing}{0.6}
+	\begin{spacing}{0.6}
 		\begin{small}
-	\input{src/Math/stl_numeric.tex}
+			\input{src/Math/stl_numeric.tex}
 		\end{small}
 	\end{spacing}
+
+	\clearpage
+ 	\printindex
+
 	% \begin{center}
 	% 	\LARGE{Good Luck \&\& Have Fun!}
 	% \end{center}
