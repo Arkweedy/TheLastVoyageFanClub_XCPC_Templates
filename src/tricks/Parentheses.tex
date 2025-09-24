@@ -1,0 +1,38 @@
+设括号串 \(s=s_1s_2\cdots s_n\) ，其中 \(s_i\in\{(\,),)\}\)。定义数列
+\[
+x_i=\begin{cases}
++1,& s_i=\text{“(”},\\
+-1,& s_i=\text{“)”}.
+\end{cases}
+\]
+并令前缀和
+\[
+S_0:=0,\qquad S_i:=\sum_{k=1}^{i}x_k\quad(1\le i\le n).
+\]
+记
+\[
+S_{\min}:=\min_{0\le i\le n}S_i,\qquad S_n=\sum_{k=1}^{n}x_k.
+\]
+又记左括号与右括号个数分别为
+\[
+L:=\#\{i:s_i=\text{“(”}\},\qquad R:=\#\{i:s_i=\text{“)”}\},
+\]
+则 \(L+R=n\) 且 \(S_n=L-R\)。
+
+记 \(\mathrm{LPS}(s)\) 为串 \(s\) 的“最长合法括号子序列”的长度。则有如下等价表述：
+\[
+\boxed{\;\mathrm{LPS}(s)\;=\;n-S_n+2\,\min\{S_{\min},\,0\}\;}
+\]
+以及（利用 \(n-S_n=2R\)）
+\[
+\boxed{\;\mathrm{LPS}(s)\;=\;2\Big(R+\min\{S_{\min},\,0\}\Big)\;.}
+\]
+
+若用折线图表示前缀和（将点 \((i,S_i)\) 连线），其最低纵坐标为
+\[
+Y_{\min}:=S_{\min},
+\]
+则上式亦可写作
+\[
+\boxed{\;\mathrm{LPS}(s)\;=\;2\Big(R+\min\{Y_{\min},\,0\}\Big)\;.}
+\]

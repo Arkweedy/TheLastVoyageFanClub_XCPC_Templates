@@ -114,19 +114,20 @@
 \indexentry{曼哈顿和切比雪夫}{156}
 \indexentry{接受有效日期的最小状态自动机}{156}
 \indexentry{带修的区间线性基}{157}
-\indexentry{Appendix}{158}
-\indexentry{Formulas 公式表}{158}
-\indexentry{Calculus, Integration Table 导数积分表}{167}
-\indexentry{Python Hint}{170}
-\indexentry{Miscellany}{173}
-\indexentry{初始模板}{173}
-\indexentry{WIN 运行脚本}{173}
-\indexentry{对拍}{174}
-\indexentry{Zeller 日期公式}{174}
-\indexentry{有理数二分: Stern-Brocot 树, Farey 序列}{174}
-\indexentry{黄金三分}{175}
-\indexentry{DP 优化}{175}
-\indexentry{O3, 读入优化}{176}
-\indexentry{builtin}{176}
-\indexentry{试机赛与纪律文件}{177}
-\indexentry{Constant Table 常数表}{178}
+\indexentry{最长合法括号子序列长度}{157}
+\indexentry{Appendix}{159}
+\indexentry{Formulas 公式表}{159}
+\indexentry{Calculus, Integration Table 导数积分表}{168}
+\indexentry{Python Hint}{171}
+\indexentry{Miscellany}{174}
+\indexentry{初始模板}{174}
+\indexentry{WIN 运行脚本}{174}
+\indexentry{对拍}{175}
+\indexentry{Zeller 日期公式}{175}
+\indexentry{有理数二分: Stern-Brocot 树, Farey 序列}{175}
+\indexentry{黄金三分}{176}
+\indexentry{DP 优化}{176}
+\indexentry{O3, 读入优化}{177}
+\indexentry{builtin}{177}
+\indexentry{试机赛与纪律文件}{178}
+\indexentry{Constant Table 常数表}{179}

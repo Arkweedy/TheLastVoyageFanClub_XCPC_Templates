@@ -6,19 +6,19 @@
   \indexspace
 
   \item AC 自动机, 107
-  \item Appendix, 158
+  \item Appendix, 159
 
   \indexspace
 
   \item Berlekamp-Massey 最小多项式, 147
   \item Bitset Kosaraju, 50
   \item Border树, 106
-  \item builtin, 176
+  \item builtin, 177
 
   \indexspace
 
-  \item Calculus, Integration Table 导数积分表, 167
-  \item Constant Table 常数表, 178
+  \item Calculus, Integration Table 导数积分表, 168
+  \item Constant Table 常数表, 179
   \item CRT 中国剩余定理, 128
 
   \indexspace
@@ -26,7 +26,7 @@
   \item Data Structure, 71
   \item Dinic 最大流, 56
   \item Dominator Tree 支配树, 54
-  \item DP 优化, 175
+  \item DP 优化, 176
 
   \indexspace
 
@@ -35,7 +35,7 @@
   \indexspace
 
   \item FFT, 141
-  \item Formulas 公式表, 158
+  \item Formulas 公式表, 159
   \item FWT, 148
 
   \indexspace
@@ -67,7 +67,7 @@
   \item Miller Rabin, Pollard Rho, 129
   \item min\_25 筛, 135
   \item Minimum Mean Cycle 最小平均值环 $O(n^2)$, 67
-  \item Miscellany, 173
+  \item Miscellany, 174
   \item MTT 任意模数卷积, 142
 
   \indexspace
@@ -76,7 +76,7 @@
 
   \indexspace
 
-  \item O3, 读入优化, 176
+  \item O3, 读入优化, 177
 
   \indexspace
 
@@ -84,7 +84,7 @@
   \item PBDS 实现平衡树, 89
   \item Pell 方程, 150
   \item prufer 与树的互相转化, 38
-  \item Python Hint, 170
+  \item Python Hint, 171
 
   \indexspace
 
@@ -106,11 +106,11 @@
 
   \indexspace
 
-  \item WIN 运行脚本, 173
+  \item WIN 运行脚本, 174
 
   \indexspace
 
-  \item Zeller 日期公式, 174
+  \item Zeller 日期公式, 175
 
   \indexspace
 
@@ -125,7 +125,7 @@
 
   \item 内向基环树, 42
   \item 凸包, 10
-  \item 初始模板, 173
+  \item 初始模板, 174
   \item 动态dp, 96
   \item 区间 $mex$ 和 $mex$ 区间, 152
   \item 区间众数, 152
@@ -147,7 +147,7 @@
   \item 多项式, 138
   \item 多项式运算, 143
   \item 字符串 Hash, 123
-  \item 对拍, 174
+  \item 对拍, 175
   \item 带修的区间线性基, 157
   \item 平方剩余, 134
   \item 平面不相交矩形建树, 154
@@ -165,8 +165,9 @@
   \item 无穷字符串匹配/比较, 155
   \item 曼哈顿和切比雪夫, 156
   \item 最小表示法, 105
+  \item 最长合法括号子序列长度, 157
   \item 有向图欧拉回路/路径, 46
-  \item 有理数二分: Stern-Brocot 树, Farey 序列, 174
+  \item 有理数二分: Stern-Brocot 树, Farey 序列, 175
   \item 树上启发式合并, 86
   \item 树哈希, 39
   \item 树状数组, 78
@@ -198,7 +199,7 @@
   \item 莫队合集, 72
   \item 虚树, 62
   \item 解一元三次方程, 151
-  \item 试机赛与纪律文件, 177
+  \item 试机赛与纪律文件, 178
   \item 质数个数计数, 132
   \item 边双连通分量, 51
 
@@ -206,6 +207,6 @@
 
   \item 阶乘取模, 131
   \item 高斯消元最小范数解, 150
-  \item 黄金三分, 175
+  \item 黄金三分, 176
 
 \end{theindex}
