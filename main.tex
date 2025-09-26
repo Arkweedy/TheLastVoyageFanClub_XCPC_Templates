@@ -22,6 +22,7 @@
 \usepackage{tabularx}
 \usepackage{enumitem}
 \usepackage{imakeidx} % 若没有 xindy，改成 \usepackage{imakeidx}
+\usepackage{multirow}
 \makeindex[columns=2, intoc, title=关键词索引]  % 两栏；目录中显示“索引”条目 , program=texindy , options=-z pinyin -C utf8
 % configure fonts
 % if not using CJK
@@ -808,6 +809,8 @@
 					}
 				\end{small}
 				\input{src/TipsandHints/Addon.tex}
+				\subsection{Prime Table 质数表}
+				 	\input{src/TipsandHints/Primes.tex}
 				\subsection*{Vimrc, Bashrc}
 				\inputminted{vim}{src/Miscellany/vimrc}
 				\inputminted{sh}{src/Miscellany/bashrc}
