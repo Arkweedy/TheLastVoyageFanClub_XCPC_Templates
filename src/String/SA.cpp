@@ -1,6 +1,7 @@
 struct SA {
     int n;
     std::vector<int> sa, rk, lc;
+    vector<vector<int>> st;
     /*
     sa[k] = 后缀排名为 k 的后缀起始位置（k = 0..n-1）
     rk[pos] = 后缀 s[pos..] 的排名（0..n-1）
