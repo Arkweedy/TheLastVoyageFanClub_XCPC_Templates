@@ -68,4 +68,32 @@ struct SA {
             }
         }
     }
+
+    void init_lcp()
+    {
+        constexpr int K = 21;//注意根据题目范围调整K大小，不同范围也可以取log计算。
+        st.resize(K, vector<int>(n - 1));
+        st[0] = lc;
+        for (int j = 0; j < K - 1; j++) {
+            for (int i = 0; i + (2 << j) <= n - 1; i++) {
+                st[j + 1][i] = min(st[j][i], st[j][i + (1 << j)]);
+            }
+        }
+    }
+    
+    int rmq(int l, int r) {
+        int k = __lg(r - l);
+        return min(st[k][l], st[k][r - (1 << k)]);
+    };
+    int lcp(int i, int j) {
+        if (i == j || i == n || j == n) {
+            return min(n - i, n - j);
+        }
+        int a = rk[i];
+        int b = rk[j];
+        if (a > b) {
+            swap(a, b);
+        }
+        return min({n - i, n - j, rmq(a, b)});
+    };
 };
