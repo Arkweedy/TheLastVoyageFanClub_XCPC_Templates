@@ -1,4 +1,4 @@
-int dfn[N], mi[19][N], tot;
+int dfn[N], mi[20][N], tot;
 vector<int> e[N];
 int get(int x, int y) { return dfn[x] < dfn[y] ? x : y; }
 void dfs(int u, int f) {
