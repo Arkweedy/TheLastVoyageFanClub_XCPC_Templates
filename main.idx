@@ -91,30 +91,31 @@
 \indexentry{Miller Rabin, Pollard Rho}{143}
 \indexentry{线性基}{144}
 \indexentry{扩展卢卡斯}{146}
-\indexentry{阶乘取模}{146}
-\indexentry{质数个数计数}{147}
-\indexentry{类欧几里得 直线下格点统计}{148}
-\indexentry{万能欧几里德}{149}
-\indexentry{平方剩余}{149}
-\indexentry{线性同余不等式}{149}
-\indexentry{min\_25 筛}{150}
-\indexentry{原根}{153}
-\indexentry{半在线卷积}{153}
-\indexentry{在线卷积}{154}
-\indexentry{多项式}{154}
-\indexentry{FFT}{158}
-\indexentry{NTT(大模数)}{158}
-\indexentry{MTT 任意模数卷积}{159}
-\indexentry{多项式运算}{160}
-\indexentry{线性递推}{162}
-\indexentry{Berlekamp-Massey 最小多项式}{164}
-\indexentry{FWT}{165}
-\indexentry{K 进制 FWT}{166}
-\indexentry{Simplex 单纯形}{166}
-\indexentry{高斯消元最小范数解}{167}
-\indexentry{Pell 方程}{168}
-\indexentry{解一元三次方程}{168}
-\indexentry{自适应 Simpson}{168}
+\indexentry{连续拉格朗日插值}{146}
+\indexentry{阶乘取模}{147}
+\indexentry{质数个数计数}{148}
+\indexentry{类欧几里得 直线下格点统计}{149}
+\indexentry{万能欧几里德}{150}
+\indexentry{平方剩余}{150}
+\indexentry{线性同余不等式}{150}
+\indexentry{min\_25 筛}{151}
+\indexentry{原根}{154}
+\indexentry{半在线卷积}{154}
+\indexentry{在线卷积}{155}
+\indexentry{多项式}{155}
+\indexentry{FFT}{159}
+\indexentry{NTT(大模数)}{159}
+\indexentry{MTT 任意模数卷积}{160}
+\indexentry{多项式运算}{161}
+\indexentry{线性递推}{163}
+\indexentry{Berlekamp-Massey 最小多项式}{165}
+\indexentry{FWT}{166}
+\indexentry{K 进制 FWT}{167}
+\indexentry{Simplex 单纯形}{167}
+\indexentry{高斯消元最小范数解}{168}
+\indexentry{Pell 方程}{169}
+\indexentry{解一元三次方程}{169}
+\indexentry{自适应 Simpson}{169}
 \indexentry{Tricks}{170}
 \indexentry{线性预处理左边第 k 大}{170}
 \indexentry{二维前驱查询}{170}

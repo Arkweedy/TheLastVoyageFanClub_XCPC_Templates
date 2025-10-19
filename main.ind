@@ -10,7 +10,7 @@
 
   \indexspace
 
-  \item Berlekamp-Massey 最小多项式, 164
+  \item Berlekamp-Massey 最小多项式, 165
   \item Bitset Kosaraju, 53
   \item Border树, 118
   \item builtin, 195
@@ -34,9 +34,9 @@
 
   \indexspace
 
-  \item FFT, 158
+  \item FFT, 159
   \item Formulas 公式表, 177
-  \item FWT, 165
+  \item FWT, 166
 
   \indexspace
 
@@ -50,7 +50,7 @@
 
   \indexspace
 
-  \item K 进制 FWT, 166
+  \item K 进制 FWT, 167
   \item KM 最大权匹配 $O(V^3)$, 47
   \item KMP, exKMP, 118
   \item K短路, 68
@@ -66,15 +66,15 @@
   \item Manacher, 117
   \item Math 数学, 140
   \item Miller Rabin, Pollard Rho, 143
-  \item min\_25 筛, 150
+  \item min\_25 筛, 151
   \item Minimum Mean Cycle 最小平均值环 $O(n^2)$, 73
   \item Miscellany, 192
-  \item MTT 任意模数卷积, 159
+  \item MTT 任意模数卷积, 160
 
   \indexspace
 
   \item NTT 模数表, 198
-  \item NTT(大模数), 158
+  \item NTT(大模数), 159
 
   \indexspace
 
@@ -84,7 +84,7 @@
 
   \item PBDS 实现可并堆, 102
   \item PBDS 实现平衡树, 101
-  \item Pell 方程, 168
+  \item Pell 方程, 169
   \item Prime Table 质数表, 200
   \item prufer 与树的互相转化, 38
   \item Python Hint, 189
@@ -96,7 +96,7 @@
   \indexspace
 
   \item Shuffle 一般图最大匹配 $O(V E)$, 47
-  \item Simplex 单纯形, 166
+  \item Simplex 单纯形, 167
   \item Splay, 96
   \item Stoer-Wagner\,无向图最小割\,$O(VE + V ^ 2 \log V)$, 71
   \item String, 117
@@ -119,7 +119,7 @@
   \indexspace
 
   \item 一般图最大匹配 - Blossom, 74
-  \item 万能欧几里德, 149
+  \item 万能欧几里德, 150
   \item 三元环, 69
   \item 三维几何基础操作, 22
   \item 三维凸包, 25
@@ -135,12 +135,12 @@
   \item 动态树直径, 39
   \item 区间 $mex$ 和 $mex$ 区间, 170
   \item 区间众数, 170
-  \item 半在线卷积, 153
+  \item 半在线卷积, 154
   \item 半平面交, 12
   \item 单插入动态凸包, 13
   \item 单点修改线段树, 86
   \item 原始对偶费用流, 65
-  \item 原根, 153
+  \item 原根, 154
   \item 可持久化 Treap, 100
   \item 吉如一线段树, 112
   \item 同余方程, 142
@@ -151,13 +151,13 @@
   \item 回滚并查集, 78
   \item 图论结论, 74
   \item 圆, 16
-  \item 在线卷积, 154
-  \item 多项式, 154
-  \item 多项式运算, 160
+  \item 在线卷积, 155
+  \item 多项式, 155
+  \item 多项式运算, 161
   \item 字符串 Hash, 136
   \item 对拍, 193
   \item 带修的区间线性基, 175
-  \item 平方剩余, 149
+  \item 平方剩余, 150
   \item 平面不相交矩形建树, 172
   \item 广义后缀自动机(离线), 126
   \item 广义在线 SAM, 128
@@ -195,31 +195,32 @@
   \item 相关技巧, 27
   \item 笛卡尔树, 93
   \item 第 k 大李超线段树, 92
-  \item 类欧几里得 直线下格点统计, 148
-  \item 线性同余不等式, 149
+  \item 类欧几里得 直线下格点统计, 149
+  \item 线性同余不等式, 150
   \item 线性基, 144
-  \item 线性递推, 162
+  \item 线性递推, 163
   \item 线性预处理左边第 k 大, 170
   \item 线段树合并与分裂, 91
   \item 网络流总结, 70
 
   \indexspace
 
-  \item 自适应 Simpson, 168
+  \item 自适应 Simpson, 169
   \item 莫队合集, 79
   \item 虚树, 69
   \item 行列式求值(任意模数), 140
-  \item 解一元三次方程, 168
+  \item 解一元三次方程, 169
   \item 试机赛与纪律文件, 196
-  \item 质数个数计数, 147
+  \item 质数个数计数, 148
   \item 边双连通分量, 55
   \item 边双连通分量(可处理非简单、联通图), 56
+  \item 连续拉格朗日插值, 146
 
   \indexspace
 
-  \item 阶乘取模, 146
+  \item 阶乘取模, 147
   \item 高斯消元, 140
-  \item 高斯消元最小范数解, 167
+  \item 高斯消元最小范数解, 168
   \item 黄金三分, 194
 
 \end{theindex}
