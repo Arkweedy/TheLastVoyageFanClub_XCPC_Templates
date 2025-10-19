@@ -1,6 +1,6 @@
-This is makeindex, version 2.17 [TeX Live 2025] (kpathsea + Thai support).
-Scanning input file main.idx....done (143 entries accepted, 0 rejected).
-Sorting entries....done (1154 comparisons).
-Generating output file main.ind....done (222 lines written, 0 warnings).
+This is makeindex, version 2.17 [TeX Live 2023] (kpathsea + Thai support).
+Scanning input file main.idx....done (144 entries accepted, 0 rejected).
+Sorting entries....done (1135 comparisons).
+Generating output file main.ind....done (223 lines written, 0 warnings).
 Output written in main.ind.
 Transcript written in main.ilg.
