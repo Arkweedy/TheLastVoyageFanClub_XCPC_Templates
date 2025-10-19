@@ -21,21 +21,22 @@
 \indexentry{Hungarian $O(V E / w)$}{46}
 \indexentry{Shuffle 一般图最大匹配 $O(V E)$}{46}
 \indexentry{KM 最大权匹配 $O(V^3)$}{47}
-\indexentry{有向图欧拉回路/路径}{49}
+\indexentry{无向图欧拉回路}{49}
+\indexentry{有向图欧拉回路/路径}{50}
 \indexentry{2-SAT}{52}
 \indexentry{Bitset Kosaraju}{53}
-\indexentry{强连通分量}{53}
-\indexentry{边双连通分量}{54}
+\indexentry{强连通分量}{54}
+\indexentry{边双连通分量}{55}
 \indexentry{边双连通分量(可处理非简单、联通图)}{56}
 \indexentry{点双连通分量}{57}
 \indexentry{Dominator Tree 支配树}{59}
 \indexentry{Dinic 最大流}{61}
-\indexentry{原始对偶费用流}{64}
+\indexentry{原始对偶费用流}{65}
 \indexentry{K短路}{67}
 \indexentry{三元环}{68}
-\indexentry{虚树}{68}
+\indexentry{虚树}{69}
 \indexentry{网络流总结}{69}
-\indexentry{Gomory-Hu 无向图最小割树\,$O(V ^ 3 E)$}{70}
+\indexentry{Gomory-Hu 无向图最小割树\,$O(V ^ 3 E)$}{71}
 \indexentry{Stoer-Wagner\,无向图最小割\,$O(VE + V ^ 2 \log V)$}{71}
 \indexentry{弦图}{72}
 \indexentry{Minimum Mean Cycle 最小平均值环 $O(n^2)$}{73}
@@ -101,50 +102,53 @@
 \indexentry{min\_25 筛}{150}
 \indexentry{原根}{153}
 \indexentry{半在线卷积}{153}
-\indexentry{在线卷积}{153}
+\indexentry{在线卷积}{154}
 \indexentry{多项式}{154}
-\indexentry{FFT}{157}
+\indexentry{FFT}{158}
 \indexentry{NTT(大模数)}{158}
 \indexentry{MTT 任意模数卷积}{159}
 \indexentry{多项式运算}{160}
 \indexentry{线性递推}{162}
-\indexentry{Berlekamp-Massey 最小多项式}{163}
+\indexentry{Berlekamp-Massey 最小多项式}{164}
 \indexentry{FWT}{165}
-\indexentry{K 进制 FWT}{165}
-\indexentry{Simplex 单纯形}{165}
-\indexentry{高斯消元最小范数解}{166}
-\indexentry{Pell 方程}{167}
-\indexentry{解一元三次方程}{167}
-\indexentry{自适应 Simpson}{168}
-\indexentry{Tricks}{169}
-\indexentry{线性预处理左边第 k 大}{169}
-\indexentry{二维前驱查询}{169}
-\indexentry{区间众数}{169}
-\indexentry{区间 $mex$ 和 $mex$ 区间}{169}
-\indexentry{平面不相交矩形建树}{171}
-\indexentry{无穷字符串匹配/比较}{172}
-\indexentry{曼哈顿和切比雪夫}{173}
-\indexentry{接受有效日期的最小状态自动机}{173}
-\indexentry{带修的区间线性基}{174}
-\indexentry{最长合法括号子序列长度}{174}
-\indexentry{Appendix}{176}
-\indexentry{Formulas 公式表}{176}
-\indexentry{Calculus, Integration Table 导数积分表}{185}
-\indexentry{Python Hint}{188}
-\indexentry{Miscellany}{191}
-\indexentry{初始模板}{191}
-\indexentry{WIN 运行脚本}{191}
-\indexentry{Linux 运行脚本}{192}
-\indexentry{计时}{193}
-\indexentry{对拍}{193}
-\indexentry{高精度}{195}
-\indexentry{Zeller 日期公式}{198}
-\indexentry{有理数二分: Stern-Brocot 树, Farey 序列}{198}
-\indexentry{黄金三分}{198}
-\indexentry{DP 优化}{198}
-\indexentry{O3, 读入优化}{200}
-\indexentry{builtin}{200}
-\indexentry{试机赛与纪律文件}{201}
-\indexentry{Constant Table 常数表}{202}
-\indexentry{NTT 模数表}{203}
-\indexentry{Prime Table 质数表}{204}
+\indexentry{K 进制 FWT}{167}
+\indexentry{Simplex 单纯形}{168}
+\indexentry{高斯消元最小范数解}{169}
+\indexentry{Pell 方程}{169}
+\indexentry{解一元三次方程}{170}
+\indexentry{自适应 Simpson}{170}
+\indexentry{Tricks}{171}
+\indexentry{线性预处理左边第 k 大}{171}
+\indexentry{二维前驱查询}{171}
+\indexentry{区间众数}{171}
+\indexentry{区间 $mex$ 和 $mex$ 区间}{171}
+\indexentry{平面不相交矩形建树}{173}
+\indexentry{无穷字符串匹配/比较}{174}
+\indexentry{曼哈顿和切比雪夫}{175}
+\indexentry{接受有效日期的最小状态自动机}{175}
+\indexentry{带修的区间线性基}{176}
+\indexentry{最长合法括号子序列长度}{176}
+\indexentry{区间或，区间与，区间异或}{177}
+\indexentry{枚举大小为 r 的子集}{177}
+\indexentry{模意义真分数还原}{177}
+\indexentry{Appendix}{179}
+\indexentry{Formulas 公式表}{179}
+\indexentry{Calculus, Integration Table 导数积分表}{188}
+\indexentry{Python Hint}{191}
+\indexentry{Miscellany}{194}
+\indexentry{初始模板}{194}
+\indexentry{WIN 运行脚本}{194}
+\indexentry{Linux 运行脚本}{195}
+\indexentry{计时}{196}
+\indexentry{对拍}{196}
+\indexentry{高精度}{198}
+\indexentry{Zeller 日期公式}{201}
+\indexentry{有理数二分: Stern-Brocot 树, Farey 序列}{201}
+\indexentry{黄金三分}{201}
+\indexentry{DP 优化}{201}
+\indexentry{O3, 读入优化}{203}
+\indexentry{builtin}{203}
+\indexentry{试机赛与纪律文件}{204}
+\indexentry{Constant Table 常数表}{205}
+\indexentry{NTT 模数表}{206}
+\indexentry{Prime Table 质数表}{207}

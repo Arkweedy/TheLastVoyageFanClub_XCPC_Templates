@@ -371,6 +371,8 @@
 				% 	如果使用 xor hash, 注意相同子树贡献不应该抵消.
 				\subsection{KM 最大权匹配 $O(V^3)$}
 					\inputminted{cpp}{src/TreeandGraph/KM.cpp}
+				\subsection{无向图欧拉回路}
+					\inputminted{cpp}{src/TreeandGraph/无向图欧拉回路.cpp}
 				\subsection{有向图欧拉回路/路径}
 					\begin{itemize}
 						\item \textbf{check 欧拉回路}: 所有点 \texttt{degree\_in = degree\_out}
@@ -716,6 +718,7 @@
 					\input{src/Math/Berlekamp-Massey.tex}
 				\subsection{FWT}
 					\inputminted{cpp}{src/Math/FWT.cpp}
+					\inputminted{cpp}{src/Math/myFWT.cpp}
 				% \subsection{FFT NTT FWT 多项式操作}
 				% 	\inputminted{cpp}{src/Math/FFT NTT FWT.cpp}
 				\subsection{K 进制 FWT}
@@ -764,6 +767,12 @@
 					\input{src/tricks/lb.tex}
 				\subsection{最长合法括号子序列长度}
 					\input{src/tricks/Parentheses.tex}
+				\subsection{区间或，区间与，区间异或}
+					\inputminted{cpp}{src/tricks/orandxor.cpp}
+				\subsection{枚举大小为 r 的子集}
+					\inputminted{cpp}{src/tricks/sz_r.cpp}
+				\subsection{模意义真分数还原}
+					\inputminted{cpp}{src/tricks/approx.cpp}
 				\section{Appendix}
 				\begin{spacing}{0.4}
 				\subsection{Formulas 公式表}
@@ -787,7 +796,7 @@
 				\subsection{计时}
 					\inputminted{cpp}{src/Miscellany/time.cpp}
 				\subsection{对拍}
-					\inputminted{cpp}{src/Miscellany/duipai.sh}
+					\inputminted{sh}{src/Miscellany/duipai.sh}
 					\inputminted{cpp}{src/Miscellany/duipai.cpp}
 				\subsection{高精度}
 					\inputminted{cpp}{src/Miscellany/bigint.cpp}
