@@ -29,15 +29,12 @@ s.insert(1); s.find_by_order(0); s.order_of_key(5);
     \item 测试 clock() 是否能够正常工作; 测试本地性能与提交性能。
 \begin{minted}{C++}
 const int N = 1 << 20;
-for (int T = 4; T; T--) {
-    int a[N], b[N], c[N];
+for (int T = 0; T < 4; T++) {
+    Poly a(N), b(N);
     for (int i = 0; i < N; i++) a[i] = i, b[i] = N - i;
-    ntt_init(N); ntt(a, N, 1); ntt(b, N, 1);
-    for (int i = 0; i < N; i++) c[i] = a[i] * b[i];
-    ntt(c, N, -1); assert (c[0] == 0xad223d); }
-// 机房: 190ms; (1s T = 21)
-// QOJ: 340+-40ms; (1s T = 11.9)
-// CF: 1050+-100ms; (1s T = 3.9)
+    auto c = a * b;
+}
+// QOJ: 580-730ms;
 \end{minted}
 \end{itemize}
 提交前检查: 
