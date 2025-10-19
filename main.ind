@@ -6,19 +6,19 @@
   \indexspace
 
   \item AC 自动机, 119
-  \item Appendix, 175
+  \item Appendix, 177
 
   \indexspace
 
-  \item Berlekamp-Massey 最小多项式, 162
+  \item Berlekamp-Massey 最小多项式, 164
   \item Bitset Kosaraju, 53
   \item Border树, 118
-  \item builtin, 193
+  \item builtin, 195
 
   \indexspace
 
-  \item Calculus, Integration Table 导数积分表, 184
-  \item Constant Table 常数表, 196
+  \item Calculus, Integration Table 导数积分表, 186
+  \item Constant Table 常数表, 198
   \item CRT 中国剩余定理, 142
 
   \indexspace
@@ -26,7 +26,7 @@
   \item Data Structure, 78
   \item Dinic 最大流, 61
   \item Dominator Tree 支配树, 59
-  \item DP 优化, 192
+  \item DP 优化, 194
 
   \indexspace
 
@@ -34,9 +34,9 @@
 
   \indexspace
 
-  \item FFT, 156
-  \item Formulas 公式表, 175
-  \item FWT, 164
+  \item FFT, 158
+  \item Formulas 公式表, 177
+  \item FWT, 165
 
   \indexspace
 
@@ -50,7 +50,7 @@
 
   \indexspace
 
-  \item K 进制 FWT, 164
+  \item K 进制 FWT, 166
   \item KM 最大权匹配 $O(V^3)$, 47
   \item KMP, exKMP, 118
   \item K短路, 68
@@ -68,26 +68,26 @@
   \item Miller Rabin, Pollard Rho, 143
   \item min\_25 筛, 150
   \item Minimum Mean Cycle 最小平均值环 $O(n^2)$, 73
-  \item Miscellany, 190
-  \item MTT 任意模数卷积, 158
+  \item Miscellany, 192
+  \item MTT 任意模数卷积, 159
 
   \indexspace
 
-  \item NTT 模数表, 196
-  \item NTT(大模数), 157
+  \item NTT 模数表, 198
+  \item NTT(大模数), 158
 
   \indexspace
 
-  \item O3, 读入优化, 193
+  \item O3, 读入优化, 195
 
   \indexspace
 
   \item PBDS 实现可并堆, 102
   \item PBDS 实现平衡树, 101
-  \item Pell 方程, 166
-  \item Prime Table 质数表, 198
+  \item Pell 方程, 168
+  \item Prime Table 质数表, 200
   \item prufer 与树的互相转化, 38
-  \item Python Hint, 187
+  \item Python Hint, 189
 
   \indexspace
 
@@ -96,7 +96,7 @@
   \indexspace
 
   \item Shuffle 一般图最大匹配 $O(V E)$, 47
-  \item Simplex 单纯形, 165
+  \item Simplex 单纯形, 166
   \item Splay, 96
   \item Stoer-Wagner\,无向图最小割\,$O(VE + V ^ 2 \log V)$, 71
   \item String, 117
@@ -106,15 +106,15 @@
   \indexspace
 
   \item Tree \& Graph, 36
-  \item Tricks, 168
+  \item Tricks, 170
 
   \indexspace
 
-  \item WIN 运行脚本, 190
+  \item WIN 运行脚本, 192
 
   \indexspace
 
-  \item Zeller 日期公式, 191
+  \item Zeller 日期公式, 193
 
   \indexspace
 
@@ -124,17 +124,18 @@
   \item 三维几何基础操作, 22
   \item 三维凸包, 25
   \item 二维几何基础操作, 7
-  \item 二维前驱查询, 168
+  \item 二维前驱查询, 170
 
   \indexspace
 
   \item 内向基环树, 45
   \item 凸包, 10
-  \item 初始模板, 190
+  \item 初始模板, 192
   \item 动态dp, 108
   \item 动态树直径, 39
-  \item 区间 $mex$ 和 $mex$ 区间, 168
-  \item 区间众数, 168
+  \item 区间 $mex$ 和 $mex$ 区间, 170
+  \item 区间众数, 170
+  \item 半在线卷积, 153
   \item 半平面交, 12
   \item 单插入动态凸包, 13
   \item 单点修改线段树, 86
@@ -150,13 +151,14 @@
   \item 回滚并查集, 78
   \item 图论结论, 74
   \item 圆, 16
-  \item 多项式, 153
-  \item 多项式运算, 159
+  \item 在线卷积, 154
+  \item 多项式, 154
+  \item 多项式运算, 160
   \item 字符串 Hash, 136
-  \item 对拍, 191
-  \item 带修的区间线性基, 173
+  \item 对拍, 193
+  \item 带修的区间线性基, 175
   \item 平方剩余, 149
-  \item 平面不相交矩形建树, 170
+  \item 平面不相交矩形建树, 172
   \item 广义后缀自动机(离线), 126
   \item 广义在线 SAM, 128
   \item 弦图, 72
@@ -167,14 +169,14 @@
   \item 懒标记线段树, 89
   \item 手写 bitset, 104
   \item 扩展卢卡斯, 146
-  \item 接受有效日期的最小状态自动机, 172
+  \item 接受有效日期的最小状态自动机, 174
   \item 整体二分, 107
-  \item 无穷字符串匹配/比较, 171
-  \item 曼哈顿和切比雪夫, 172
+  \item 无穷字符串匹配/比较, 173
+  \item 曼哈顿和切比雪夫, 174
   \item 最小表示法, 117
-  \item 最长合法括号子序列长度, 173
+  \item 最长合法括号子序列长度, 175
   \item 有向图欧拉回路/路径, 50
-  \item 有理数二分: Stern-Brocot 树, Farey 序列, 191
+  \item 有理数二分: Stern-Brocot 树, Farey 序列, 193
   \item 树上启发式合并, 95
   \item 树哈希, 42
   \item 树状数组, 85
@@ -196,19 +198,19 @@
   \item 类欧几里得 直线下格点统计, 148
   \item 线性同余不等式, 149
   \item 线性基, 144
-  \item 线性递推, 161
-  \item 线性预处理左边第 k 大, 168
+  \item 线性递推, 162
+  \item 线性预处理左边第 k 大, 170
   \item 线段树合并与分裂, 91
   \item 网络流总结, 70
 
   \indexspace
 
-  \item 自适应 Simpson, 167
+  \item 自适应 Simpson, 168
   \item 莫队合集, 79
   \item 虚树, 69
   \item 行列式求值(任意模数), 140
-  \item 解一元三次方程, 167
-  \item 试机赛与纪律文件, 194
+  \item 解一元三次方程, 168
+  \item 试机赛与纪律文件, 196
   \item 质数个数计数, 147
   \item 边双连通分量, 55
   \item 边双连通分量(可处理非简单、联通图), 56
@@ -217,7 +219,7 @@
 
   \item 阶乘取模, 146
   \item 高斯消元, 140
-  \item 高斯消元最小范数解, 166
-  \item 黄金三分, 192
+  \item 高斯消元最小范数解, 167
+  \item 黄金三分, 194
 
 \end{theindex}

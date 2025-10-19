@@ -99,46 +99,48 @@
 \indexentry{线性同余不等式}{149}
 \indexentry{min\_25 筛}{150}
 \indexentry{原根}{153}
-\indexentry{多项式}{153}
-\indexentry{FFT}{156}
-\indexentry{NTT(大模数)}{157}
-\indexentry{MTT 任意模数卷积}{158}
-\indexentry{多项式运算}{159}
-\indexentry{线性递推}{161}
-\indexentry{Berlekamp-Massey 最小多项式}{162}
-\indexentry{FWT}{164}
-\indexentry{K 进制 FWT}{164}
-\indexentry{Simplex 单纯形}{165}
-\indexentry{高斯消元最小范数解}{166}
-\indexentry{Pell 方程}{166}
-\indexentry{解一元三次方程}{167}
-\indexentry{自适应 Simpson}{167}
-\indexentry{Tricks}{168}
-\indexentry{线性预处理左边第 k 大}{168}
-\indexentry{二维前驱查询}{168}
-\indexentry{区间众数}{168}
-\indexentry{区间 $mex$ 和 $mex$ 区间}{168}
-\indexentry{平面不相交矩形建树}{170}
-\indexentry{无穷字符串匹配/比较}{171}
-\indexentry{曼哈顿和切比雪夫}{172}
-\indexentry{接受有效日期的最小状态自动机}{172}
-\indexentry{带修的区间线性基}{173}
-\indexentry{最长合法括号子序列长度}{173}
-\indexentry{Appendix}{175}
-\indexentry{Formulas 公式表}{175}
-\indexentry{Calculus, Integration Table 导数积分表}{184}
-\indexentry{Python Hint}{187}
-\indexentry{Miscellany}{190}
-\indexentry{初始模板}{190}
-\indexentry{WIN 运行脚本}{190}
-\indexentry{对拍}{191}
-\indexentry{Zeller 日期公式}{191}
-\indexentry{有理数二分: Stern-Brocot 树, Farey 序列}{191}
-\indexentry{黄金三分}{192}
-\indexentry{DP 优化}{192}
-\indexentry{O3, 读入优化}{193}
-\indexentry{builtin}{193}
-\indexentry{试机赛与纪律文件}{194}
-\indexentry{Constant Table 常数表}{196}
-\indexentry{NTT 模数表}{196}
-\indexentry{Prime Table 质数表}{198}
+\indexentry{半在线卷积}{153}
+\indexentry{在线卷积}{154}
+\indexentry{多项式}{154}
+\indexentry{FFT}{158}
+\indexentry{NTT(大模数)}{158}
+\indexentry{MTT 任意模数卷积}{159}
+\indexentry{多项式运算}{160}
+\indexentry{线性递推}{162}
+\indexentry{Berlekamp-Massey 最小多项式}{164}
+\indexentry{FWT}{165}
+\indexentry{K 进制 FWT}{166}
+\indexentry{Simplex 单纯形}{166}
+\indexentry{高斯消元最小范数解}{167}
+\indexentry{Pell 方程}{168}
+\indexentry{解一元三次方程}{168}
+\indexentry{自适应 Simpson}{168}
+\indexentry{Tricks}{170}
+\indexentry{线性预处理左边第 k 大}{170}
+\indexentry{二维前驱查询}{170}
+\indexentry{区间众数}{170}
+\indexentry{区间 $mex$ 和 $mex$ 区间}{170}
+\indexentry{平面不相交矩形建树}{172}
+\indexentry{无穷字符串匹配/比较}{173}
+\indexentry{曼哈顿和切比雪夫}{174}
+\indexentry{接受有效日期的最小状态自动机}{174}
+\indexentry{带修的区间线性基}{175}
+\indexentry{最长合法括号子序列长度}{175}
+\indexentry{Appendix}{177}
+\indexentry{Formulas 公式表}{177}
+\indexentry{Calculus, Integration Table 导数积分表}{186}
+\indexentry{Python Hint}{189}
+\indexentry{Miscellany}{192}
+\indexentry{初始模板}{192}
+\indexentry{WIN 运行脚本}{192}
+\indexentry{对拍}{193}
+\indexentry{Zeller 日期公式}{193}
+\indexentry{有理数二分: Stern-Brocot 树, Farey 序列}{193}
+\indexentry{黄金三分}{194}
+\indexentry{DP 优化}{194}
+\indexentry{O3, 读入优化}{195}
+\indexentry{builtin}{195}
+\indexentry{试机赛与纪律文件}{196}
+\indexentry{Constant Table 常数表}{198}
+\indexentry{NTT 模数表}{198}
+\indexentry{Prime Table 质数表}{200}
