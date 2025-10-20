@@ -4,7 +4,8 @@ struct Node {
     bool operator<(const Node& a) const { return l < a.l; }
 };
 
-vector<pair<int, int>> seg[N];  // 按照 mex 值存放极小区间。
+vector<pair<int, int>> segL[N];  // 按照 mex 值存放极小区间。
+vector<pair<int, int>> segR[N];  // 按照 mex 值存放极长区间
 void solve() {
     set<int> s;
     for (int i = 1; i <= n; i++) {
@@ -18,6 +19,7 @@ void solve() {
         int j = i;
         while (j <= n && b[j] == b[i]) j++;
         odt.insert({i, j - 1, b[i]});
+        segR[j - 1].push_back({1, b[i]});
         i = j;
     }
     for (int i = 1; i <= n; i++) {
@@ -28,7 +30,7 @@ void solve() {
         while (it->v >= a[i]) {
             auto [l, r, v] = *it;
 
-            seg[v].push_back({i, l});
+            segL[v].push_back({i, l});
             x = min(x, l), y = max(r, y);
             if (r >= lst[i]) odt.insert({lst[i], r, v});
 
@@ -48,8 +50,11 @@ void solve() {
 
         y = min(y, lst[i] - 1);
 
-        if (x <= y) odt.insert({x, y, a[i]});
-        seg[a[i] == 0].push_back({i, i});
+        if (x <= y) {
+            odt.insert({x, y, a[i]});
+            if (i + 1 <= n) segR[y].push_back({i + 1, a[i]});
+        }
+        segL[a[i] == 0].push_back({i, i});
         it = odt.begin();
         int r = it->r, v = it->v;
 
