@@ -1,0 +1,173 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8\relax}]
+\PYG{k}{struct}\PYG{+w}{ }\PYG{n+nc}{Bigint}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{    }\PYG{c+c1}{// a 用于存储数字，为了方便计算，数字是倒序存储的。}
+\PYG{+w}{    }\PYG{c+c1}{// 例如，数字 123 在字符串 a 中存储为 \PYGZdq{}321\PYGZdq{}。}
+\PYG{+w}{    }\PYG{n}{string}\PYG{+w}{ }\PYG{n}{a}\PYG{p}{;}
+\PYG{+w}{    }\PYG{c+c1}{// sign 表示符号，1 代表正数或零，\PYGZhy{}1 代表负数。}
+\PYG{+w}{    }\PYG{k+kt}{int}\PYG{+w}{ }\PYG{n}{sign}\PYG{p}{;}
+
+\PYG{+w}{    }\PYG{c+c1}{// 默认构造函数}
+\PYG{+w}{    }\PYG{n}{Bigint}\PYG{p}{()}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{sign}\PYG{p}{(}\PYG{l+m+mi}{1}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{\PYGZob{}\PYGZcb{}}
+
+\PYG{+w}{    }\PYG{c+c1}{// 从字符串构造 Bigint}
+\PYG{+w}{    }\PYG{n}{Bigint}\PYG{p}{(}\PYG{n}{string}\PYG{+w}{ }\PYG{n}{b}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{\PYGZob{}}\PYG{+w}{ }\PYG{p}{(}\PYG{o}{*}\PYG{k}{this}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{b}\PYG{p}{;}\PYG{+w}{ }\PYG{p}{\PYGZcb{}}
+
+\PYG{+w}{    }\PYG{c+c1}{// 获取数字的位数}
+\PYG{+w}{    }\PYG{k+kt}{int}\PYG{+w}{ }\PYG{n}{size}\PYG{p}{()}\PYG{+w}{ }\PYG{p}{\PYGZob{}}\PYG{+w}{ }\PYG{k}{return}\PYG{+w}{ }\PYG{n}{a}\PYG{p}{.}\PYG{n}{size}\PYG{p}{();}\PYG{+w}{ }\PYG{p}{\PYGZcb{}}
+
+\PYG{+w}{    }\PYG{c+c1}{// 翻转符号（正变负，负变正）}
+\PYG{+w}{    }\PYG{n}{Bigint}\PYG{+w}{ }\PYG{n}{inverseSign}\PYG{p}{()}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{        }\PYG{n}{sign}\PYG{+w}{ }\PYG{o}{*=}\PYG{+w}{ }\PYG{l+m+mi}{\PYGZhy{}1}\PYG{p}{;}
+\PYG{+w}{        }\PYG{k}{return}\PYG{+w}{ }\PYG{p}{(}\PYG{o}{*}\PYG{k}{this}\PYG{p}{);}
+\PYG{+w}{    }\PYG{p}{\PYGZcb{}}
+
+\PYG{+w}{    }\PYG{c+c1}{// 规范化：移除前导零并设置正确的符号}
+\PYG{+w}{    }\PYG{n}{Bigint}\PYG{+w}{ }\PYG{n}{normalize}\PYG{p}{(}\PYG{k+kt}{int}\PYG{+w}{ }\PYG{n}{newSign}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{        }\PYG{n}{sign}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{newSign}\PYG{p}{;}
+\PYG{+w}{        }\PYG{c+c1}{// 从字符串末尾（即数字的最高位）移除前导零}
+\PYG{+w}{        }\PYG{k}{for}\PYG{+w}{ }\PYG{p}{(}\PYG{k+kt}{int}\PYG{+w}{ }\PYG{n}{i}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{a}\PYG{p}{.}\PYG{n}{size}\PYG{p}{()}\PYG{+w}{ }\PYG{o}{\PYGZhy{}}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{+w}{ }\PYG{n}{i}\PYG{+w}{ }\PYG{o}{\PYGZgt{}}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{+w}{ }\PYG{o}{\PYGZam{}\PYGZam{}}\PYG{+w}{ }\PYG{n}{a}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{+w}{ }\PYG{o}{==}\PYG{+w}{ }\PYG{l+s+sc}{\PYGZsq{}0\PYGZsq{}}\PYG{p}{;}\PYG{+w}{ }\PYG{n}{i}\PYG{o}{\PYGZhy{}\PYGZhy{}}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{            }\PYG{n}{a}\PYG{p}{.}\PYG{n}{erase}\PYG{p}{(}\PYG{n}{a}\PYG{p}{.}\PYG{n}{begin}\PYG{p}{()}\PYG{+w}{ }\PYG{o}{+}\PYG{+w}{ }\PYG{n}{i}\PYG{p}{);}
+\PYG{+w}{        }\PYG{p}{\PYGZcb{}}
+\PYG{+w}{        }\PYG{c+c1}{// 如果结果是 \PYGZdq{}0\PYGZdq{}，符号应为正}
+\PYG{+w}{        }\PYG{k}{if}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{a}\PYG{p}{.}\PYG{n}{size}\PYG{p}{()}\PYG{+w}{ }\PYG{o}{==}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{+w}{ }\PYG{o}{\PYGZam{}\PYGZam{}}\PYG{+w}{ }\PYG{n}{a}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]}\PYG{+w}{ }\PYG{o}{==}\PYG{+w}{ }\PYG{l+s+sc}{\PYGZsq{}0\PYGZsq{}}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{            }\PYG{n}{sign}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{;}
+\PYG{+w}{        }\PYG{p}{\PYGZcb{}}
+\PYG{+w}{        }\PYG{k}{return}\PYG{+w}{ }\PYG{p}{(}\PYG{o}{*}\PYG{k}{this}\PYG{p}{);}
+\PYG{+w}{    }\PYG{p}{\PYGZcb{}}
+
+\PYG{+w}{    }\PYG{c+c1}{// 赋值运算符：从字符串赋值}
+\PYG{+w}{    }\PYG{k+kt}{void}\PYG{+w}{ }\PYG{k}{operator}\PYG{o}{=}\PYG{p}{(}\PYG{n}{string}\PYG{+w}{ }\PYG{n}{b}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{        }\PYG{c+c1}{// 如果字符串以\PYGZsq{}\PYGZhy{}\PYGZsq{}开头，则a存储\PYGZsq{}\PYGZhy{}\PYGZsq{}之后的部分，否则存储整个字符串}
+\PYG{+w}{        }\PYG{n}{a}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{b}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]}\PYG{+w}{ }\PYG{o}{==}\PYG{+w}{ }\PYG{l+s+sc}{\PYGZsq{}\PYGZhy{}\PYGZsq{}}\PYG{+w}{ }\PYG{o}{?}\PYG{+w}{ }\PYG{n}{b}\PYG{p}{.}\PYG{n}{substr}\PYG{p}{(}\PYG{l+m+mi}{1}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{b}\PYG{p}{;}
+\PYG{+w}{        }\PYG{c+c1}{// 将数字倒序存储}
+\PYG{+w}{        }\PYG{n}{reverse}\PYG{p}{(}\PYG{n}{a}\PYG{p}{.}\PYG{n}{begin}\PYG{p}{(),}\PYG{+w}{ }\PYG{n}{a}\PYG{p}{.}\PYG{n}{end}\PYG{p}{());}
+\PYG{+w}{        }\PYG{c+c1}{// 规范化并设置符号}
+\PYG{+w}{        }\PYG{k}{this}\PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{n}{normalize}\PYG{p}{(}\PYG{n}{b}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]}\PYG{+w}{ }\PYG{o}{==}\PYG{+w}{ }\PYG{l+s+sc}{\PYGZsq{}\PYGZhy{}\PYGZsq{}}\PYG{+w}{ }\PYG{o}{?}\PYG{+w}{ }\PYG{l+m+mi}{\PYGZhy{}1}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{);}
+\PYG{+w}{    }\PYG{p}{\PYGZcb{}}
+
+\PYG{+w}{    }\PYG{c+c1}{// 小于运算符}
+\PYG{+w}{    }\PYG{k+kt}{bool}\PYG{+w}{ }\PYG{k}{operator}\PYG{o}{\PYGZlt{}}\PYG{p}{(}\PYG{k}{const}\PYG{+w}{ }\PYG{n}{Bigint}\PYG{o}{\PYGZam{}}\PYG{+w}{ }\PYG{n}{b}\PYG{p}{)}\PYG{+w}{ }\PYG{k}{const}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{        }\PYG{k}{if}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{sign}\PYG{+w}{ }\PYG{o}{!=}\PYG{+w}{ }\PYG{n}{b}\PYG{p}{.}\PYG{n}{sign}\PYG{p}{)}\PYG{+w}{ }\PYG{k}{return}\PYG{+w}{ }\PYG{n}{sign}\PYG{+w}{ }\PYG{o}{\PYGZlt{}}\PYG{+w}{ }\PYG{n}{b}\PYG{p}{.}\PYG{n}{sign}\PYG{p}{;}\PYG{+w}{  }\PYG{c+c1}{// 符号不同，负数小}
+\PYG{+w}{        }\PYG{k}{if}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{a}\PYG{p}{.}\PYG{n}{size}\PYG{p}{()}\PYG{+w}{ }\PYG{o}{!=}\PYG{+w}{ }\PYG{n}{b}\PYG{p}{.}\PYG{n}{a}\PYG{p}{.}\PYG{n}{size}\PYG{p}{())}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{            }\PYG{c+c1}{// 符号相同，位数不同}
+\PYG{+w}{            }\PYG{c+c1}{// 正数：位数少的数字小}
+\PYG{+w}{            }\PYG{c+c1}{// 负数：位数多的数字小 (因为其绝对值更大)}
+\PYG{+w}{            }\PYG{k}{return}\PYG{+w}{ }\PYG{n}{sign}\PYG{+w}{ }\PYG{o}{==}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{+w}{ }\PYG{o}{?}\PYG{+w}{ }\PYG{n}{a}\PYG{p}{.}\PYG{n}{size}\PYG{p}{()}\PYG{+w}{ }\PYG{o}{\PYGZlt{}}\PYG{+w}{ }\PYG{n}{b}\PYG{p}{.}\PYG{n}{a}\PYG{p}{.}\PYG{n}{size}\PYG{p}{()}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{a}\PYG{p}{.}\PYG{n}{size}\PYG{p}{()}\PYG{+w}{ }\PYG{o}{\PYGZgt{}}\PYG{+w}{ }\PYG{n}{b}\PYG{p}{.}\PYG{n}{a}\PYG{p}{.}\PYG{n}{size}\PYG{p}{();}
+\PYG{+w}{        }\PYG{p}{\PYGZcb{}}
+\PYG{+w}{        }\PYG{c+c1}{// 符号和位数都相同，从高位到低位逐位比较}
+\PYG{+w}{        }\PYG{k}{for}\PYG{+w}{ }\PYG{p}{(}\PYG{k+kt}{int}\PYG{+w}{ }\PYG{n}{i}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{a}\PYG{p}{.}\PYG{n}{size}\PYG{p}{()}\PYG{+w}{ }\PYG{o}{\PYGZhy{}}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{+w}{ }\PYG{n}{i}\PYG{+w}{ }\PYG{o}{\PYGZgt{}=}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{+w}{ }\PYG{n}{i}\PYG{o}{\PYGZhy{}\PYGZhy{}}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{            }\PYG{k}{if}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{a}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{+w}{ }\PYG{o}{!=}\PYG{+w}{ }\PYG{n}{b}\PYG{p}{.}\PYG{n}{a}\PYG{p}{[}\PYG{n}{i}\PYG{p}{])}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{                }\PYG{c+c1}{// 正数：字符小的数值小}
+\PYG{+w}{                }\PYG{c+c1}{// 负数：字符大的数值小 (因为其绝对值更大)}
+\PYG{+w}{                }\PYG{k}{return}\PYG{+w}{ }\PYG{n}{sign}\PYG{+w}{ }\PYG{o}{==}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{+w}{ }\PYG{o}{?}\PYG{+w}{ }\PYG{n}{a}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{+w}{ }\PYG{o}{\PYGZlt{}}\PYG{+w}{ }\PYG{n}{b}\PYG{p}{.}\PYG{n}{a}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{a}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{+w}{ }\PYG{o}{\PYGZgt{}}\PYG{+w}{ }\PYG{n}{b}\PYG{p}{.}\PYG{n}{a}\PYG{p}{[}\PYG{n}{i}\PYG{p}{];}
+\PYG{+w}{            }\PYG{p}{\PYGZcb{}}
+\PYG{+w}{        }\PYG{p}{\PYGZcb{}}
+\PYG{+w}{        }\PYG{k}{return}\PYG{+w}{ }\PYG{n+nb}{false}\PYG{p}{;}\PYG{+w}{  }\PYG{c+c1}{// 两数相等}
+\PYG{+w}{    }\PYG{p}{\PYGZcb{}}
+
+\PYG{+w}{    }\PYG{c+c1}{// 等于运算符}
+\PYG{+w}{    }\PYG{k+kt}{bool}\PYG{+w}{ }\PYG{k}{operator}\PYG{o}{==}\PYG{p}{(}\PYG{k}{const}\PYG{+w}{ }\PYG{n}{Bigint}\PYG{o}{\PYGZam{}}\PYG{+w}{ }\PYG{n}{b}\PYG{p}{)}\PYG{+w}{ }\PYG{k}{const}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{        }\PYG{k}{return}\PYG{+w}{ }\PYG{n}{a}\PYG{+w}{ }\PYG{o}{==}\PYG{+w}{ }\PYG{n}{b}\PYG{p}{.}\PYG{n}{a}\PYG{+w}{ }\PYG{o}{\PYGZam{}\PYGZam{}}\PYG{+w}{ }\PYG{n}{sign}\PYG{+w}{ }\PYG{o}{==}\PYG{+w}{ }\PYG{n}{b}\PYG{p}{.}\PYG{n}{sign}\PYG{p}{;}
+\PYG{+w}{    }\PYG{p}{\PYGZcb{}}
+
+\PYG{+w}{    }\PYG{c+c1}{// 加法运算符}
+\PYG{+w}{    }\PYG{n}{Bigint}\PYG{+w}{ }\PYG{k}{operator}\PYG{o}{+}\PYG{p}{(}\PYG{n}{Bigint}\PYG{+w}{ }\PYG{n}{b}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{        }\PYG{c+c1}{// 如果符号不同，转化为减法}
+\PYG{+w}{        }\PYG{k}{if}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{sign}\PYG{+w}{ }\PYG{o}{!=}\PYG{+w}{ }\PYG{n}{b}\PYG{p}{.}\PYG{n}{sign}\PYG{p}{)}\PYG{+w}{ }\PYG{k}{return}\PYG{+w}{ }\PYG{p}{(}\PYG{o}{*}\PYG{k}{this}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{\PYGZhy{}}\PYG{+w}{ }\PYG{n}{b}\PYG{p}{.}\PYG{n}{inverseSign}\PYG{p}{();}
+\PYG{+w}{        }\PYG{n}{Bigint}\PYG{+w}{ }\PYG{n}{c}\PYG{p}{;}
+\PYG{+w}{        }\PYG{n}{c}\PYG{p}{.}\PYG{n}{a}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}\PYGZdq{}}\PYG{p}{;}
+\PYG{+w}{        }\PYG{k}{for}\PYG{+w}{ }\PYG{p}{(}\PYG{k+kt}{int}\PYG{+w}{ }\PYG{n}{i}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{carry}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{+w}{ }\PYG{n}{i}\PYG{+w}{ }\PYG{o}{\PYGZlt{}}\PYG{+w}{ }\PYG{n}{a}\PYG{p}{.}\PYG{n}{size}\PYG{p}{()}\PYG{+w}{ }\PYG{o}{||}\PYG{+w}{ }\PYG{n}{i}\PYG{+w}{ }\PYG{o}{\PYGZlt{}}\PYG{+w}{ }\PYG{n}{b}\PYG{p}{.}\PYG{n}{size}\PYG{p}{()}\PYG{+w}{ }\PYG{o}{||}\PYG{+w}{ }\PYG{n}{carry}\PYG{p}{;}\PYG{+w}{ }\PYG{n}{i}\PYG{o}{++}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{            }\PYG{n}{carry}\PYG{+w}{ }\PYG{o}{+=}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{i}\PYG{+w}{ }\PYG{o}{\PYGZlt{}}\PYG{+w}{ }\PYG{n}{a}\PYG{p}{.}\PYG{n}{size}\PYG{p}{()}\PYG{+w}{ }\PYG{o}{?}\PYG{+w}{ }\PYG{n}{a}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{+w}{ }\PYG{o}{\PYGZhy{}}\PYG{+w}{ }\PYG{l+s+sc}{\PYGZsq{}0\PYGZsq{}}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{+}
+\PYG{+w}{                     }\PYG{p}{(}\PYG{n}{i}\PYG{+w}{ }\PYG{o}{\PYGZlt{}}\PYG{+w}{ }\PYG{n}{b}\PYG{p}{.}\PYG{n}{size}\PYG{p}{()}\PYG{+w}{ }\PYG{o}{?}\PYG{+w}{ }\PYG{n}{b}\PYG{p}{.}\PYG{n}{a}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{+w}{ }\PYG{o}{\PYGZhy{}}\PYG{+w}{ }\PYG{l+s+sc}{\PYGZsq{}0\PYGZsq{}}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{);}
+\PYG{+w}{            }\PYG{n}{c}\PYG{p}{.}\PYG{n}{a}\PYG{+w}{ }\PYG{o}{+=}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{carry}\PYG{+w}{ }\PYG{o}{\PYGZpc{}}\PYG{+w}{ }\PYG{l+m+mi}{10}\PYG{+w}{ }\PYG{o}{+}\PYG{+w}{ }\PYG{l+s+sc}{\PYGZsq{}0\PYGZsq{}}\PYG{p}{);}
+\PYG{+w}{            }\PYG{n}{carry}\PYG{+w}{ }\PYG{o}{/=}\PYG{+w}{ }\PYG{l+m+mi}{10}\PYG{p}{;}
+\PYG{+w}{        }\PYG{p}{\PYGZcb{}}
+\PYG{+w}{        }\PYG{k}{return}\PYG{+w}{ }\PYG{n}{c}\PYG{p}{.}\PYG{n}{normalize}\PYG{p}{(}\PYG{n}{sign}\PYG{p}{);}
+\PYG{+w}{    }\PYG{p}{\PYGZcb{}}
+
+\PYG{+w}{    }\PYG{c+c1}{// 减法运算符}
+\PYG{+w}{    }\PYG{n}{Bigint}\PYG{+w}{ }\PYG{k}{operator}\PYG{o}{\PYGZhy{}}\PYG{p}{(}\PYG{n}{Bigint}\PYG{+w}{ }\PYG{n}{b}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{        }\PYG{c+c1}{// 如果符号不同，转化为加法}
+\PYG{+w}{        }\PYG{k}{if}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{sign}\PYG{+w}{ }\PYG{o}{!=}\PYG{+w}{ }\PYG{n}{b}\PYG{p}{.}\PYG{n}{sign}\PYG{p}{)}\PYG{+w}{ }\PYG{k}{return}\PYG{+w}{ }\PYG{p}{(}\PYG{o}{*}\PYG{k}{this}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{+}\PYG{+w}{ }\PYG{n}{b}\PYG{p}{.}\PYG{n}{inverseSign}\PYG{p}{();}
+\PYG{+w}{        }\PYG{c+c1}{// 保证大数减小数}
+\PYG{+w}{        }\PYG{k}{if}\PYG{+w}{ }\PYG{p}{((}\PYG{o}{*}\PYG{k}{this}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{\PYGZlt{}}\PYG{+w}{ }\PYG{n}{b}\PYG{p}{)}\PYG{+w}{ }\PYG{k}{return}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{b}\PYG{+w}{ }\PYG{o}{\PYGZhy{}}\PYG{+w}{ }\PYG{p}{(}\PYG{o}{*}\PYG{k}{this}\PYG{p}{)).}\PYG{n}{inverseSign}\PYG{p}{();}
+\PYG{+w}{        }\PYG{n}{Bigint}\PYG{+w}{ }\PYG{n}{c}\PYG{p}{;}
+\PYG{+w}{        }\PYG{n}{c}\PYG{p}{.}\PYG{n}{a}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}\PYGZdq{}}\PYG{p}{;}
+\PYG{+w}{        }\PYG{k}{for}\PYG{+w}{ }\PYG{p}{(}\PYG{k+kt}{int}\PYG{+w}{ }\PYG{n}{i}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{borrow}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{+w}{ }\PYG{n}{i}\PYG{+w}{ }\PYG{o}{\PYGZlt{}}\PYG{+w}{ }\PYG{n}{a}\PYG{p}{.}\PYG{n}{size}\PYG{p}{();}\PYG{+w}{ }\PYG{n}{i}\PYG{o}{++}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{            }\PYG{n}{borrow}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{a}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{+w}{ }\PYG{o}{\PYGZhy{}}\PYG{+w}{ }\PYG{n}{borrow}\PYG{+w}{ }\PYG{o}{\PYGZhy{}}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{i}\PYG{+w}{ }\PYG{o}{\PYGZlt{}}\PYG{+w}{ }\PYG{n}{b}\PYG{p}{.}\PYG{n}{size}\PYG{p}{()}\PYG{+w}{ }\PYG{o}{?}\PYG{+w}{ }\PYG{n}{b}\PYG{p}{.}\PYG{n}{a}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{l+s+sc}{\PYGZsq{}0\PYGZsq{}}\PYG{p}{);}
+\PYG{+w}{            }\PYG{n}{c}\PYG{p}{.}\PYG{n}{a}\PYG{+w}{ }\PYG{o}{+=}\PYG{+w}{ }\PYG{n}{borrow}\PYG{+w}{ }\PYG{o}{\PYGZgt{}=}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{+w}{ }\PYG{o}{?}\PYG{+w}{ }\PYG{n}{borrow}\PYG{+w}{ }\PYG{o}{+}\PYG{+w}{ }\PYG{l+s+sc}{\PYGZsq{}0\PYGZsq{}}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{n}{borrow}\PYG{+w}{ }\PYG{o}{+}\PYG{+w}{ }\PYG{l+m+mi}{10}\PYG{+w}{ }\PYG{o}{+}\PYG{+w}{ }\PYG{l+s+sc}{\PYGZsq{}0\PYGZsq{}}\PYG{p}{;}
+\PYG{+w}{            }\PYG{n}{borrow}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{borrow}\PYG{+w}{ }\PYG{o}{\PYGZgt{}=}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{+w}{ }\PYG{o}{?}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{;}
+\PYG{+w}{        }\PYG{p}{\PYGZcb{}}
+\PYG{+w}{        }\PYG{k}{return}\PYG{+w}{ }\PYG{n}{c}\PYG{p}{.}\PYG{n}{normalize}\PYG{p}{(}\PYG{n}{sign}\PYG{p}{);}
+\PYG{+w}{    }\PYG{p}{\PYGZcb{}}
+
+\PYG{+w}{    }\PYG{c+c1}{// 乘法运算符 (朴素的 O(N\PYGZca{}2) 实现)}
+\PYG{+w}{    }\PYG{c+c1}{// 逻辑：模拟手算，将 b 累加 a[i] * 10\PYGZca{}i 次}
+\PYG{+w}{    }\PYG{n}{Bigint}\PYG{+w}{ }\PYG{k}{operator}\PYG{o}{*}\PYG{p}{(}\PYG{n}{Bigint}\PYG{+w}{ }\PYG{n}{b}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{        }\PYG{n}{Bigint}\PYG{+w}{ }\PYG{n}{c}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}0\PYGZdq{}}\PYG{p}{);}
+\PYG{+w}{        }\PYG{k}{for}\PYG{+w}{ }\PYG{p}{(}\PYG{k+kt}{int}\PYG{+w}{ }\PYG{n}{i}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{k}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{+w}{ }\PYG{n}{i}\PYG{+w}{ }\PYG{o}{\PYGZlt{}}\PYG{+w}{ }\PYG{n}{a}\PYG{p}{.}\PYG{n}{size}\PYG{p}{();}\PYG{+w}{ }\PYG{n}{i}\PYG{o}{++}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{            }\PYG{n}{k}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{a}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{+w}{ }\PYG{o}{\PYGZhy{}}\PYG{+w}{ }\PYG{l+s+sc}{\PYGZsq{}0\PYGZsq{}}\PYG{p}{;}
+\PYG{+w}{            }\PYG{n}{Bigint}\PYG{+w}{ }\PYG{n}{temp}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{b}\PYG{p}{;}\PYG{+w}{  }\PYG{c+c1}{// 临时变量存储当前位的乘积}
+\PYG{+w}{            }\PYG{k}{while}\PYG{+w}{ }\PYG{p}{(}\PYG{o}{\PYGZhy{}\PYGZhy{}}\PYG{n}{k}\PYG{+w}{ }\PYG{o}{\PYGZgt{}}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{)}\PYG{+w}{ }\PYG{n}{temp}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{temp}\PYG{+w}{ }\PYG{o}{+}\PYG{+w}{ }\PYG{n}{b}\PYG{p}{;}
+\PYG{+w}{            }\PYG{k}{if}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{a}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{+w}{ }\PYG{o}{!=}\PYG{+w}{ }\PYG{l+s+sc}{\PYGZsq{}0\PYGZsq{}}\PYG{p}{)}\PYG{+w}{ }\PYG{n}{c}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{c}\PYG{+w}{ }\PYG{o}{+}\PYG{+w}{ }\PYG{n}{temp}\PYG{p}{;}
+\PYG{+w}{            }\PYG{n}{b}\PYG{p}{.}\PYG{n}{a}\PYG{p}{.}\PYG{n}{insert}\PYG{p}{(}\PYG{n}{b}\PYG{p}{.}\PYG{n}{a}\PYG{p}{.}\PYG{n}{begin}\PYG{p}{(),}\PYG{+w}{ }\PYG{l+s+sc}{\PYGZsq{}0\PYGZsq{}}\PYG{p}{);}\PYG{+w}{  }\PYG{c+c1}{// 相当于 b *= 10，为下一位做准备}
+\PYG{+w}{        }\PYG{p}{\PYGZcb{}}
+\PYG{+w}{        }\PYG{k}{return}\PYG{+w}{ }\PYG{n}{c}\PYG{p}{.}\PYG{n}{normalize}\PYG{p}{(}\PYG{n}{sign}\PYG{+w}{ }\PYG{o}{*}\PYG{+w}{ }\PYG{n}{b}\PYG{p}{.}\PYG{n}{sign}\PYG{p}{);}
+\PYG{+w}{    }\PYG{p}{\PYGZcb{}}
+
+\PYG{+w}{    }\PYG{c+c1}{// 除法运算符 (朴素的 O(N\PYGZca{}2) 实现)}
+\PYG{+w}{    }\PYG{n}{Bigint}\PYG{+w}{ }\PYG{k}{operator}\PYG{o}{/}\PYG{p}{(}\PYG{n}{Bigint}\PYG{+w}{ }\PYG{n}{b}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{        }\PYG{c+c1}{// 除数不能为0}
+\PYG{+w}{        }\PYG{k}{if}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{b}\PYG{p}{.}\PYG{n}{size}\PYG{p}{()}\PYG{+w}{ }\PYG{o}{==}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{+w}{ }\PYG{o}{\PYGZam{}\PYGZam{}}\PYG{+w}{ }\PYG{n}{b}\PYG{p}{.}\PYG{n}{a}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]}\PYG{+w}{ }\PYG{o}{==}\PYG{+w}{ }\PYG{l+s+sc}{\PYGZsq{}0\PYGZsq{}}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{            }\PYG{n}{b}\PYG{p}{.}\PYG{n}{a}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]}\PYG{+w}{ }\PYG{o}{/=}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{b}\PYG{p}{.}\PYG{n}{a}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]}\PYG{+w}{ }\PYG{o}{\PYGZhy{}}\PYG{+w}{ }\PYG{l+s+sc}{\PYGZsq{}0\PYGZsq{}}\PYG{p}{);}\PYG{+w}{  }\PYG{c+c1}{// 触发一个除以零的异常}
+\PYG{+w}{        }\PYG{p}{\PYGZcb{}}
+\PYG{+w}{        }\PYG{n}{Bigint}\PYG{+w}{ }\PYG{n}{c}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}0\PYGZdq{}}\PYG{p}{),}\PYG{+w}{ }\PYG{n}{d}\PYG{p}{;}
+\PYG{+w}{        }\PYG{n}{d}\PYG{p}{.}\PYG{n}{a}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}\PYGZdq{}}\PYG{p}{;}
+\PYG{+w}{        }\PYG{k}{for}\PYG{+w}{ }\PYG{p}{(}\PYG{k+kt}{int}\PYG{+w}{ }\PYG{n}{j}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{+w}{ }\PYG{n}{j}\PYG{+w}{ }\PYG{o}{\PYGZlt{}}\PYG{+w}{ }\PYG{n}{a}\PYG{p}{.}\PYG{n}{size}\PYG{p}{();}\PYG{+w}{ }\PYG{n}{j}\PYG{o}{++}\PYG{p}{)}\PYG{+w}{ }\PYG{n}{d}\PYG{p}{.}\PYG{n}{a}\PYG{+w}{ }\PYG{o}{+=}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}0\PYGZdq{}}\PYG{p}{;}\PYG{+w}{  }\PYG{c+c1}{// 初始化商}
+\PYG{+w}{        }\PYG{k+kt}{int}\PYG{+w}{ }\PYG{n}{dSign}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{sign}\PYG{+w}{ }\PYG{o}{*}\PYG{+w}{ }\PYG{n}{b}\PYG{p}{.}\PYG{n}{sign}\PYG{p}{;}
+\PYG{+w}{        }\PYG{n}{b}\PYG{p}{.}\PYG{n}{sign}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{+w}{  }\PYG{c+c1}{// 除数取绝对值进行计算}
+
+\PYG{+w}{        }\PYG{c+c1}{// 从高位开始逐位试商}
+\PYG{+w}{        }\PYG{k}{for}\PYG{+w}{ }\PYG{p}{(}\PYG{k+kt}{int}\PYG{+w}{ }\PYG{n}{i}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{a}\PYG{p}{.}\PYG{n}{size}\PYG{p}{()}\PYG{+w}{ }\PYG{o}{\PYGZhy{}}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{+w}{ }\PYG{n}{i}\PYG{+w}{ }\PYG{o}{\PYGZgt{}=}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{+w}{ }\PYG{n}{i}\PYG{o}{\PYGZhy{}\PYGZhy{}}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{            }\PYG{n}{c}\PYG{p}{.}\PYG{n}{a}\PYG{p}{.}\PYG{n}{insert}\PYG{p}{(}\PYG{n}{c}\PYG{p}{.}\PYG{n}{a}\PYG{p}{.}\PYG{n}{begin}\PYG{p}{(),}\PYG{+w}{ }\PYG{l+s+sc}{\PYGZsq{}0\PYGZsq{}}\PYG{p}{);}\PYG{+w}{  }\PYG{c+c1}{// 余数左移一位}
+\PYG{+w}{            }\PYG{n}{c}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{c}\PYG{+w}{ }\PYG{o}{+}\PYG{+w}{ }\PYG{n}{a}\PYG{p}{.}\PYG{n}{substr}\PYG{p}{(}\PYG{n}{i}\PYG{p}{,}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{);}\PYG{+w}{        }\PYG{c+c1}{// 加入当前位}
+\PYG{+w}{            }\PYG{n}{c}\PYG{p}{.}\PYG{n}{normalize}\PYG{p}{(}\PYG{l+m+mi}{1}\PYG{p}{);}
+\PYG{+w}{            }\PYG{k}{while}\PYG{+w}{ }\PYG{p}{(}\PYG{o}{!}\PYG{p}{(}\PYG{n}{c}\PYG{+w}{ }\PYG{o}{\PYGZlt{}}\PYG{+w}{ }\PYG{n}{b}\PYG{p}{))}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{                }\PYG{n}{c}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{c}\PYG{+w}{ }\PYG{o}{\PYGZhy{}}\PYG{+w}{ }\PYG{n}{b}\PYG{p}{;}
+\PYG{+w}{                }\PYG{n}{d}\PYG{p}{.}\PYG{n}{a}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{++}\PYG{p}{;}\PYG{+w}{  }\PYG{c+c1}{// 商的当前位增加}
+\PYG{+w}{            }\PYG{p}{\PYGZcb{}}
+\PYG{+w}{        }\PYG{p}{\PYGZcb{}}
+\PYG{+w}{        }\PYG{k}{return}\PYG{+w}{ }\PYG{n}{d}\PYG{p}{.}\PYG{n}{normalize}\PYG{p}{(}\PYG{n}{dSign}\PYG{p}{);}
+\PYG{+w}{    }\PYG{p}{\PYGZcb{}}
+
+\PYG{+w}{    }\PYG{c+c1}{// 取模运算符}
+\PYG{+w}{    }\PYG{n}{Bigint}\PYG{+w}{ }\PYG{k}{operator}\PYG{o}{\PYGZpc{}}\PYG{p}{(}\PYG{n}{Bigint}\PYG{+w}{ }\PYG{n}{b}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{        }\PYG{c+c1}{// 除数不能为0}
+\PYG{+w}{        }\PYG{k}{if}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{b}\PYG{p}{.}\PYG{n}{size}\PYG{p}{()}\PYG{+w}{ }\PYG{o}{==}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{+w}{ }\PYG{o}{\PYGZam{}\PYGZam{}}\PYG{+w}{ }\PYG{n}{b}\PYG{p}{.}\PYG{n}{a}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]}\PYG{+w}{ }\PYG{o}{==}\PYG{+w}{ }\PYG{l+s+sc}{\PYGZsq{}0\PYGZsq{}}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{            }\PYG{n}{b}\PYG{p}{.}\PYG{n}{a}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]}\PYG{+w}{ }\PYG{o}{/=}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{b}\PYG{p}{.}\PYG{n}{a}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]}\PYG{+w}{ }\PYG{o}{\PYGZhy{}}\PYG{+w}{ }\PYG{l+s+sc}{\PYGZsq{}0\PYGZsq{}}\PYG{p}{);}
+\PYG{+w}{        }\PYG{p}{\PYGZcb{}}
+\PYG{+w}{        }\PYG{n}{Bigint}\PYG{+w}{ }\PYG{n}{c}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}0\PYGZdq{}}\PYG{p}{);}
+\PYG{+w}{        }\PYG{n}{b}\PYG{p}{.}\PYG{n}{sign}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{+w}{  }\PYG{c+c1}{// 除数取绝对值}
+
+\PYG{+w}{        }\PYG{c+c1}{// 计算过程与除法类似，最后得到的 c 就是余数}
+\PYG{+w}{        }\PYG{k}{for}\PYG{+w}{ }\PYG{p}{(}\PYG{k+kt}{int}\PYG{+w}{ }\PYG{n}{i}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{a}\PYG{p}{.}\PYG{n}{size}\PYG{p}{()}\PYG{+w}{ }\PYG{o}{\PYGZhy{}}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{+w}{ }\PYG{n}{i}\PYG{+w}{ }\PYG{o}{\PYGZgt{}=}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{+w}{ }\PYG{n}{i}\PYG{o}{\PYGZhy{}\PYGZhy{}}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{            }\PYG{n}{c}\PYG{p}{.}\PYG{n}{a}\PYG{p}{.}\PYG{n}{insert}\PYG{p}{(}\PYG{n}{c}\PYG{p}{.}\PYG{n}{a}\PYG{p}{.}\PYG{n}{begin}\PYG{p}{(),}\PYG{+w}{ }\PYG{l+s+sc}{\PYGZsq{}0\PYGZsq{}}\PYG{p}{);}
+\PYG{+w}{            }\PYG{n}{c}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{c}\PYG{+w}{ }\PYG{o}{+}\PYG{+w}{ }\PYG{n}{a}\PYG{p}{.}\PYG{n}{substr}\PYG{p}{(}\PYG{n}{i}\PYG{p}{,}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{);}
+\PYG{+w}{            }\PYG{n}{c}\PYG{p}{.}\PYG{n}{normalize}\PYG{p}{(}\PYG{l+m+mi}{1}\PYG{p}{);}
+\PYG{+w}{            }\PYG{k}{while}\PYG{+w}{ }\PYG{p}{(}\PYG{o}{!}\PYG{p}{(}\PYG{n}{c}\PYG{+w}{ }\PYG{o}{\PYGZlt{}}\PYG{+w}{ }\PYG{n}{b}\PYG{p}{))}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{                }\PYG{n}{c}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{c}\PYG{+w}{ }\PYG{o}{\PYGZhy{}}\PYG{+w}{ }\PYG{n}{b}\PYG{p}{;}
+\PYG{+w}{            }\PYG{p}{\PYGZcb{}}
+\PYG{+w}{        }\PYG{p}{\PYGZcb{}}
+\PYG{+w}{        }\PYG{c+c1}{// C++中，a \PYGZpc{} b 的结果符号与 a 相同}
+\PYG{+w}{        }\PYG{k}{return}\PYG{+w}{ }\PYG{n}{c}\PYG{p}{.}\PYG{n}{normalize}\PYG{p}{(}\PYG{n}{sign}\PYG{p}{);}
+\PYG{+w}{    }\PYG{p}{\PYGZcb{}}
+
+\PYG{+w}{    }\PYG{c+c1}{// 输出函数}
+\PYG{+w}{    }\PYG{k+kt}{void}\PYG{+w}{ }\PYG{n}{print}\PYG{p}{()}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{        }\PYG{k}{if}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{sign}\PYG{+w}{ }\PYG{o}{==}\PYG{+w}{ }\PYG{l+m+mi}{\PYGZhy{}1}\PYG{p}{)}\PYG{+w}{ }\PYG{n}{cout}\PYG{+w}{ }\PYG{o}{\PYGZlt{}\PYGZlt{}}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}\PYGZhy{}\PYGZdq{}}\PYG{p}{;}
+\PYG{+w}{        }\PYG{k}{for}\PYG{+w}{ }\PYG{p}{(}\PYG{k+kt}{int}\PYG{+w}{ }\PYG{n}{i}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{a}\PYG{p}{.}\PYG{n}{size}\PYG{p}{()}\PYG{+w}{ }\PYG{o}{\PYGZhy{}}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{+w}{ }\PYG{n}{i}\PYG{+w}{ }\PYG{o}{\PYGZgt{}=}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{+w}{ }\PYG{n}{i}\PYG{o}{\PYGZhy{}\PYGZhy{}}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{            }\PYG{n}{cout}\PYG{+w}{ }\PYG{o}{\PYGZlt{}\PYGZlt{}}\PYG{+w}{ }\PYG{n}{a}\PYG{p}{[}\PYG{n}{i}\PYG{p}{];}
+\PYG{+w}{        }\PYG{p}{\PYGZcb{}}
+\PYG{+w}{    }\PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{};}
+\end{Verbatim}
