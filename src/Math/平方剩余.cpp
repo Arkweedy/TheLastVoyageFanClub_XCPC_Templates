@@ -1,19 +1,44 @@
-// x^2=a (mod p),0 <=a<p,返回 true or false 代表是否存在解
-// p必须是质数, 若是多个单次质数的乘积，可以分别求解再用CRT合并
-// 复杂度为 O(log n)
-void multiply(ll &c, ll &d, ll a, ll b, ll w) {
-	int cc = (a * c + b * d % MOD * w) % MOD;
-	int dd = (a * d + b * c) % MOD; c = cc, d = dd; }
-bool solve(int n, int &x) {
-	if (n==0) return x=0,true; if (MOD==2) return x=1,true;
-	if (power(n, MOD / 2, MOD) == MOD - 1) return false;
-	ll c = 1, d = 0, b = 1, a, w;
-	// finding a such that a^2 - n is not a square
-	do { a = rand() % MOD; w = (a * a - n + MOD) % MOD;
-		if (w == 0) return x = a, true;
-	} while (power(w, MOD / 2, MOD) != MOD - 1);
-	for (int times = (MOD + 1) / 2; times; times >>= 1) {
-		if (times & 1) multiply(c, d, a, b, w);
-		multiply(a, b, a, b, w); }
-	// x = (a + sqrt(w)) ^ ((p + 1) / 2)
-	return x = c, true; }
+namespace cipolla {
+// 二次剩余等价于 n^(p-1>>1)=1
+// 先找a^2-n非二次剩余 定义w^2=a^2-n 则一解为(a+w)^(p+1>>1)
+ll p, w;
+struct Q  // 复数类
+{
+    ll x, y;
+    Q operator*(const Q& o) const {
+        return {(x * o.x + y * o.y % p * w) % p, (x * o.y + y * o.x) % p};
+    }
+};
+ll qmi(ll x, int y) {
+    ll r = 1;
+    while (y) {
+        if (y & 1) r = r * x % p;
+        x = x * x % p;
+        y >>= 1;
+    }
+    return r;
+}
+Q qmi(Q x, int y) {
+    Q r = {1, 0};
+    while (y) {
+        if (y & 1) r = r * x;
+        x = x * x;
+        y >>= 1;
+    }
+    return r;
+}
+ll modsqrt(ll x, ll P)  // x [0,p)
+{
+    if (x == 0 || P == 2) return x;
+    p = P;
+    if (qmi(x, p - 1 >> 1) != 1) return -1;
+    ll y;
+    mt19937 rnd(chrono::steady_clock::now().time_since_epoch().count());
+    do y = rnd() % p, w = ((ll)y * y + p - x) % p;
+    while (qmi(w, p - 1 >> 1) <= 1);  // not for p=2
+    y = qmi({y, 1}, p + 1 >> 1).x;
+    if (y * 2 > p) y = p - y;  // 两解取小
+    return y;
+}
+}  // namespace cipolla
+using cipolla::modsqrt;
