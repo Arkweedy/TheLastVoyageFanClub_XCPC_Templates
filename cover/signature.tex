@@ -1,0 +1,33 @@
+\documentclass[a4paper]{article}
+\usepackage[a4paper,margin=16mm]{geometry}
+
+% 颜色 & 背景
+\usepackage{xcolor}
+\definecolor{champagne}{RGB}{247,231,206} % 香槟色
+\pagecolor{champagne}                      % 整页底色
+\color{black!70}                           % 默认文字颜色偏柔和
+
+% 版式 & 花体字
+\usepackage{calligra}
+\usepackage[T1]{fontenc}
+
+% 叠加排版
+\usepackage{tikz}
+\usetikzlibrary{calc}
+
+\pagestyle{empty}
+
+\begin{document}
+\thispagestyle{empty}
+
+% “Signature” 标题——下移一些，避免页顶裁切；放大一点
+\begin{tikzpicture}[remember picture,overlay]
+  \node[anchor=north, yshift=-18mm, text=black!75]
+    at (current page.north) {\fontsize{42}{48}\selectfont\calligra Signatures};
+\end{tikzpicture}
+
+% 留出大面积空白供自由签名（什么都不画）
+\vspace*{40mm}
+\mbox{}
+
+\end{document}
