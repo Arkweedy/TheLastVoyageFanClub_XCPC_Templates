@@ -52,6 +52,7 @@ _minted*/
 
 # Root document output
 /main.pdf
+/build/
 
 # Competitive-programming tool local state
 .cph/
