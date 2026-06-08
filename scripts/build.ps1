@@ -73,6 +73,7 @@ try {
     Require-Command "xelatex"
     Require-Command "makeindex"
     Require-Command "pygmentize"
+    Require-Command "python"
 
     New-Item -ItemType Directory -Force -Path "cover/dist" | Out-Null
 
@@ -112,6 +113,8 @@ try {
         "-output-directory=cover/dist",
         "cover/src/signature.tex"
     ))
+
+    Invoke-Checked "python" @("scripts/rainbow_brackets.py")
 
     Invoke-Checked "xelatex" $xelatexMain
 

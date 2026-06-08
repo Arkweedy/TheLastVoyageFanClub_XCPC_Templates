@@ -26,7 +26,7 @@ cover/dist/signature.pdf
 ## Requirements
 
 - TeX Live with `xelatex` and `makeindex`
-- Python/Pygments with `pygmentize`; the build script prefers the Python environment that provides `pygmentize`, which avoids `latexminted` issues with incompatible Python versions.
+- Python/Pygments with `python` and `pygmentize`; the build script prefers the Python environment that provides `pygmentize`, which avoids `latexminted` issues with incompatible Python versions.
 - Fonts referenced by `main.tex`, such as `Linux Libertine O`, `Microsoft YaHei`, `SimHei`, `KaiTi`, and `Consolas`
 
 ## Manual Build
@@ -41,11 +41,14 @@ xelatex -interaction=nonstopmode -halt-on-error -file-line-error -shell-escape -
 xelatex -interaction=nonstopmode -halt-on-error -file-line-error -shell-escape -output-directory=cover/dist cover/src/cover.tex
 xelatex -interaction=nonstopmode -halt-on-error -file-line-error -output-directory=cover/dist cover/src/signature.tex
 xelatex -interaction=nonstopmode -halt-on-error -file-line-error -output-directory=cover/dist cover/src/signature.tex
+python scripts/rainbow_brackets.py
 xelatex -shell-escape -synctex=1 -interaction=nonstopmode -halt-on-error -file-line-error main.tex
 xelatex -shell-escape -synctex=1 -interaction=nonstopmode -halt-on-error -file-line-error main.tex
 ```
 
 `main.tex` uses `imakeidx`; the index is generated automatically during the `xelatex -shell-escape` passes. Chinese entries use explicit sort keys so the printed keyword index follows pinyin-style ordering without requiring an extra xindy Chinese module.
+
+The build also generates a small rainbow-bracket trial under `build/rainbow/` for selected dense C++ templates. Normal `\TemplateCode` entries are unchanged; the trial can be disabled in `tex/preamble.tex` by setting `\TemplateRainbowBracketsfalse`.
 
 Pass `-KeepAux` to keep LaTeX auxiliary files for debugging:
 
