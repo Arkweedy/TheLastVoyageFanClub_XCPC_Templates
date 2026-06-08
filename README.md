@@ -1,6 +1,8 @@
 # XCPC Templates
 
-这是华中科技大学 `Hust114514` 队伍维护的 XCPC/ICPC 线下赛纸质模板库。它的目标不是做一个“越全越好”的代码仓库，而是整理一份能在现场快速翻阅、页码可靠、索引好用、打印友好的比赛资料。
+这是华中科技大学 *哈斯特坐牢领域大神/终帆粉丝团* 队伍维护的 XCPC 线下赛纸质模板库。它的目标不是做一个“越全越好”的代码仓库，而是整理一份能在现场快速翻阅、页码可靠、索引好用、打印友好的比赛资料。
+
+封面是 <font color="#00BFFF">Aqours 渡边曜</font>
 
 如果你只是想使用这份模板，优先从 GitHub Releases 下载已经编译好的 `main.pdf`；如果你想修改内容、替换封面或重新排版，再阅读后面的编译与维护说明。
 
@@ -22,7 +24,7 @@
 - `Geometry`：二维/三维几何、凸包、半平面交、圆与球面等。
 - `Tree and Graph`：图论、网络流、匹配、生成树、树上问题等。
 - `Data Structure`：并查集、线段树、树状数组、Splay、LCT、动态树等。
-- `String`：KMP、AC 自动机、SAM、PAM、Hash、Runs 等。
+- `String`：KMP、AC 自动机、SAM、PAM、Hash、Lyndon 等。
 - `Math`：数论、线代、多项式、卷积、递推、单纯形等。
 - `Tricks`：常用技巧、模型转换、矩阵树、日期自动机等。
 - `Appendix` / `Miscellany`：公式表、常数表、运行脚本、对拍、初始模板等。
@@ -41,16 +43,6 @@ cover/assets/            封面使用的图片素材
 scripts/build.ps1        Windows PowerShell 构建脚本
 scripts/rainbow_brackets.py
                          少量代码的彩虹括号试点生成器
-```
-
-生成物不会进入 git，主要包括：
-
-```text
-main.pdf
-cover/dist/
-build/
-_minted-main/
-*.aux, *.log, *.toc, *.idx, ...
 ```
 
 ## 修改模板
