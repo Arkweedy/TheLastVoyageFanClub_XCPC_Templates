@@ -74,13 +74,28 @@ try {
     Require-Command "makeindex"
     Require-Command "pygmentize"
 
-    New-Item -ItemType Directory -Force -Path "cover/dist", "build" | Out-Null
+    New-Item -ItemType Directory -Force -Path "cover/dist" | Out-Null
 
     $xelatexCommon = @(
         "-interaction=nonstopmode",
         "-halt-on-error",
         "-file-line-error"
     )
+
+    $xelatexMain = @(
+        "-shell-escape",
+        "-synctex=1",
+        "-interaction=nonstopmode",
+        "-halt-on-error",
+        "-file-line-error",
+        "main.tex"
+    )
+
+    Invoke-Checked "xelatex" ($xelatexCommon + @(
+        "-shell-escape",
+        "-output-directory=cover/dist",
+        "cover/src/cover.tex"
+    ))
 
     Invoke-Checked "xelatex" ($xelatexCommon + @(
         "-shell-escape",
@@ -94,23 +109,13 @@ try {
     ))
 
     Invoke-Checked "xelatex" ($xelatexCommon + @(
-        "-shell-escape",
-        "main.tex"
+        "-output-directory=cover/dist",
+        "cover/src/signature.tex"
     ))
 
-    Invoke-Checked "makeindex" @("main.idx")
+    Invoke-Checked "xelatex" $xelatexMain
 
-    Invoke-Checked "xelatex" ($xelatexCommon + @(
-        "-shell-escape",
-        "main.tex"
-    ))
-
-    Invoke-Checked "xelatex" ($xelatexCommon + @(
-        "-shell-escape",
-        "main.tex"
-    ))
-
-    Move-Item -LiteralPath "main.pdf" -Destination "build/main.pdf" -Force
+    Invoke-Checked "xelatex" $xelatexMain
 
     if (-not $KeepAux) {
         Remove-IfExists @(
@@ -135,7 +140,7 @@ try {
         Remove-Glob @("*.minted")
     }
 
-    Write-Host "Built build/main.pdf"
+    Write-Host "Built main.pdf"
 }
 finally {
     Set-Location $PreviousLocation

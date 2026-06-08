@@ -13,10 +13,10 @@ Use the PowerShell build script from the repository root:
 The final document is written to:
 
 ```text
-build/main.pdf
+main.pdf
 ```
 
-The script also refreshes the cover PDFs used by `main.tex`:
+The script also refreshes the cover PDFs used by `main.tex`. This is an intentional extension over the original VSCode LaTeX Workshop recipe, which only compiled `main.tex` and reused the existing cover PDFs:
 
 ```text
 cover/dist/cover.pdf
@@ -38,12 +38,11 @@ $env:PYTHONIOENCODING = "utf-8"
 $env:PYTHONUTF8 = "1"
 
 xelatex -interaction=nonstopmode -halt-on-error -file-line-error -shell-escape -output-directory=cover/dist cover/src/cover.tex
+xelatex -interaction=nonstopmode -halt-on-error -file-line-error -shell-escape -output-directory=cover/dist cover/src/cover.tex
 xelatex -interaction=nonstopmode -halt-on-error -file-line-error -output-directory=cover/dist cover/src/signature.tex
-xelatex -interaction=nonstopmode -halt-on-error -file-line-error -shell-escape main.tex
-makeindex main.idx
-xelatex -interaction=nonstopmode -halt-on-error -file-line-error -shell-escape main.tex
-xelatex -interaction=nonstopmode -halt-on-error -file-line-error -shell-escape main.tex
-Move-Item -LiteralPath main.pdf -Destination build/main.pdf -Force
+xelatex -interaction=nonstopmode -halt-on-error -file-line-error -output-directory=cover/dist cover/src/signature.tex
+xelatex -shell-escape -synctex=1 -interaction=nonstopmode -halt-on-error -file-line-error main.tex
+xelatex -shell-escape -synctex=1 -interaction=nonstopmode -halt-on-error -file-line-error main.tex
 ```
 
 Pass `-KeepAux` to keep LaTeX auxiliary files for debugging:
