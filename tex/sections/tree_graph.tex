@@ -1,0 +1,107 @@
+				
+					
+			\TemplateSection[K0E990E8A0E210E2107020E250E8A0E020E7E0E2C0101120202020212010100]{Tree \& Graph}
+				\TemplateNote{src/TreeandGraph/tree_properties.tex}
+				\TemplateSubsection[KCCF440C7962ECAE413C3CF0D0101010100]{树链剖分}
+					\TemplateCode{cpp}{src/TreeandGraph/HLD.cpp}
+				\TemplateSubsection[K0E7E0E8A0E9F0E230E210E8A0702D0470DCCF440C2CE0DC55513CF0A1CD1810DC55F100101010100]{prufer 与树的互相转化}
+					\TemplateCode{cpp}{src/TreeandGraph/prufer.cpp}
+				\TemplateSubsection[KC32E0DCD9F2BCCF440D13916C6201F0101010100]{动态树直径}
+					\TemplateCode{cpp}{src/TreeandGraph/动态树直径.cpp}
+				\TemplateSubsection[KCCF440C4D20DCEDB4C0101010100]{树哈希}
+					\TemplateNote{src/TreeandGraph/tree_hash_intro.tex}
+					\TemplateCode{cpp}{src/TreeandGraph/tree_hash.cpp}
+				\TemplateSubsection[KC97710CF1310C5AFE2C56C16CCF4400101010100]{内向基环树}
+					\TemplateCode{cpp}{src/TreeandGraph/内向基环树.cpp}
+				\TemplateSubsection[K0E2C0E7C0E7E0E0A0E8A0E7C0E230E990E360E020E8A0E7E07020E7C07270E910E890E8A0E9907020EA207020E21072A010112020202020202021202020202120202020202021202120101FFF7821200]{Hopcroft-Karp $O(\sqrt{V} E)$}
+					\TemplateCode[highlightlines={13}]{cpp}{src/TreeandGraph/hk_skip2004.cpp}
+				\TemplateSubsection[K0E2C0E9F0E700E250E020E8A0E320E020E7007020E7C07270EA207020E210702073507020EA4072A0101120202020202020202021202120212010100]{Hungarian $O(V E / w)$}
+					\TemplateCode{cpp}{src/TreeandGraph/Hungarian.cpp}
+				\TemplateSubsection[K0E910E2C0E9F0E230E230E480E210702CFE60DC05828CE3322D1E62BC29E0DCA9B0DCA744007020E7C07270EA207020E21072A0101120202020202020202020202020202021202120212010100]{Shuffle 一般图最大匹配 $O(V E)$}
+					\TemplateCode{cpp}{src/TreeandGraph/一般图最大匹配-shuffle.cpp}
+				% \subsection{有根树同构 Hash}
+				% 	可重集合 Hash, 一个子树要换一种 Hash 做打包.
+				% 	通常 sort rolling hash, 然后 xorshift 打包.
+				% 	如果使用 xor hash, 注意相同子树贡献不应该抵消.
+				\TemplateSubsection[K0E360E510702D1E62BC29E0DCB9213CA9B0DCA744007020E7C07270EA207020D1E072A0101121202020202020202120212010100]{KM 最大权匹配 $O(V^3)$}
+					\TemplateCode{cpp}{src/TreeandGraph/KM.cpp}
+				\TemplateSubsection[KCECF0DCF1310CE3322CA2619C71513C58813C80FE20101010100]{无向图欧拉回路}
+					\TemplateCode{cpp}{src/TreeandGraph/无向图欧拉回路.cpp}
+				\TemplateSubsection[KD03616CF1310CE3322CA2619C71513C58813C80FE20735C80FE2C6201F0101010100]{有向图欧拉回路/路径}
+					\begin{itemize}
+						\item \textbf{check 欧拉回路}: 所有点 \texttt{degree\_in = degree\_out}
+						\item \textbf{check 欧拉路径}: 所有点 \texttt{degree\_in = degree\_out}, 或者存在一对点出入度相差 1, 其他点 \texttt{degree\_in = degree\_out}
+					\end{itemize}
+					\TemplateCode{cpp}{src/TreeandGraph/EulerGraphDir.cpp}
+				%\subsection{Blossom 一般图带权最大匹配 $O(|V|^3)$}
+				%\inputminted{cpp}{src/TreeandGraph/Blossom.cpp}
+				\TemplateSubsection[K0D1C0E910E020E990101021212120101FFFE821200]{2-SAT}
+					\TemplateCode{cpp}{src/TreeandGraph/2-sat.cpp}
+				\TemplateSubsection[K0E090E320E990E910E210E9907020E360E7C0E910E020E8A0E020E350E9F01011202020202020212010100]{Bitset Kosaraju}
+					\TemplateCode{cpp}{src/TreeandGraph/kosaraju.cpp}
+				\TemplateSubsection[KCB2F2BC78F10CE171CC3CF0DC7A2280101010100]{强连通分量}
+					\TemplateCode{cpp}{src/TreeandGraph/scc.cpp}
+				\TemplateSubsection[KC0B20DCD110DC78F10CE171CC3CF0DC7A2280101010100]{边双连通分量}
+					\TemplateCode{cpp}{src/TreeandGraph/EBCC.cpp}
+				\TemplateSubsection[KC0B20DCD110DC78F10CE171CC3CF0DC7A2280727C6A50DC1EC10C77B52C3C216C5DA91C2AE3A0731C78F34CE171CCE3322072A01010202020202020202020202020203010100]{边双连通分量(可处理非简单、联通图)}
+					\TemplateCode{cpp}{src/TreeandGraph/边双连通分量.(可处理非简单、联通图）.cpp}
+				\TemplateSubsection[KC2F419CD110DC78F10CE171CC3CF0DC7A2280101010100]{点双连通分量}
+					不可以传入自环，否则孤立点不会被统计，有时候要考虑特判孤立点。
+					\TemplateCode{cpp}{src/TreeandGraph/VBCC.cpp}
+				\TemplateSubsection[K0E1A0E7C0E510E320E700E020E990E7C0E8A07020E990E8A0E210E210702D13510CA7440CCF44001011202020202020202020212010100]{Dominator Tree 支配树}
+					\TemplateCode{cpp}{src/TreeandGraph/支配树.cpp}
+				%\subsection{最大团}
+				%\inputminted{cpp}{src/TreeandGraph/MaximumClique.cpp}
+				\TemplateSubsection[K0E1A0E320E700E320E0A0702D1E62BC29E0DC7DF43010112010100]{Dinic 最大流}
+					\TemplateNote{src/yzh/dinic_complexity.tex}
+					\TemplateCode{cpp}{src/TreeandGraph/Dinic.cpp}
+					\TemplateCode{cpp}{src/TreeandGraph/jianlyflow.cpp}
+				\TemplateSubsection[KD0565BCCD646C35C10CA2C1FC3CB43D02B0DC7DF430101010100]{原始对偶费用流}
+					\TemplateCode[highlightlines={2,3,22,25,28,31,42,43}]{cpp}{src/TreeandGraph/多路增广费用流.cpp}
+					\TemplateCode{cpp}{src/TreeandGraph/jiangly费用流.cpp}
+				\TemplateSubsection[K0E7C0E32C85D16C3DB10C3CB43D02B0DC7DF4301011212010100]{OI码风费用流}
+					\TemplateCode{cpp}{src/TreeandGraph/费用流oi-style.cpp}
+				\TemplateSubsection[K0E36C3501CC80FE2010112010100]{K短路}
+					\TemplateCode{cpp}{src/TreeandGraph/K短路.cpp}
+				%\subsection{动态 MST}
+					%\inputminted{cpp}{src/TreeandGraph/完全动态MST.cpp}
+				\TemplateSubsection[KCC3E0DD0560DC56C160101010100]{三元环}
+					\TemplateCode{cpp}{src/TreeandGraph/三元环.cpp}
+				%\subsection{平面图转对偶图}
+				%\inputminted{cpp}{src/TreeandGraph/平面图转对偶图.cpp}
+				%\subsection{最小乘积生成树}
+				%\inputminted{cpp}{src/TreeandGraph/最小乘积生成树.cpp}
+				%\subsection{树同构}
+				%\inputminted{cpp}{src/TreeandGraph/树同构.cpp}
+				\TemplateSubsection[KCF6191CCF4400101010100]{虚树}
+				\TemplateCode{cpp}{src/TreeandGraph/虚树.cpp}
+				%\subsection{动态最小生成树}
+				%\inputminted{cpp}{src/TreeandGraph/DynamicMST.cpp}
+				\TemplateNote{src/tbr/网络流总结.tex}
+				\TemplateSubsection[K0E250E7C0E510E7C0E8A0EA70E2C0E9F0702CECF0DCF1310CE3322D1E62BCF1E0DC4446DCCF44007020E7C07270EA207020D1E07020E21072A01011202020202021202020202020202020202120212020202120101FFF9821200]{Gomory-Hu 无向图最小割树\,$O(V ^ 3 E)$}
+					\TemplateNote{src/yzh/Gomory-Hu.tex}
+				\TemplateSubsection[K0E910E990E7C0E210E8A0EA40E020E250E700E210E8A0702CECF0DCF1310CE3322D1E62BCF1E0DC4446D07020E7C07270EA20E210702080307020EA207020D1C07020EA2072A0101120202020212020202020202020202020202021202121202020212020202120101FFFA821200]{Stoer-Wagner\,无向图最小割\,$O(VE + V ^ 2 \log V)$}
+					\TemplateCode{cpp}{src/yzh/Stoer-Wagner.cpp}
+				\TemplateSubsection[KCEFE2ECE33220101010100]{弦图}
+					\TemplateNote{src/yzh/chordal-graph.tex}
+					\TemplateCode{cpp}{src/TreeandGraph/弦图.cpp}
+				\TemplateSubsection[K0E510E320E700E320E510E9F0E5107020E510E210E020E7007020E0A0EA70E0A0E480E210702D1E62BCF1E0DCAD113C66410D13931C56C1607020E7C07270E7007020D1C072A0101120202020202020212020202021202020202020202020202020212010100]{Minimum Mean Cycle 最小平均值环 $O(n^2)$}
+					\TemplateCode{cpp}{src/TreeandGraph/MeanCycle.cpp}
+				\TemplateSubsection[KCFE60DC05828CE3322D1E62BC29E0DCA9B0DCA7440070207020E090E480E7C0E910E910E7C0E510101020202020202020202120101FFF4821200]{一般图最大匹配 - Blossom}
+					\TemplateCode{cpp}{src/TreeandGraph/Blossom.cpp}
+				% \subsection{斯坦纳树}
+				% 	\inputminted{cpp}{src/TreeandGraph/斯坦纳树.cpp}
+				%\subsection{Cactus 仙人掌}
+					%\inputminted{cpp}{src/TreeandGraph/cactus.cpp}
+				\TemplateSubsection[KCE3322C8300DC5FFA9C8300D0101010100]{图论结论}
+					\TemplateNote{src/tbr/最小乘积问题.tex}
+					\TemplateNote{src/tbr/最小环问题.tex}
+					\TemplateNote{src/tbr/度序列的可图性.tex}
+					\TemplateNote{src/tbr/切比雪夫距离与曼哈顿距离互化.tex}
+					%\subsection{图论知识 - Nightfall}
+					\TemplateNote{src/TreeandGraph/图论知识.tex}
+					\TemplateNote{src/tbr/拟阵交问题.tex}
+					%\subsubsection{双极定向}
+					%\inputminted{cpp}{src/tbr/bipolar_orientation.cpp}
+					%\input{src/TreeandGraph/shanghai19.tex}
+					\newpage

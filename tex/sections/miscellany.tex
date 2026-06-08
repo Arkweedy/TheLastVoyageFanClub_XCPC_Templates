@@ -1,0 +1,124 @@
+			\TemplateSection[K0E510E320E910E0A0E210E480E480E020E700EA7010112010100]{Miscellany}
+				\TemplateSubsection[KC1E319CCD646C90B49C05B1C0101010100]{初始模板}
+					\TemplateCode{cpp}{src/Miscellany/template.cpp}
+				\TemplateSubsection[K0EA40E320E700702D07416CF4214C5F46DC0900D0101121212010100]{WIN 运行脚本}
+					\TemplateCode{cpp}{src/Miscellany/r.cpp}
+				\TemplateSubsection[K0E480E320E700E9F0EA60702D07416CF4214C5F46DC0900D010112010100]{Linux 运行脚本}
+					\TemplateCode{cpp}{src/Miscellany/linux_r.cpp}
+				\TemplateSubsection[KC5BE16CCD22E0101010100]{计时}
+					\TemplateCode{cpp}{src/Miscellany/time.cpp}
+				\TemplateSubsection[KC35C10CA3E0D0101010100]{对拍}
+					\TemplateCode{sh}{src/Miscellany/duipai.sh}
+					\TemplateCode{cpp}{src/Miscellany/duipai.cpp}
+				\TemplateSubsection[KC43B19C619AFC34A2B0101010100]{高精度}
+					\TemplateCode{cpp}{src/Miscellany/bigint.cpp}
+				\TemplateSubsection[K0EA90E210E480E480E210E8A0702CBE80DCAF9A0C4691CCCD931010112010100]{Zeller 日期公式}
+					\TemplateCode{cpp}{src/Miscellany/日期公式.cpp}
+				\TemplateSubsection[KD03616C77B52CCF4C4C39A0DC3CF0D073707020E910E990E210E8A0E700E090E8A0E7C0E0A0E7C0E990702CCF440072F07020E230E020E8A0E210EA70702CF6B1CC7BB0D010102020202020202120202020212020202020202020202120101FFF1821200]{有理数二分: Stern-Brocot 树, Farey 序列}
+					\TemplateCode{python}{src/yzh/farey.py}
+				\TemplateSubsection[KC57A31C60E2ECC3E0DC3CF0D0101010100]{黄金三分}
+					\TemplateCode[highlightlines={7}]{cpp}{src/yzh/golden_ternary.cpp}
+				\TemplateSubsection[K0E1A0E7E0702D02E13C55F1001011212010100]{DP 优化}
+				\TemplateSubsubsection{四边形不等式}
+					\TemplateCode{cpp}{src/Miscellany/2D1D.cpp}
+					\TemplateNote{src/tbr/树形背包优化.tex}
+				%\subsection{Dancing Links 精确覆盖搜索} 
+				%\inputminted{cpp}{src/Miscellany/DLX.cpp}
+				\TemplateSubsubsection{$O(n \cdot \max a_i)$ Subset Sum}
+					\TemplateCode{cpp}{src/yzh/Subset Sum.cpp}
+
+				\newpage
+				%\subsection{Hash Table}
+					%\inputminted[highlightlines={4,15,17,18}]{cpp}{src/DataStructure/hashmap.cpp}
+				%\subsection{基数排序}
+					%\inputminted{cpp}{src/Miscellany/RadixSort.cpp}
+				\TemplateSubsection[K0E7C0D1E072F0702C3432ECC050DD02E13C55F10010112010100]{O3, 读入优化}
+					\TemplateCode{cpp}{src/Miscellany/hack.cpp}
+				\TemplateSubsection[K0E090E9F0E320E480E990E320E700101010100]{builtin}
+					\TemplateCode{cpp}{src/Miscellany/builtin.cpp}
+				%\subsection{Bitset}
+					%\inputminted{cpp}{src}
+				\TemplateSubsection[KCCD979C5AF31CC3B10D0470DC5BE28C84B13CEB110C5DF100101010100]{试机赛与纪律文件}
+					\TemplateNote{src/TipsandHints/discipline.tex}
+				\TemplateSubsection[K0E0A0E7C0E700E910E990E020E700E9907020E990E020E090E480E210702C17C4FCCF4C4C0C60D010112020202020202020212010100]{Constant Table 常数表}
+				\label{randomprimes}
+				% \begin{small}
+				% \setlength{\parindent}{0em}\setlength{\parskip}{0em}\renewcommand{\baselinestretch}{.8}
+				% 	\texttt{\textbf{NTT}
+				% 	3\ \ r=1\ (1)\ g=2\
+				% 	5\ \ r=1\ (2)\ g=2\
+				% 	17\ \ r=1\ (4)\ g=3\
+				% 	97\ \ r=3\ (5)\ g=5\
+				% 	193\ \ r=3\ (6)\ g=5\
+				% 	257\ \ r=1\ (8)\ g=3\
+				% 	7681\ \ r=15\ (9)\ g=17\
+				% 	12289\ \ r=3\ (12)\ g=11\
+				% 	40961\ \ r=5\ (13)\ g=3\
+				% 	65537\ \ r=1\ (16)\ g=3\
+				% 	786433\ \ r=3\ (18)\ g=10\
+				% 	5767169\ \ r=11\ (19)\ g=3\
+				% 	7340033\ \ r=7\ (20)\ g=3\
+				% 	23068673\ \ r=11\ (21)\ g=3\
+				% 	104857601\ \ r=25\ (22)\ g=3\
+				% 	167772161\ \ r=5\ (25)\ g=3\
+				% 	469762049\ \ r=7\ (26)\ g=3\
+				% 	1004535809\ \ r=479\ (21)\ g=3\
+				% 	2013265921\ \ r=15\ (27)\ g=31\
+				% 	2281701377\ \ r=17\ (27)\ g=3\
+				% 	3221225473\ \ r=3\ (30)\ g=5\
+				% 	75161927681\ \ r=35\ (31)\ g=3\
+				% 	77309411329\ \ r=9\ (33)\ g=7\
+				% 	206158430209\ \ r=3\ (36)\ g=22\
+				% 	2061584302081\ \ r=15\ (37)\ g=7\
+				% 	2748779069441\ \ r=5\ (39)\ g=3\
+				% 	6597069766657\ \ r=3\ (41)\ g=5\
+				% 	39582418599937\ \ r=9\ (42)\ g=5\
+				% 	79164837199873\ \ r=9\ (43)\ g=5\
+				% 	263882790666241\ \ r=15\ (44)\ g=7\
+				% 	1231453023109121\ \ r=35\ (45)\ g=3\
+				% 	1337006139375617\ \ r=19\ (46)\ g=3\
+				% 	3799912185593857\ \ r=27\ (47)\ g=5\
+				% 	4222124650659841\ \ r=15\ (48)\ g=19\
+				% 	7881299347898369\ \ r=7\ (50)\ g=6\
+				% 	31525197391593473\ \ r=7\ (52)\ g=3\
+				% 	180143985094819841\ \ r=5\ (55)\ g=6\
+				% 	1945555039024054273\ \ r=27\ (56)\ g=5\
+				% 	4179340454199820289\ \ r=29\ (57)\ g=3
+				% }
+				% \end{small}
+				\TemplateNote{src/TipsandHints/Addon.tex}
+				\TemplateSubsection[K0E700E990E990702C90B49CCF4C4C0C60D0101121212010100]{NTT 模数表}
+					$P = r\cdot2^k + 1$,原根为$g$
+					\TemplateNote{src/TipsandHints/NTTbase.tex}
+				\TemplateSubsection[K0E7E0E8A0E320E510E2107020E990E020E090E480E210702D1416DCCF4C4C0C60D010112020202020212010100]{Prime Table 质数表}
+				 	\TemplateNote{src/TipsandHints/Primes.tex}
+				\TemplateSubsectionStar{Vimrc, Bashrc}
+				\TemplateCode{vim}{src/Miscellany/vimrc}
+				\TemplateCode{sh}{src/Miscellany/bashrc}
+				VSCode: 打开自动保存
+		% insert Miscellany/Grid_Paper.pdf
+		% \newpage
+		%	\subsection*{Delaunay 三角剖分}
+		%	\inputminted[fontsize=\small]{cpp}{src/Geometry/DelaunayTriangulation.cpp}
+		%	\subsection*{动态凸包}
+		%	\inputminted[fontsize=\small]{cpp}{src/Geometry/dynamic_convex_hull.cpp}
+		% \begin{comment}		
+			% \subsection*{Java Example}
+				% \inputminted{java}{src/Miscellany/Main2.java}
+			% \subsection*{Python Example}
+			% 	\inputminted{python}{src/Miscellany/test.py}
+			% \subsection*{Blossom}
+			% 	\inputminted[fontsize=\small]{cpp}{src/TreeandGraph/Blossom.cpp}
+			% \subsection*{Chu-liu}
+			% 	\inputminted[fontsize=\small]{cpp}{src/TreeandGraph/最小树形图.cpp}
+			% \subsection*{可持久化 Treap}
+			% 	\inputminted[fontsize=\small]{cpp}{src/DataStructure/可持久化treap-zmc.cpp}
+			% 	\subsection*{天动万象}
+			%	\inputminted[fontsize=\small]{cpp}{src/yzh/ByteCampA3.cpp}
+			% \subsection*{Clique Counting}
+			% \inputminted[fontsize=\small]{cpp}{src/yzh/clique.cpp}
+			% \subsection*{神谕}
+			% 	\inputminted[fontsize=\small]{cpp}{src/zjj/zjj.cpp}
+			% 	\input{src/zjj/sam.tex}
+
+		%\end{comment}

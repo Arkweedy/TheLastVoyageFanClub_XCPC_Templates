@@ -45,6 +45,8 @@ xelatex -shell-escape -synctex=1 -interaction=nonstopmode -halt-on-error -file-l
 xelatex -shell-escape -synctex=1 -interaction=nonstopmode -halt-on-error -file-line-error main.tex
 ```
 
+`main.tex` uses `imakeidx`; the index is generated automatically during the `xelatex -shell-escape` passes. Chinese entries use explicit sort keys so the printed keyword index follows pinyin-style ordering without requiring an extra xindy Chinese module.
+
 Pass `-KeepAux` to keep LaTeX auxiliary files for debugging:
 
 ```powershell
