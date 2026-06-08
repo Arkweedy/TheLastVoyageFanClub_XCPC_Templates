@@ -54,6 +54,7 @@ _minted*/
 # Root document output
 /main.pdf
 /build/
+/cover/dist/
 
 # Competitive-programming tool local state
 .cph/

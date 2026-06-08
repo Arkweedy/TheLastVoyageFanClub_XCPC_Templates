@@ -16,7 +16,7 @@ The final document is written to:
 main.pdf
 ```
 
-The script also refreshes the cover PDFs used by `main.tex`. This is an intentional extension over the original VSCode LaTeX Workshop recipe, which only compiled `main.tex` and reused the existing cover PDFs:
+The script also refreshes the generated cover PDFs used by `main.tex`. This is an intentional extension over the original VSCode LaTeX Workshop recipe, which only compiled `main.tex` and reused the existing cover PDFs. These files are build outputs and are ignored by git:
 
 ```text
 cover/dist/cover.pdf
@@ -37,6 +37,7 @@ If you need to run the commands manually, use the repository root as the working
 $env:PYTHONIOENCODING = "utf-8"
 $env:PYTHONUTF8 = "1"
 
+New-Item -ItemType Directory -Force -Path "cover/dist"
 xelatex -interaction=nonstopmode -halt-on-error -file-line-error -shell-escape -output-directory=cover/dist cover/src/cover.tex
 xelatex -interaction=nonstopmode -halt-on-error -file-line-error -shell-escape -output-directory=cover/dist cover/src/cover.tex
 xelatex -interaction=nonstopmode -halt-on-error -file-line-error -output-directory=cover/dist cover/src/signature.tex

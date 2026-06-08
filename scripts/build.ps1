@@ -124,8 +124,7 @@ try {
         Remove-IfExists @(
             "_minted",
             "_minted-main",
-            "build/main.pdf",
-            "build/rainbow",
+            "build",
             "cover/dist/cover.aux",
             "cover/dist/cover.log",
             "cover/dist/signature.aux",
