@@ -167,15 +167,21 @@
   }
 \ExplSyntaxOff
 
+\NewDocumentCommand{\TemplateIncludeFrontPdf}{ O{-} m }{%
+  \includepdf[
+    pages=#1,
+    fitpaper=true,
+    pagecommand={\thispagestyle{empty}}%
+  ]{#2}%
+}
+
 \newcommand{\TemplateFrontMatter}{%
   \hypersetup{pageanchor=false}%
   \pagenumbering{gobble}%
   \pagestyle{empty}%
-  \begin{titlepage}%
-    \includepdf[pages=1,pagecommand={\thispagestyle{empty}}]{cover/dist/cover.pdf}%
-  \end{titlepage}%
-  \includepdf[pages=-,pagecommand={\thispagestyle{empty}}]{cover/dist/signature.pdf}%
-  \includepdf[pages=-,pagecommand={\thispagestyle{empty}}]{cover/dist/signature.pdf}%
+  \TemplateIncludeFrontPdf[1]{cover/dist/cover.pdf}%
+  \TemplateIncludeFrontPdf{cover/dist/signature.pdf}%
+  \TemplateIncludeFrontPdf{cover/dist/signature.pdf}%
   \setcounter{tocdepth}{3}%
   \begingroup
     \let\cleardoublepage\relax
