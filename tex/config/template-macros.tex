@@ -1,0 +1,29 @@
+% Major sections start a fresh page only when the current page already has content.
+\newcommand{\TemplateClearPage}{\ifdim\pagetotal=0pt\relax\else\newpage\fi}
+
+\NewDocumentCommand{\TemplateSection}{ o m }{%
+  \TemplateClearPage
+  \section{#2}%
+  \IfNoValueTF{#1}{\index{#2}}{\index{#1@#2}}%
+}
+\NewDocumentCommand{\TemplateSectionStar}{ m }{%
+  \TemplateClearPage
+  \section*{#1}%
+}
+\NewDocumentCommand{\TemplateSubsection}{ o m }{%
+  \subsection{#2}%
+  \IfNoValueTF{#1}{\index{#2}}{\index{#1@#2}}%
+}
+\NewDocumentCommand{\TemplateSubsectionStar}{ m }{\subsection*{#1}}
+\NewDocumentCommand{\TemplateSubsubsection}{ m }{\subsubsection{#1}}
+\NewDocumentCommand{\TemplateSubsubsectionStar}{ m }{\subsubsection*{#1}}
+\NewDocumentCommand{\TemplateNote}{ m }{\input{#1}}
+
+\ExplSyntaxOn
+\NewDocumentCommand{\TemplateCode}{ O{} m m }
+  {
+    \tl_if_blank:nTF { #1 }
+      { \inputminted{#2}{#3} }
+      { \inputminted[#1]{#2}{#3} }
+  }
+\ExplSyntaxOff

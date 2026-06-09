@@ -1,0 +1,27 @@
+\NewDocumentCommand{\TemplateIncludeFrontPdf}{ O{-} m }{%
+  \includepdf[
+    pages=#1,
+    fitpaper=true,
+    pagecommand={\thispagestyle{empty}}%
+  ]{#2}%
+}
+
+\newcommand{\TemplateFrontMatter}{%
+  \hypersetup{pageanchor=false}%
+  \pagenumbering{gobble}%
+  \pagestyle{empty}%
+  \TemplateIncludeFrontPdf[1]{cover/dist/cover.pdf}%
+  \TemplateIncludeFrontPdf{cover/dist/signature.pdf}%
+  \TemplateIncludeFrontPdf{cover/dist/signature.pdf}%
+  \setcounter{tocdepth}{3}%
+  \begingroup
+    \let\cleardoublepage\relax
+    \let\clearpage\relax
+    \tableofcontents
+  \endgroup
+  \clearpage
+  \pagenumbering{arabic}%
+  \setcounter{page}{1}%
+  \hypersetup{pageanchor=true}%
+  \pagestyle{fancy}%
+}

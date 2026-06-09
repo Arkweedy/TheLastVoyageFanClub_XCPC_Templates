@@ -1,0 +1,38 @@
+\geometry{a4paper, margin=2.2cm, bindingoffset=7mm}
+
+\setlength{\parindent}{0em}
+\setlength{\parskip}{1pt}
+\setlength\itemsep{1pt}
+
+\makeatletter
+\renewcommand{\paragraph}{%
+  \@startsection{paragraph}{4}%
+  {\z@}{1pt \@plus 1pt \@minus 1pt}{-1em}%
+  {\normalfont\normalsize\bfseries}%
+}
+\makeatother
+
+\pagestyle{fancy}
+\setlength{\headheight}{14pt}
+\setlength{\headsep}{0.6cm}
+
+\chead{Hust114514}
+\rhead{Page \thepage}
+\lhead{华中科技大学}
+
+\setlength{\columnsep}{13pt}
+\renewcommand\cftsecfont{\Large}
+
+\titleformat{\section}
+  {\huge}
+  {\thesection.}
+  {4pt}
+  {}
+\titleformat{\subsection}{\Large\bfseries}{\thesubsection}{6pt}{}
+
+\titlespacing{\section}
+  {0pt}
+  {.7\baselineskip plus .15\baselineskip minus .1\baselineskip}
+  {.35\baselineskip plus .1\baselineskip}
+\titlespacing{\subsection}{0pt}{4pt}{3pt}
+\titlespacing{\subsubsection}{0pt}{3pt}{2pt}
