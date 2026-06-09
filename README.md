@@ -4,7 +4,7 @@
 
 封面是 $\textcolor{#00BFFF}{Aqours\ 渡边曜}$
 
-如果你只是想使用这份模板，优先从 GitHub Releases 下载已经编译好的 `main.pdf`；如果你想修改内容、替换封面或重新排版，再阅读后面的编译与维护说明。
+如果你只是想使用这份模板，优先从 GitHub Releases 下载已经编译好的 [`main.pdf`](https://github.com/Arkweedy/TheLastVoyageFanClub_XCPC_Templates/releases/latest/download/main.pdf)；如果你想修改内容、替换封面或重新排版，再阅读后面的编译与维护说明。
 
 ## 怎么使用
 
