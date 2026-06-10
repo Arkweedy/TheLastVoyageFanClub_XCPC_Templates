@@ -22,8 +22,30 @@
 \ExplSyntaxOn
 \NewDocumentCommand{\TemplateCode}{ O{} m m }
   {
-    \tl_if_blank:nTF { #1 }
-      { \inputminted{#2}{#3} }
-      { \inputminted[#1]{#2}{#3} }
+    \str_if_eq:nnTF { #2 } { cpp }
+      {
+        \ifTemplateRainbowBrackets
+          \IfFileExists{build/rainbow/#3}
+            {
+              \tl_if_blank:nTF { #1 }
+                { \inputminted[escapeinside=@@]{#2}{build/rainbow/#3} }
+                { \inputminted[escapeinside=@@,#1]{#2}{build/rainbow/#3} }
+            }
+            {
+              \tl_if_blank:nTF { #1 }
+                { \inputminted{#2}{#3} }
+                { \inputminted[#1]{#2}{#3} }
+            }
+        \else
+          \tl_if_blank:nTF { #1 }
+            { \inputminted{#2}{#3} }
+            { \inputminted[#1]{#2}{#3} }
+        \fi
+      }
+      {
+        \tl_if_blank:nTF { #1 }
+          { \inputminted{#2}{#3} }
+          { \inputminted[#1]{#2}{#3} }
+      }
   }
 \ExplSyntaxOff

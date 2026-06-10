@@ -1,5 +1,6 @@
-% Rainbow brackets are enabled by default for selected dense C++ templates.
-% The build script generates build/rainbow/*.cpp before compiling main.tex.
+% Rainbow brackets are enabled by default for all C++ templates included with
+% \TemplateCode{cpp}{...}. The build script generates build/rainbow/src/**/*.cpp
+% before compiling main.tex.
 % Change the next line to \TemplateRainbowBracketsfalse to use plain source files.
 \newif\ifTemplateRainbowBrackets
 \TemplateRainbowBracketstrue
@@ -18,18 +19,3 @@
   \fi
   \endgroup
 }
-
-\ExplSyntaxOn
-\NewDocumentCommand{\TemplateRainbowCode}{ O{} m m m }
-  {
-    \ifTemplateRainbowBrackets
-      \tl_if_blank:nTF { #1 }
-        { \inputminted[escapeinside=@@]{#2}{#3} }
-        { \inputminted[escapeinside=@@,#1]{#2}{#3} }
-    \else
-      \tl_if_blank:nTF { #1 }
-        { \inputminted{#2}{#4} }
-        { \inputminted[#1]{#2}{#4} }
-    \fi
-  }
-\ExplSyntaxOff

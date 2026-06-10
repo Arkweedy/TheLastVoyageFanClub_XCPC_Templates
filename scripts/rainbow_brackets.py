@@ -1,12 +1,10 @@
 from pathlib import Path
+import shutil
 
 
 ROOT = Path(__file__).resolve().parents[1]
-SOURCES = [
-    ("src/DataStructure/Splay.cpp", "build/rainbow/DataStructure/Splay.cpp"),
-    ("src/Math/poly.cpp", "build/rainbow/Math/poly.cpp"),
-    ("src/String/PAM.cpp", "build/rainbow/String/PAM.cpp"),
-]
+SOURCE_ROOT = ROOT / "src"
+TARGET_ROOT = ROOT / "build" / "rainbow"
 
 OPEN = "([{"
 CLOSE = ")]}"
@@ -24,6 +22,10 @@ def rainbow_token(char: str, color: int) -> str:
     return f"@\\TemplateRainbowBracket{{{color}}}{{{DISPLAY[char]}}}@"
 
 
+def escaped_at() -> str:
+    return r"@\char64{}@"
+
+
 def rainbow_text(text: str) -> str:
     stack: list[int] = []
     out: list[str] = []
@@ -37,7 +39,7 @@ def rainbow_text(text: str) -> str:
         nxt = text[i + 1] if i + 1 < len(text) else ""
 
         if state == "preprocessor":
-            out.append(char)
+            out.append(escaped_at() if char == "@" else char)
             if char == "\n":
                 if preprocessor_prev != "\\":
                     state = "code"
@@ -50,7 +52,7 @@ def rainbow_text(text: str) -> str:
             continue
 
         if state == "line_comment":
-            out.append(char)
+            out.append(escaped_at() if char == "@" else char)
             if char == "\n":
                 state = "code"
                 line_can_start_directive = True
@@ -58,7 +60,7 @@ def rainbow_text(text: str) -> str:
             continue
 
         if state == "block_comment":
-            out.append(char)
+            out.append(escaped_at() if char == "@" else char)
             if char == "*" and nxt == "/":
                 out.append(nxt)
                 i += 2
@@ -68,9 +70,9 @@ def rainbow_text(text: str) -> str:
             continue
 
         if state in {"string", "char"}:
-            out.append(char)
+            out.append(escaped_at() if char == "@" else char)
             if char == "\\" and nxt:
-                out.append(nxt)
+                out.append(escaped_at() if nxt == "@" else nxt)
                 i += 2
                 continue
             if (state == "string" and char == '"') or (state == "char" and char == "'"):
@@ -125,7 +127,7 @@ def rainbow_text(text: str) -> str:
             color = stack.pop() if stack else 0
             out.append(rainbow_token(char, color))
         else:
-            out.append(char)
+            out.append(escaped_at() if char == "@" else char)
 
         if char == "\n":
             line_can_start_directive = True
@@ -137,14 +139,18 @@ def rainbow_text(text: str) -> str:
 
 
 def main() -> None:
-    for source, target in SOURCES:
-        source_path = ROOT / source
-        target_path = ROOT / target
+    if TARGET_ROOT.exists():
+        shutil.rmtree(TARGET_ROOT)
+
+    sources = sorted(SOURCE_ROOT.rglob("*.cpp"))
+    for source_path in sources:
+        target_path = TARGET_ROOT / source_path.relative_to(ROOT)
         target_path.parent.mkdir(parents=True, exist_ok=True)
         target_path.write_text(
             rainbow_text(source_path.read_text(encoding="utf-8")),
             encoding="utf-8",
         )
+    print(f"Generated rainbow brackets for {len(sources)} C++ files.")
 
 
 if __name__ == "__main__":

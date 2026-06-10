@@ -42,7 +42,7 @@ cover/src/               封面和签名页源码
 cover/assets/            封面使用的图片素材
 scripts/build.ps1        Windows PowerShell 构建脚本
 scripts/rainbow_brackets.py
-                         少量代码的彩虹括号试点生成器
+                         C++ 代码彩虹括号生成器
 ```
 
 ## 修改模板
@@ -84,7 +84,7 @@ main.pdf
 
 - 编译两遍 `cover/src/cover.tex`，生成 `cover/dist/cover.pdf`。
 - 编译两遍 `cover/src/signature.tex`，生成 `cover/dist/signature.pdf`。
-- 生成彩虹括号试点文件。
+- 为 C++ 代码生成彩虹括号文件。
 - 编译两遍 `main.tex`。
 - 默认清理 LaTeX 辅助文件和 minted 缓存。
 
