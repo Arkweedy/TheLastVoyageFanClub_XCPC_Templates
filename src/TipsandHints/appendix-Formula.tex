@@ -147,7 +147,7 @@ $J_k(n)$ is the number of $k$-tuples of positive integers all less than or equal
 \[ f_{2n+1} = f^2_n+f^2_{n+1} \]
 \[ (-1)^kf_{n-k} = f_{n}f_{k-1} - f_{n-1}f_{k} \]
 \begin{small}
-\inputminted{python}{src/tbr/fib.py}
+\inputminted{python}{src/TipsandHints/fib.py}
 \end{small}
 \[ \text{Modulo }f_n, f_{mn+r} \equiv \left\{
 \begin{aligned}
@@ -297,7 +297,7 @@ For fixed $k$, EGF and OGF:
 该函数可由下述方法计算: 分解质因数$m=p_1^{\alpha_1}p_2^{\alpha_2}...p_t^{\alpha_t}$. 则$\lambda(m)=\operatorname{lcm}(\lambda(p_1^{\alpha_1}),\lambda(p_2^{\alpha_2}),\ ..., \lambda(p_t^{\alpha_t}))$. 其中对奇质数$p$, $\lambda(p^\alpha)=(p-1)p^{\alpha-1}$. 对2的幂, $\lambda(2^k)=2^{k-2}, \text{s.t. } k\ge 3$. $\lambda(4)=\lambda(2)=2$.
 
 \subsubsection{求拆分数}
-\inputminted{python}{src/yzh/partition.py}
+\inputminted{python}{src/TipsandHints/partition.py}
 $ \Phi(x) = \prod_{n=1}^{\infty}(1-x^n) =\sum_{k=-\infty}^{\infty}{(-1)^kx^{k(3k-1)/2}} $
 记$p(n)$表示$n$的拆分数,$f(n,k)$表示将$n$拆分且每种数字使用次数必须小于等于$k$的拆分数.则
 \[ P(x)\Phi(x)=1, F_k(x) = P(x) \Phi(x^{k+1}) \]
@@ -353,7 +353,7 @@ $h_\lambda(i,j)$表示该格子右边和上边的格子数量加1 (自身也算1
 \paragraph{约瑟夫环}$n$ 个人 $0,\dots,n-1$, 令 $f(i,m)$ 为 $i$ 个人报 $m$ 的胜利者, 则 $f(1,m)=0,f(i,m)=(f(i-1,m)+m)\bmod i$. 
 \paragraph{阶梯Nim} 在一个阶梯上, 每次选一个台阶上任意个石子移到下一个台阶上, 不可移动者输. 结论: SG值等于奇数层台阶上石子数的异或和. 对于树形结构也适用, 奇数层节点上所有石子数异或起来即可.
 \paragraph{图上博弈} 给定无向图, 先手从某点开始走, 只能走相邻且未走过的点, 无法移动者输. 对该图求最大匹配, 若某个点不一定在最大匹配中则先手必败, 否则先手必胜.
-\input{src/tbr/最大最小定理求纳什均衡点.tex}
+\input{src/TipsandHints/最大最小定理求纳什均衡点.tex}
 
 \subsubsection{概率相关}
 $D(X)=E((X-E(X))^2)=E(X^2)-(E(X))^2,\ D(X+Y)=D(X)+D(Y),$\\
