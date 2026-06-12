@@ -19,10 +19,6 @@
 					\TemplateCode{cpp}{src/TreeandGraph/Hungarian.cpp}
 				\TemplateSubsection[K0E910E2C0E9F0E230E230E480E210702CFE60DC05828CE3322D1E62BC29E0DCA9B0DCA744007020E7C07270EA207020E21072A0101120202020202020202020202020202021202120212010100]{Shuffle 一般图最大匹配 $O(V E)$}
 					\TemplateCode{cpp}{src/TreeandGraph/一般图最大匹配-shuffle.cpp}
-				% \subsection{有根树同构 Hash}
-				% 	可重集合 Hash, 一个子树要换一种 Hash 做打包.
-				% 	通常 sort rolling hash, 然后 xorshift 打包.
-				% 	如果使用 xor hash, 注意相同子树贡献不应该抵消.
 				\TemplateSubsection[K0E360E510702D1E62BC29E0DCB9213CA9B0DCA744007020E7C07270EA207020D1E072A0101121202020202020202120212010100]{KM 最大权匹配 $O(V^3)$}
 					\TemplateCode{cpp}{src/TreeandGraph/KM.cpp}
 				\TemplateSubsection[KCECF0DCF1310CE3322CA2619C71513C58813C80FE20101010100]{无向图欧拉回路}
@@ -33,8 +29,6 @@
 						\item \textbf{check 欧拉路径}: 所有点 \texttt{degree\_in = degree\_out}, 或者存在一对点出入度相差 1, 其他点 \texttt{degree\_in = degree\_out}
 					\end{itemize}
 					\TemplateCode{cpp}{src/TreeandGraph/EulerGraphDir.cpp}
-				%\subsection{Blossom 一般图带权最大匹配 $O(|V|^3)$}
-				%\inputminted{cpp}{src/TreeandGraph/Blossom.cpp}
 				\TemplateSubsection[K0D1C0E910E020E990101021212120101FFFE821200]{2-SAT}
 					\TemplateCode{cpp}{src/TreeandGraph/2-sat.cpp}
 				\TemplateSubsection[K0E090E320E990E910E210E9907020E360E7C0E910E020E8A0E020E350E9F01011202020202020212010100]{Bitset Kosaraju}
@@ -50,8 +44,6 @@
 					\TemplateCode{cpp}{src/TreeandGraph/VBCC.cpp}
 				\TemplateSubsection[K0E1A0E7C0E510E320E700E020E990E7C0E8A07020E990E8A0E210E210702D13510CA7440CCF44001011202020202020202020212010100]{Dominator Tree 支配树}
 					\TemplateCode{cpp}{src/TreeandGraph/支配树.cpp}
-				%\subsection{最大团}
-				%\inputminted{cpp}{src/TreeandGraph/MaximumClique.cpp}
 				\TemplateSubsection[K0E1A0E320E700E320E0A0702D1E62BC29E0DC7DF43010112010100]{Dinic 最大流}
 					\TemplateNote{src/TreeandGraph/dinic_complexity.tex}
 					\TemplateCode{cpp}{src/TreeandGraph/Dinic.cpp}
@@ -63,20 +55,10 @@
 					\TemplateCode{cpp}{src/TreeandGraph/费用流oi-style.cpp}
 				\TemplateSubsection[K0E36C3501CC80FE2010112010100]{K短路}
 					\TemplateCode{cpp}{src/TreeandGraph/K短路.cpp}
-				%\subsection{动态 MST}
-					%\inputminted{cpp}{src/TreeandGraph/完全动态MST.cpp}
 				\TemplateSubsection[KCC3E0DD0560DC56C160101010100]{三元环}
 					\TemplateCode{cpp}{src/TreeandGraph/三元环.cpp}
-				%\subsection{平面图转对偶图}
-				%\inputminted{cpp}{src/TreeandGraph/平面图转对偶图.cpp}
-				%\subsection{最小乘积生成树}
-				%\inputminted{cpp}{src/TreeandGraph/最小乘积生成树.cpp}
-				%\subsection{树同构}
-				%\inputminted{cpp}{src/TreeandGraph/树同构.cpp}
 				\TemplateSubsection[KCF6191CCF4400101010100]{虚树}
 				\TemplateCode{cpp}{src/TreeandGraph/虚树.cpp}
-				%\subsection{动态最小生成树}
-				%\inputminted{cpp}{src/TreeandGraph/DynamicMST.cpp}
 				\TemplateNote{src/TreeandGraph/网络流总结.tex}
 				\TemplateSubsection[K0E250E7C0E510E7C0E8A0EA70E2C0E9F0702CECF0DCF1310CE3322D1E62BCF1E0DC4446DCCF44007020E7C07270EA207020D1E07020E21072A01011202020202021202020202020202020202120212020202120101FFF9821200]{Gomory-Hu 无向图最小割树\,$O(V ^ 3 E)$}
 					\TemplateNote{src/TreeandGraph/Gomory-Hu.tex}
@@ -89,19 +71,11 @@
 					\TemplateCode{cpp}{src/TreeandGraph/MeanCycle.cpp}
 				\TemplateSubsection[KCFE60DC05828CE3322D1E62BC29E0DCA9B0DCA7440070207020E090E480E7C0E910E910E7C0E510101020202020202020202120101FFF4821200]{一般图最大匹配 - Blossom}
 					\TemplateCode{cpp}{src/TreeandGraph/Blossom.cpp}
-				% \subsection{斯坦纳树}
-				% 	\inputminted{cpp}{src/TreeandGraph/斯坦纳树.cpp}
-				%\subsection{Cactus 仙人掌}
-					%\inputminted{cpp}{src/TreeandGraph/cactus.cpp}
 				\TemplateSubsection[KCE3322C8300DC5FFA9C8300D0101010100]{图论结论}
 					\TemplateNote{src/TreeandGraph/最小乘积问题.tex}
 					\TemplateNote{src/TreeandGraph/最小环问题.tex}
 					\TemplateNote{src/TreeandGraph/度序列的可图性.tex}
 					\TemplateNote{src/TreeandGraph/切比雪夫距离与曼哈顿距离互化.tex}
-					%\subsection{图论知识 - Nightfall}
 					\TemplateNote{src/TreeandGraph/图论知识.tex}
 					\TemplateNote{src/TreeandGraph/拟阵交问题.tex}
-					%\subsubsection{双极定向}
-					%\inputminted{cpp}{src/tbr/bipolar_orientation.cpp}
-					%\input{src/TreeandGraph/shanghai19.tex}
 					\newpage
