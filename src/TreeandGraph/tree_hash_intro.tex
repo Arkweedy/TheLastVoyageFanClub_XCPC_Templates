@@ -13,7 +13,7 @@
     \end{cases}
     \]
     \item 有根树的 hash 可以用根节点的 hash 值。
-    \item 无根树的 hash 可以用所有有点作为根节点的 hash 值的异或和作为 hash 值。
+    \item 无根树的 hash 可以用所有有点作为根节点的 hash 值的和作为 hash 值(不用异或是为了防止不同对称树结构使得异或和均为0)
 \end{itemize}
 
 \paragraph{复杂度分析}
