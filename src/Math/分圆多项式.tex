@@ -1,0 +1,141 @@
+约定系数按次数从低到高存储，所有运算在模 $P$ 的系数域中进行。
+代码只依赖已有的 \texttt{poly}、\texttt{mu}、\texttt{phi}、\texttt{me}、\texttt{comb.inv} 和多项式形式幂级数指数函数 \texttt{exp2}。
+
+\paragraph*{数论函数与基本性质}
+
+Möbius 函数为
+\[
+\mu(d)=
+\begin{cases}
+1, & d=1,\\
+0, & \exists p,\ p^2\mid d,\\
+(-1)^{\omega(d)}, & d\text{ 为平方自由数},
+\end{cases}
+\]
+其中 $\omega(d)$ 是 $d$ 的不同质因子个数。
+Euler 函数满足
+\[
+\varphi(n)=\left|\{1\leq k\leq n:\gcd(k,n)=1\}\right|
+=n\prod_{p\mid n}\left(1-\frac1p\right).
+\]
+第 $n$ 个分圆多项式记为 $\Phi_n(x)$，其基本分解为
+\[
+x^n-1=\prod_{d\mid n}\Phi_d(x),
+\qquad \deg\Phi_n=\varphi(n).
+\]
+
+\paragraph*{\texttt{Cyclotomic}: Möbius 乘积与截断更新}
+
+对 $n>1$，由上面的因子分解作 Möbius 反演，得到代码使用的公式
+\[
+\boxed{
+\Phi_n(x)=\prod_{d\mid n}\bigl(1-x^{n/d}\bigr)^{\mu(d)}
+}.
+\]
+当 $n=1$ 时，$\Phi_1(x)=x-1$；若直接套用上式得到的是 $1-x$，所以代码单独返回
+\[
+\Phi_1(x)=x-1.
+\]
+
+设当前多项式为 $f(x)=\sum f_i x^i$，只保留次数不超过 $D$ 的系数。
+乘以 $1-x^k$ 时，
+\[
+g(x)=f(x)(1-x^k)
+\quad\Longrightarrow\quad
+g_i=f_i-f_{i-k},
+\]
+其中越界系数视为 $0$。原地更新必须从高次到低次，代码中的
+\texttt{a[i] -= a[i-k]} 正是这个操作。
+
+除以 $1-x^k$ 时，在形式幂级数中使用
+\[
+\frac1{1-x^k}=\sum_{j\geq 0}x^{jk},
+\qquad
+g(x)=\frac{f(x)}{1-x^k}
+\quad\Longrightarrow\quad
+g_i=f_i+g_{i-k}.
+\]
+因此原地更新必须从低次到高次，代码中的
+\texttt{a[i] += a[i-k]} 正是递推得到 $g_i$。
+由于每个因子 $1-x^k$ 的常数项为 $1$，其形式幂级数逆存在；截断到次数 $D$ 后，高次项不会重新影响低次项，所以可以安全地只维护需要的前缀系数。
+
+对 $n>1$，分圆多项式是首一且具有倒数对称性
+\[
+\boxed{
+x^{\varphi(n)}\Phi_n(x^{-1})=\Phi_n(x)
+}.
+\]
+若写成
+\[
+\Phi_n(x)=\sum_{i=0}^{\varphi(n)}c_i x^i,
+\]
+则
+\[
+c_i=c_{\varphi(n)-i}.
+\]
+所以代码令
+\[
+m=\left\lfloor\frac{\varphi(n)}2\right\rfloor+1
+\]
+，只用 Möbius 乘积计算 $0$ 到 $m-1$ 的系数，再通过
+\texttt{a[i] = a[phi[n]-i]} 镜像恢复另一半。
+
+\paragraph*{\texttt{CyclotomicProd}: Mertens 函数与形式幂级数指数}
+
+该函数返回前缀乘积
+\[
+C_n(x)=\prod_{i=1}^{n}\Phi_i(x),
+\qquad
+D=\deg C_n=\sum_{i=1}^{n}\varphi(i).
+\]
+定义 Mertens 函数
+\[
+\mathfrak M(t)=\sum_{j=1}^{t}\mu(j).
+\]
+将单个分圆多项式的 Möbius 乘积按 $1-x^i$ 的指数重新整理，并注意 $\Phi_1(x)=-(1-x)$，有
+\[
+\boxed{
+C_n(x)=-\prod_{i=1}^{n}
+\bigl(1-x^i\bigr)^{\mathfrak M(\lfloor n/i\rfloor)}
+}.
+\]
+指数的来源是：固定 $i$ 后，所有 $j$ 的 $\Phi_j$ 中出现 $1-x^i$ 的总指数为
+\[
+\sum_{q=1}^{\lfloor n/i\rfloor}\mu(q)
+=\mathfrak M\!\left(\left\lfloor\frac ni\right\rfloor\right).
+\]
+
+令 $R_n(x)=-C_n(x)$，则 $R_n(0)=1$，可以取形式幂级数对数。利用
+\[
+\log(1-x^i)=-\sum_{k\geq 1}\frac{x^{ik}}k,
+\]
+得到
+\[
+\begin{aligned}
+\log R_n(x)
+&=\sum_{i=1}^{n}\mathfrak M\!\left(\left\lfloor\frac ni\right\rfloor\right)\log(1-x^i)\\
+&=-\sum_{i=1}^{n}\sum_{k\geq 1}
+\frac{\mathfrak M(\lfloor n/i\rfloor)}{k}x^{ik}.
+\end{aligned}
+\]
+因此对满足 $ik\leq D$ 的每一对 $(i,k)$，有
+\[
+[x^{ik}]\log R_n(x)
+\mathrel{+}= -\frac{\mathfrak M(\lfloor n/i\rfloor)}k.
+\]
+代码中的
+\[
+\texttt{lpc[i*k] -= me[n/i] * comb.inv(k)}
+\]
+正是这个系数更新；\texttt{comb.inv(k)} 表示 $k^{-1}\pmod P$。
+
+最后，\texttt{lpc.exp2(D+1)} 计算截断到 $x^D$ 的
+\[
+R_n(x)=\exp\bigl(\log R_n(x)\bigr),
+\]
+代码再整体取负，得到 $C_n(x)$。
+形式幂级数的 $\log$ 和 $\exp$ 中会出现 $1/k$，因此在模 $P$ 下需要相关的 $k$ 可逆；通常要求 $P$ 为素数且
+\[
+D<P.
+\]
+这也保证代码预处理的 \texttt{comb.inv(k)} 在 $1\leq k\leq D$ 范围内有效。
