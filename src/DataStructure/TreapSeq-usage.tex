@@ -1,0 +1,182 @@
+\paragraph*{接口使用说明}
+
+\textbf{基本约定}
+
+\begin{itemize}
+  \item \texttt{rt} 是默认操作的序列根，空树为 \texttt{0}。
+  \item \texttt{t[0]} 是空节点，\texttt{sz(0)=0}。
+  \item \texttt{t} 使用整数下标表示节点，\texttt{newNode} 返回的下标可以作为稳定的 \texttt{node id} 保存。
+  \item 序列下标和 rank 均为 0-based，区间均为闭区间 $[l,r]$。
+  \item 默认状态下，一个物理节点表示一个序列元素，\texttt{sz} 维护物理节点数。
+  \item \texttt{split} 和 \texttt{merge} 会修改原树，应使用返回的根继续维护序列。
+\end{itemize}
+
+\paragraph*{建树与节点接口}
+
+\begin{itemize}
+  \item \texttt{Treap()}：创建空 Treap，节点池中只包含 \texttt{0} 号空节点。
+  \item \texttt{newNode()}：分配一个尚未初始化为有效序列元素的节点。
+  \item \texttt{newNode(val)}：创建一个值为 \texttt{val}、大小为 \texttt{1} 的节点，并返回 \texttt{node id}。
+  \item \texttt{sz(p)}：返回以 \texttt{p} 为根的物理节点数。
+  \item \texttt{push\_back(val)}：在默认序列末尾加入一个新元素。
+\end{itemize}
+
+按顺序建树：
+
+\begin{minted}[linenos=false]{cpp}
+Treap<int> t;
+for(auto x : a)t.push_back(x);
+\end{minted}
+
+需要保存新节点编号时：
+
+\begin{minted}[linenos=false]{cpp}
+t.push_back(x);
+int id = t.t.size() - 1;
+\end{minted}
+
+\paragraph*{\texttt{split} 与 \texttt{merge}}
+
+\begin{minted}[linenos=false]{cpp}
+pair<int,int> split(int p, int rk);
+\end{minted}
+
+按 0-based 下标拆分：左树是原序列 $[0,\mathrm{rk}]$，右树是原序列 $[\mathrm{rk}+1,n-1]$。特别地：
+
+\begin{itemize}
+  \item 当 $\mathrm{rk}<0$ 时，返回 $\{0,p\}$；
+  \item 当 $\mathrm{rk}\ge n-1$ 时，返回 $\{p,0\}$。
+\end{itemize}
+
+\begin{minted}[linenos=false]{cpp}
+int merge(int l, int r);
+\end{minted}
+
+\texttt{merge} 按顺序连接两棵独立 Treap，结果序列为 \texttt{l} 中的全部元素接上 \texttt{r} 中的全部元素。\texttt{split} 返回的两个根以及 \texttt{merge} 返回的根均满足 \texttt{fa=0}。
+
+隔离闭区间 $[l,r]$：
+
+\begin{minted}[linenos=false]{cpp}
+auto [ab, c] = t.split(t.rt, r);
+auto [a, b] = t.split(ab, l - 1);
+// b表示[l,r]
+t.rt = t.merge(t.merge(a, b), c);
+\end{minted}
+
+剪切并移动一个区间时，不要调用 \texttt{erase} 丢弃 \texttt{b}；应保留拆出的根，并在目标位置重新 \texttt{merge}。
+
+\paragraph*{序列操作}
+
+\begin{itemize}
+  \item \texttt{push\_back(val)}：在末尾加入 \texttt{val}。
+  \item \texttt{insert(val,rk)}：当前实现把新节点插在原下标 \texttt{rk} 之后。
+  \item \texttt{erase(rk)}：删除下标 \texttt{rk} 的一个元素。
+  \item \texttt{erase(l,r)}：删除闭区间 $[l,r]$。
+  \item \texttt{query(rk)}：返回下标 \texttt{rk} 处的值。
+  \item \texttt{rank(p)}：返回活动节点 \texttt{p} 在当前序列中的 0-based 位置。
+\end{itemize}
+
+当前 \texttt{insert} 的实际位置为：
+
+\begin{itemize}
+  \item $\mathrm{rk}=-1$：插到最前面；
+  \item $0\le\mathrm{rk}<n$：插到原 \texttt{rk} 之后；
+  \item $\mathrm{rk}\ge n-1$：插到最后面。
+\end{itemize}
+
+该接口语义仍待后续决定，使用前应确认题目需要的是“插到位置 \texttt{rk}”还是“插在 \texttt{rk} 之后”。
+
+\paragraph*{父指针与节点排名}
+
+\begin{itemize}
+  \item \texttt{setfa(s,p)}：将非空节点 \texttt{s} 的父亲设为 \texttt{p}。
+  \item \texttt{pull(p)}：重算 \texttt{sz}，并维护左右儿子的父指针。
+  \item \texttt{rank(p)}：沿父指针向上计算节点位置。
+\end{itemize}
+
+\texttt{rank(p)} 只用于仍在当前活动 Treap 中的节点。典型用法是为排列维护从 value 到 node id 的映射：
+
+\begin{minted}[linenos=false]{cpp}
+vector<int> id(n + 1);
+for(int i = 0;i < n;i++){
+    t.push_back(a[i]);
+    id[a[i]] = t.t.size() - 1;
+}
+
+int pos = t.rank(id[x]);
+\end{minted}
+
+\paragraph*{可选区间翻转}
+
+默认代码不启用 \texttt{rev}。需要区间翻转时，解除以下代码的注释：
+
+\begin{itemize}
+  \item \texttt{Node::rev}；
+  \item \texttt{push}、\texttt{push\_path}、\texttt{add\_tag}、\texttt{apply}；
+  \item \texttt{merge} 和 \texttt{split} 中的 \texttt{push}；
+  \item \texttt{rank} 中的 \texttt{push\_path}。
+\end{itemize}
+
+启用后可调用：
+
+\begin{minted}[linenos=false]{cpp}
+t.apply(l, r);
+\end{minted}
+
+该调用翻转闭区间 $[l,r]$。如果 lazy 会影响左右儿子方向，调用 \texttt{rank} 前必须通过 \texttt{push\_path} 把根到目标节点的标记依次下传。
+
+\paragraph*{可选聚合值二分}
+
+默认代码不启用 \texttt{w}/\texttt{sum}。需要一个物理节点代表多个逻辑元素时，解除以下代码的注释：
+
+\begin{itemize}
+  \item \texttt{Node::w} 和 \texttt{Node::sum}；
+  \item \texttt{newNode(val)} 中的默认权重初始化；
+  \item \texttt{newNode(val,w)}；
+  \item \texttt{sum(p)}；
+  \item \texttt{pull} 中的 \texttt{sum} 维护；
+  \item 两个 \texttt{kth\_sum} 重载。
+\end{itemize}
+
+此时各字段含义为：
+
+\begin{itemize}
+  \item \texttt{sz}：子树物理节点数；
+  \item \texttt{w}：当前节点代表的逻辑元素数；
+  \item \texttt{sum}：子树代表的逻辑元素总数。
+\end{itemize}
+
+普通节点默认 \texttt{w=1}。压缩区间节点可以使用：
+
+\begin{minted}[linenos=false]{cpp}
+int p = t.newNode(value, weight);
+\end{minted}
+
+对应的查询接口为：
+
+\begin{minted}[linenos=false]{cpp}
+pair<int,i64> kth_sum(int p, i64 k);
+pair<int,i64> kth_sum(i64 k);
+\end{minted}
+
+参数 \texttt{k} 是 1-based 逻辑位置。返回值的 \texttt{first} 是命中的 node id，\texttt{second} 是在该节点内部的 0-based 偏移。例如节点值保存连续区间 $[l,r]$ 时：
+
+\begin{minted}[linenos=false]{cpp}
+auto [p, offset] = t.kth_sum(k);
+int value = t.t[p].val.l + offset;
+\end{minted}
+
+如果同时启用 lazy，需要再解除 \texttt{kth\_sum} 内部 \texttt{push(p)} 的注释。
+
+\paragraph*{复杂度}
+
+设物理节点数为 $n$：
+
+\begin{itemize}
+  \item \texttt{split}、\texttt{merge}：期望 $O(\log n)$；
+  \item \texttt{push\_back}、\texttt{insert}、\texttt{erase}、\texttt{query}、\texttt{rank}：期望 $O(\log n)$；
+  \item \texttt{apply}：期望 $O(\log n)$；
+  \item \texttt{kth\_sum}：期望 $O(\log n)$。
+\end{itemize}
+
+Treap 退化时，上述操作最坏为 $O(n)$。

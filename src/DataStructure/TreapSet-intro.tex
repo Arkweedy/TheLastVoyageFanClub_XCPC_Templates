@@ -1,0 +1,12 @@
+该 Treap 用于维护多重集。可以加入区间查询逻辑：先拆出值域区间 $[L,R]$，再查询对应的聚合值。
+
+函数的默认操作对象是第一个 \texttt{insert} 节点所在的 Treap。也可以手动建树，只需用 \texttt{newNode} 创建一个节点作为根；各类操作也都可以显式指定根。
+
+\begin{itemize}
+  \item \texttt{merge} 用于合并值域不相交的 Treap。
+  \item \texttt{unite} 用于合并任意两棵 Treap。设两棵树的不同 key 数量为 $m\le n$，期望复杂度为 $O\!\left(m\log\!\left(\frac{n}{m}+1\right)\right)$，可以近似理解为 $O(n)$。
+  \item 进行查询操作前，需要确保树非空。
+  \item \texttt{sz} 的类型可以按需改成 \texttt{i64}。
+  \item 模板预留了 \texttt{push}/\texttt{apply} 位置；需要整体修改 key 或维护聚合值时，按题目扩展。
+  \item \texttt{lower\_bound}/\texttt{upper\_bound}/\texttt{prev}/\texttt{next} 默认使用 \texttt{split}/\texttt{merge}，代码末尾预留了 walk 查询备选。
+\end{itemize}

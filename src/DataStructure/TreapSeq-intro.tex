@@ -1,0 +1,7 @@
+支持单点查询（区间聚合值查询也可以实现）、区间操作（LazyTag：加、翻转等），以及删除、平移等操作。
+
+建树可以使用笛卡尔树的建法做到 $O(n)$（还不会），或者逐个使用 \texttt{push\_back} 插入。
+
+所使用的 \texttt{rk} 是 0-based，与数组下标对齐。
+
+模板支持查询节点的 rank。如果可以维护从 \texttt{val} 到 \texttt{node id} 的映射，就能先通过 \texttt{val} 查询 rank，再按值操作序列，例如把某个 \texttt{val} 移动到某个 rank，或交换两个 \texttt{val}。这在所维护的序列是排列时非常好用，因为一般不会改变很多 \texttt{val} 与节点的对应关系。需要注意：如果存在影响 rank 的 lazy tag，查询节点 rank 前必须先把根到该节点路径上的标记下传。

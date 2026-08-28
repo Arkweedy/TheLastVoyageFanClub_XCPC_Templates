@@ -1,0 +1,165 @@
+\paragraph*{接口使用说明}
+
+\textbf{基本约定}
+
+\begin{itemize}
+  \item 每个不同的 \texttt{key} 只对应一个物理节点，\texttt{cnt} 记录该 \texttt{key} 的出现次数。
+  \item \texttt{sz} 维护子树中计入重数后的元素总数，而不是不同 \texttt{key} 的数量。
+  \item \texttt{rt} 是默认操作的根，空树为 \texttt{0}，\texttt{t[0]} 是空节点。
+  \item 默认包装接口操作 \texttt{rt}；带 \texttt{int \&root} 的接口可以操作同一节点池中的其他独立根。
+  \item 所有比较按照 \texttt{T} 的 \texttt{<} 和 \texttt{>} 进行。
+\end{itemize}
+
+\paragraph*{建树与节点接口}
+
+\begin{itemize}
+  \item \texttt{Treap()}：创建空 Treap。
+  \item \texttt{Treap(n)}：创建空 Treap，并为节点池预留容量。
+  \item \texttt{newNode()}：分配一个尚未初始化为有效元素的节点。
+  \item \texttt{newNode(key)}：创建 \texttt{key} 节点，初始 \texttt{cnt=sz=1}。
+  \item \texttt{newNode(key,cnt)}：创建重数为 \texttt{cnt} 的 \texttt{key} 节点。
+  \item \texttt{sz(p)}：返回子树中计入重数的元素总数。
+  \item \texttt{pull(p)}：根据 \texttt{cnt} 和左右子树重算 \texttt{sz}。
+\end{itemize}
+
+通常直接使用默认根包装：
+
+\begin{minted}[linenos=false]{cpp}
+Treap<int> t(q + 1);
+t.insert(x);
+\end{minted}
+
+需要维护多棵树时，在同一个 \texttt{Treap} 对象中保存多个根：
+
+\begin{minted}[linenos=false]{cpp}
+Treap<int> t;
+int a = 0, b = 0;
+t.insertRoot(a, x);
+t.insertRoot(b, y);
+\end{minted}
+
+\paragraph*{值域拆分与合并}
+
+\begin{minted}[linenos=false]{cpp}
+pair<int,int> split_less(int p, const T& key);
+\end{minted}
+
+\texttt{split\_less} 返回的左树包含所有严格小于给定 \texttt{key} 的节点，右树包含所有大于等于该 \texttt{key} 的节点。
+
+\begin{minted}[linenos=false]{cpp}
+pair<int,int> split_leq(int p, const T& key);
+\end{minted}
+
+\texttt{split\_leq} 返回的左树包含所有小于等于给定 \texttt{key} 的节点，右树包含所有严格大于该 \texttt{key} 的节点。
+
+\begin{minted}[linenos=false]{cpp}
+int merge(int a, int b);
+\end{minted}
+
+\texttt{merge} 合并两棵值域严格不相交的 Treap。允许参数顺序相反，但必须满足一棵树的全部 \texttt{key} 严格小于另一棵树的全部 \texttt{key}。\texttt{merge} 不会合并相同 \texttt{key} 的节点。
+
+\begin{minted}[linenos=false]{cpp}
+int unite(int a, int b);
+\end{minted}
+
+\texttt{unite} 合并同一节点池中两棵任意值域的独立 Treap，相同 \texttt{key} 的 \texttt{cnt} 会相加。调用后应只继续使用返回的新根：
+
+\begin{minted}[linenos=false]{cpp}
+int root = t.unite(a, b);
+\end{minted}
+
+设两棵树的不同 \texttt{key} 数量为 $m\le n$，\texttt{unite} 的期望复杂度为 $O\!\left(m\log\!\left(\frac{n}{m}+1\right)\right)$；比赛时可以先近似理解为 $O(n)$ 级别的整树合并。
+
+\paragraph*{插入与删除}
+
+\begin{itemize}
+  \item \texttt{insertRoot(root,x)}：向指定根插入一个 \texttt{x}，返回对应节点编号。
+  \item \texttt{insertRoot(root,x,c)}：向指定根加入 \texttt{c} 个 \texttt{x}。
+  \item \texttt{erase(root,x)}：从指定根删除 \texttt{x} 的全部副本。
+  \item \texttt{extract(root,x)}：从指定根删除 \texttt{x} 的一个副本。
+  \item \texttt{insert(x)}：对默认根插入一个 \texttt{x}。
+  \item \texttt{insert(x,c)}：对默认根加入 \texttt{c} 个 \texttt{x}。
+  \item \texttt{erase(x)}：从默认根删除 \texttt{x} 的全部副本。
+  \item \texttt{extract(x)}：从默认根删除 \texttt{x} 的一个副本。
+\end{itemize}
+
+\texttt{erase} 和 \texttt{extract} 沿用 \texttt{std::multiset} 式区分：\texttt{erase(x)} 删除全部 \texttt{x}，\texttt{extract(x)} 删除一个 \texttt{x}。
+
+\paragraph*{rank 与顺序统计}
+
+\begin{itemize}
+  \item \texttt{lower\_bound(root,x)}：0-based，返回指定树中严格小于 \texttt{x} 的元素总数。
+  \item \texttt{upper\_bound(root,x)}：0-based，返回指定树中小于等于 \texttt{x} 的元素总数。
+  \item \texttt{kth(root,k)}：1-based，返回指定树的第 \texttt{k} 小。
+  \item \texttt{prev(root,x)}：返回严格小于 \texttt{x} 的最大 \texttt{key}。
+  \item \texttt{next(root,x)}：返回严格大于 \texttt{x} 的最小 \texttt{key}。
+  \item \texttt{lower\_bound(x)}、\texttt{upper\_bound(x)}：以上两个排名查询的默认根版本，均为 0-based。
+  \item \texttt{kth(k)}：第 $k$ 小查询的默认根版本，\texttt{k} 为 1-based。
+  \item \texttt{operator[](i)}：0-based，返回默认树的第 \texttt{i} 小。
+  \item \texttt{prev(x)}、\texttt{next(x)}：前驱、后继查询的默认根版本。
+\end{itemize}
+
+查询 \texttt{x} 在多重集中的重数：
+
+\begin{minted}[linenos=false]{cpp}
+int cnt = t.upper_bound(x) - t.lower_bound(x);
+\end{minted}
+
+查询题目中常见的 1-based 排名：
+
+\begin{minted}[linenos=false]{cpp}
+int rank = t.lower_bound(x) + 1;
+\end{minted}
+
+两种第 $k$ 小写法：
+
+\begin{minted}[linenos=false]{cpp}
+T a = t.kth(k); // k为1-based
+T b = t[k - 1]; // 下标为0-based
+\end{minted}
+
+\paragraph*{可选 lazy 扩展}
+
+默认代码不启用 \texttt{push}/\texttt{apply}。需要类似 702F 的整棵 \texttt{key} 修改和答案标记时，解除以下代码的注释：
+
+\begin{itemize}
+  \item \texttt{Node::res}、\texttt{Node::ktag}、\texttt{Node::rtag}；
+  \item \texttt{push} 和 \texttt{apply}；
+  \item \texttt{merge}、\texttt{split\_less}、\texttt{split\_leq}、\texttt{unite} 中的 \texttt{push}；
+  \item 如果查询过程中也可能存在未下传标记，再解除 \texttt{kth} 中的 \texttt{push(p)}。
+\end{itemize}
+
+当前注释示例针对 \texttt{T=pair<int,int>}：\texttt{key.first += a}，同时 \texttt{res += b}。使用其他 \texttt{T} 或其他聚合值时，应按题修改 \texttt{Node} 字段和 \texttt{apply} 内容。整体修改 \texttt{key} 后，必须保证子树内部的 BST 顺序仍然成立。
+
+\paragraph*{walk 查询备选}
+
+默认 \texttt{lower\_bound}、\texttt{upper\_bound}、\texttt{prev}、\texttt{next} 通过 \texttt{split}/\texttt{merge} 实现。代码中的注释区域还提供：
+
+\begin{itemize}
+  \item \texttt{lower\_bound\_walk}；
+  \item \texttt{upper\_bound\_walk}；
+  \item \texttt{prev\_walk}；
+  \item \texttt{next\_walk}。
+\end{itemize}
+
+解除注释后可以直接沿 BST 查询，减少拆树和合树的常数：
+
+\begin{minted}[linenos=false]{cpp}
+int rank = t.lower_bound_walk(t.rt, x);
+T pre = t.prev_walk(t.rt, x);
+\end{minted}
+
+walk 版本与默认版本的返回语义完全一致。如果同时启用 lazy，还需要解除各 walk 函数内部 \texttt{push(p)} 的二层注释。
+
+\paragraph*{复杂度}
+
+设当前不同 \texttt{key} 数量为 $n$：
+
+\begin{itemize}
+  \item \texttt{insert}、\texttt{erase}、\texttt{extract}：期望 $O(\log n)$；
+  \item \texttt{lower\_bound}、\texttt{upper\_bound}、\texttt{kth}、\texttt{prev}、\texttt{next}：期望 $O(\log n)$；
+  \item \texttt{split\_less}、\texttt{split\_leq}、\texttt{merge}：期望 $O(\log n)$；
+  \item \texttt{unite}：期望 $O\!\left(m\log\!\left(\frac{n}{m}+1\right)\right)$，其中 $m\le n$。
+\end{itemize}
+
+Treap 退化时，单次普通操作最坏为 $O(n)$。
