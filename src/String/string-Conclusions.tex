@@ -23,7 +23,7 @@
 
 \subsubsection*{子串最小后缀}
 \noindent
-设$s[p..n]$是$s[i..n]$, $(l \leq i \leq r)$中最小者, 则minsuf(l, r)等于$s[p..r]$的最短非空 border. minsuf(l, r) = min\{$s[p..r]$, minsuf(r − $2^k$ + 1, r)\}, $(2^k < r − l + 1 \leq 2^{k+1})$. 
+设$s[p..n]$是$s[i..n]$, $(l \leq i \leq r)$中最小者, 则minsuf(l, r)等于$s[p..r]$的最短非空 border. minsuf(l, r) = min\{$s[p..r]$, minsuf($r - 2^k + 1$, r)\}, $(2^k < r - l + 1 \leq 2^{k+1})$.
 
 \subsubsection*{子串最大后缀}
 \noindent

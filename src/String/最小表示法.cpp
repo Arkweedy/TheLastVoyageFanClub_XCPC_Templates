@@ -15,11 +15,12 @@ int min_pos(vector<int> a) { // 0-based
 int Duval(const string& s)//return begin of min expression
 {
     int n = s.length();
+    string t = s + s;
     int last = -1;
     for(int i = 0;i < n;){
         int j = i + 1, k = i;
-        while(j < n && s[k] <= s[j]){
-            if(s[j] > s[k])k = i;
+        while(j < 2 * n && t[k] <= t[j]){
+            if(t[j] > t[k])k = i;
             else k++;
             j++;
         }
@@ -28,7 +29,6 @@ int Duval(const string& s)//return begin of min expression
         while(i <= k){//i + j - k <= j
             i += j - k;
         }
-        if(j == n)break;//find last but not empty
     }
     return last;
 };
