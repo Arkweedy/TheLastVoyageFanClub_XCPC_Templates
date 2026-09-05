@@ -1,0 +1,85 @@
+\paragraph*{接口使用说明}
+
+该实现用前缀版本主席树求静态序列的区间第 $k$ 小。线段树坐标不是原值，
+而是离散化后的排名；每个版本保存对应前缀在各排名上的出现次数。
+
+\textbf{基本约定}
+
+\begin{itemize}
+  \item 线段树值域为 $[0,M)$，离散排名和数组下标均为 0-based。
+  \item \texttt{rt[ver]} 是版本 \texttt{ver} 的根。正常构造后，
+        \texttt{rt[0]} 表示尚未加入任何元素的版本。
+  \item 前缀构造时，\texttt{rt[i]} 表示原序列前 $i$ 个元素的频数；
+        因而原数组闭区间 $[l,r]$ 的频数等于
+        \texttt{rt[r+1]} 与 \texttt{rt[l]} 的差。
+  \item \texttt{kth} 的 \texttt{k} 为 1-based，返回值是 0-based
+        离散排名，不是原值；需要再用离散化数组反查。
+\end{itemize}
+
+\textbf{接口}
+
+\begin{itemize}
+  \item \texttt{segtree(M,init)}：建立坐标域 $[0,M)$ 和版本 0。
+        \texttt{init[x]} 是版本 0 在坐标 \texttt{x} 上的初始权值；
+        求静态区间第 $k$ 小时应传入全零数组。
+  \item \texttt{apply(ver,x,delta)}：从版本 \texttt{ver} 出发，
+        在坐标 \texttt{x} 上增加 \texttt{delta}，并把新版本追加到
+        \texttt{rt} 末尾；旧版本不变。该接口不返回版本号，新版本号为
+        调用后的 \texttt{rt.size()-1}。
+  \item \texttt{query(ver,x)}：返回版本 \texttt{ver} 在坐标
+        \texttt{x} 上的单点权值，不是区间查询。
+  \item \texttt{kth(l,r,k)}：在前缀版本约定下，查询原数组 0-based
+        闭区间 $[l,r]$ 的第 \texttt{k} 小，返回离散排名。
+\end{itemize}
+
+\begin{quote}
+\textbf{注意：}单参数构造器 \texttt{segtree(n)} 只预留容量，不会建立
+节点或版本 0，不能在其后直接调用 \texttt{apply}、\texttt{query} 或
+\texttt{kth}。本条目的标准用法应使用双参数构造器。
+\end{quote}
+
+\textbf{标准用法}
+
+\begin{minted}[linenos=false]{cpp}
+int N = a.size();
+vector<int> values = a;
+sort(values.begin(), values.end());
+values.erase(unique(values.begin(), values.end()), values.end());
+
+vector<int> rank(N);
+for (int i = 0; i < N; ++i) {
+    rank[i] = lower_bound(values.begin(), values.end(), a[i])
+            - values.begin();
+}
+
+// 当前实现以N同时作为坐标域上界和容量估计
+segtree pst(N, vector<int>(N, 0));
+for (int i = 0; i < N; ++i) {
+    pst.apply(i, rank[i], 1); // 追加版本i+1
+}
+
+// L、R为0-based闭区间，K为1-based
+int answer = values[pst.kth(L, R, K)];
+\end{minted}
+
+\textbf{前置条件}
+
+\begin{itemize}
+  \item 构造时 $M>0$，且 \texttt{init.size()} 不小于 $M$。
+  \item 调用时版本号和坐标均合法，即
+        $0\le\texttt{ver}<\texttt{rt.size()}$ 且
+        $0\le\texttt{x}<M$。
+  \item 调用 \texttt{kth(l,r,k)} 前，版本必须按
+        \texttt{apply(i,rank[i],1)} 顺序构成前缀链，并满足
+        $0\le l\le r$、$r+1<\texttt{rt.size()}$、
+        $1\le k\le r-l+1$。
+  \item 若从旧版本分叉或加入负权值，只有在右版本减左版本的逐点频数均
+        非负且总频数不少于 $k$ 时，版本差上的第 $k$ 小才有意义。
+\end{itemize}
+
+\textbf{复杂度}
+
+设线段树坐标数为 $M$、累计更新次数为 $U$。初始完整建树需要
+$O(M)$ 时间和节点；每次 \texttt{apply}、\texttt{query} 和
+\texttt{kth} 均为 $O(\log M)$，总节点数为
+$O(M+U\log M)$。原序列离散化另需 $O(N\log N)$ 时间。
