@@ -60,6 +60,10 @@ _minted*/
 .cph/
 **/.cph/
 
+# Python caches
+__pycache__/
+*.pyc
+
 # Local compile outputs
 *.exe
 *.obj
