@@ -10,6 +10,7 @@
 - 打印可读性优先：避免代码越界、字号过小、低对比度配色和不必要的空白页。
 - 维护成本要低：纯代码模板继续保存在外部源码文件中，通过 `minted` 引入。
 - `main.tex` 只负责文档总装配，不在其中加入具体算法条目或大段公式。
+- 竞赛草稿纸是独立打印成果，不接入 `main.pdf`；仓库只跟踪其生成源码，根目录 PDF 作为 Release 产物。
 - 不要因为文件当前未被引用就自行删除；归档和删除必须有明确任务依据。
 
 ## 2. 渐进式读取顺序
@@ -34,6 +35,7 @@
 | 调整代码块样式 | `tex/config/minted.tex` | `tex/config/template-macros.tex` |
 | 调整 C++ 彩虹括号 | `tex/config/rainbow-brackets.tex` | `scripts/rainbow_brackets.py`、`scripts/build.ps1` |
 | 修改封面、成员或签名页 | `cover/src/cover.tex`、`cover/src/signature.tex` | `cover/assets/`、`tex/config/frontmatter.tex` |
+| 修改或生成竞赛草稿纸 | `printables/scratch-paper/README.md` | `printables/scratch-paper/generate_scratch_paper.py`、`.gitignore` |
 | 排查编译或生成物 | `scripts/build.ps1` | `.gitignore`、相关 LaTeX 配置 |
 | 延续已有维护计划 | `TODO.md` | 对应章节清单和源码；先确认条目仍符合当前意图 |
 | 发布 PDF | `README.md` 的“发布 PDF” | GitHub Release，不修改构建布局 |
@@ -67,8 +69,10 @@
 - `tex/config/rainbow-brackets.tex`：C++ 彩虹括号开关与打印配色。
 - `tex/config/frontmatter.tex`：封面、两张签名页、目录，以及正文从第 1 页开始的流程。
 - `tex/config/minted.tex`：各语言代码块样式。
-- `scripts/build.ps1`：唯一推荐的日常完整构建入口。
+- `scripts/build.ps1`：主模板唯一推荐的日常完整构建入口。
 - `scripts/rainbow_brackets.py`：为 `src/**/*.cpp` 生成临时彩虹括号版本。
+- `printables/scratch-paper/generate_scratch_paper.py`：生成独立草稿纸，最终输出为根目录 `xcpc-scratch-paper.pdf`。
+- `printables/scratch-paper/README.md`：草稿纸页序、打印方式、依赖和发布约定。
 
 不要直接覆写 `\section`、`\subsection` 或全局 `minted` 行为；需要全局行为时修改对应配置文件，并验证所有受影响章节。
 
@@ -112,7 +116,7 @@
 
 ## 8. 构建与排版验证
 
-日常完整构建：
+主模板日常完整构建：
 
 ```powershell
 .\scripts\build.ps1
@@ -126,17 +130,28 @@
 
 构建脚本会编译封面和签名页各两遍、生成全部 C++ 彩虹括号文件，再编译主文档两遍。不要再手工追加额外编译轮次。默认构建结束会清理辅助文件和 `build/`；`-KeepAux` 产生的调试文件在任务结束前应恢复到合理状态。
 
+独立草稿纸使用自己的生成入口：
+
+```powershell
+python .\printables\scratch-paper\generate_scratch_paper.py
+```
+
+脚本只保留根目录 `xcpc-scratch-paper.pdf`；用于渲染检查的 PNG 位于系统临时目录并自动清理。不要新建或恢复 `output/` 作为草稿纸产物目录。
+
 以下检查只确认材料被正确引用并呈现在 PDF 中，不包含算法正确性验证：
 
 - 仅改 Markdown：检查链接、命令、路径和 `git diff`，通常不必重建 PDF。
 - 仅录入但尚未接入正文的源码：检查目标路径、文件编码和 `git diff`，不要求语法、样例或 checker 测试。
 - 改源码引用、章节清单、说明 `.tex` 或任意排版配置：运行 `.\scripts\build.ps1`。
 - 改页码、目录、索引、封面、代码块样式或彩虹括号：完整构建后检查相关 PDF 页面；不能只以命令退出码作为排版验收。
+- 改草稿纸源码：运行草稿纸生成脚本，确认 70 页 A4、七种样式各 10 面、PDF 书签和首尾页渲染；不要求重建 `main.pdf`。
 - 正文第一页仍应是 `Geometry` 的 Page 1；封面、两张签名页和目录不参与正文页码。
 
 ## 9. 文件卫生与 Git 边界
 
-- 不提交根目录 `main.pdf`、`cover/dist/`、`build/`、`_minted*`、LaTeX 辅助文件或本地 IDE 配置。
+- 不提交根目录 `main.pdf`、`xcpc-scratch-paper.pdf`、`cover/dist/`、`build/`、`_minted*`、LaTeX 辅助文件或本地 IDE 配置。
+- 草稿纸只跟踪 `printables/scratch-paper/` 下的生成源码和说明；不跟踪预览 PNG、中间 PDF 或 `output/` 目录。
+- `main.pdf` 与 `xcpc-scratch-paper.pdf` 都通过 GitHub Release 发布，不进入 Git 历史。
 - `src/archive/` 保存未采用、被替换或仅供参考的材料；默认不编辑、不接入正文。彩虹脚本目前会递归扫描整个 `src/`，所以使用 `-KeepAux` 时可能出现 `build/rainbow/src/archive/` 临时副本，这不表示归档内容进入了 PDF。
 - 不新建按贡献者命名的活动源码目录；新模板按知识点归类。需要保留来源时在代码注释或提交说明中记录。
 - 不使用绝对本机路径，不引入比赛现场或构建机器必须联网才能获得的资源。

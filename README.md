@@ -4,13 +4,13 @@
 
 封面是 $\textcolor{#00BFFF}{Aqours\ 渡边曜}$
 
-如果你只是想使用这份模板，优先从 GitHub Releases 下载已经编译好的 [`main.pdf`](https://github.com/Arkweedy/TheLastVoyageFanClub_XCPC_Templates/releases/latest/download/main.pdf)；如果你想修改内容、替换封面或重新排版，再阅读后面的编译与维护说明。
+如果你只是想使用这份模板，优先从 GitHub Releases 下载已经编译好的 [`main.pdf`](https://github.com/Arkweedy/TheLastVoyageFanClub_XCPC_Templates/releases/latest/download/main.pdf)；独立的竞赛草稿纸从 [`xcpc-scratch-paper.pdf`](https://github.com/Arkweedy/TheLastVoyageFanClub_XCPC_Templates/releases/latest/download/xcpc-scratch-paper.pdf) 下载。如果你想修改内容、替换封面或重新排版，再阅读后面的编译与维护说明。
 
 ## 怎么使用
 
 推荐使用方式：
 
-1. 从 Releases 下载最新的 `main.pdf`。
+1. 从 Releases 下载最新的 `main.pdf`，按需同时下载 `xcpc-scratch-paper.pdf`。
 2. 按比赛规则打印并装订。
 3. 赛前熟悉目录和最后的索引页。
 4. 比赛时优先按索引找关键词，再用页眉页码定位正文。
@@ -40,6 +40,7 @@ tex/sections/            各大章节的条目清单
 src/                     算法模板源码与专题说明
 cover/src/               封面和签名页源码
 cover/assets/            封面使用的图片素材
+printables/scratch-paper/ 草稿纸生成源码和使用说明
 scripts/build.ps1        Windows PowerShell 构建脚本
 scripts/rainbow_brackets.py
                          C++ 代码彩虹括号生成器
@@ -65,6 +66,18 @@ scripts/rainbow_brackets.py
 - 不要在 `main.tex` 里堆具体条目；`main.tex` 只保留文档入口。
 - 标题复杂、含中文或数学符号时，优先沿用现有 `\TemplateSubsection[sort-key]{title}` 写法，保证索引排序稳定。
 - 封面成员、头像、版本号等信息在 `cover/src/cover.tex` 中维护，图片放在 `cover/assets/`。
+
+## 竞赛草稿纸
+
+独立草稿纸包含方格、灰白棋盘、蜂巢、三角网格、普通点阵、等距点阵和笛卡尔坐标七种样式，每种连续 10 面，共 70 页 A4。详细页序和打印说明见 [`printables/scratch-paper/README.md`](printables/scratch-paper/README.md)。
+
+在仓库根目录运行：
+
+```powershell
+python .\printables\scratch-paper\generate_scratch_paper.py
+```
+
+脚本会在根目录生成 `xcpc-scratch-paper.pdf`，并自动清理渲染检查使用的临时 PNG。仓库只跟踪 `printables/scratch-paper/` 下的源码和说明；生成的 PDF 由 `.gitignore` 排除，通过 GitHub Release 发布，不使用 `output/` 目录。
 
 ## 编译
 
@@ -126,10 +139,12 @@ xelatex -shell-escape -synctex=1 -interaction=nonstopmode -halt-on-error -file-l
 
 ```powershell
 $version = "v2.1"
+.\scripts\build.ps1
+python .\printables\scratch-paper\generate_scratch_paper.py
 git tag $version
 git push origin main
 git push origin $version
-gh release create $version main.pdf --title "XCPC Templates $version" --notes "Printable XCPC/ICPC template PDF."
+gh release create $version main.pdf xcpc-scratch-paper.pdf --title "XCPC Templates $version" --notes "Printable XCPC/ICPC template PDFs."
 ```
 
-也可以在 GitHub 网页的 Releases 页面手动创建 release，然后上传根目录生成的 `main.pdf`。
+也可以在 GitHub 网页的 Releases 页面手动创建 release，然后上传根目录生成的 `main.pdf` 和 `xcpc-scratch-paper.pdf`。

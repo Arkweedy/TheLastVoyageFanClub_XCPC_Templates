@@ -51,8 +51,9 @@ _minted*/
 *.pygstyle
 *.minted
 
-# Root document output
+# Root release PDF outputs
 /main.pdf
+/xcpc-scratch-paper.pdf
 /build/
 /cover/dist/
 
