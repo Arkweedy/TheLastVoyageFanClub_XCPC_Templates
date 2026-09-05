@@ -485,6 +485,7 @@ public:
         if(x.size() == 0){
             return vector<int>(0);
         }
+        int query_count = x.size();
         int n = max(x.size(), this->size()); // !!!
         x.resize(n);
         for(int i = 0;i < n;i++){ //norm P - x[i]
@@ -518,6 +519,7 @@ public:
             return;
         };
         work(work, mulT(m[1].inv(n)).trunc(n), 0, n - 1, 1);
+        ans.resize(query_count);
         return ans;
     }
 

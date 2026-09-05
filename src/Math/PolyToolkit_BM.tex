@@ -1,0 +1,60 @@
+\paragraph*{Berlekamp--Massey 与线性递推}
+
+以下接口工作在模素数 \(P\) 的有限域上，输入数列的各项应已规范到
+\([0,P)\)。
+
+设
+\[
+\texttt{c}=\texttt{berlekampMassey(s)},\qquad
+k=\texttt{c.size()}-1.
+\]
+函数返回输入前缀所满足的最短递推。返回多项式采用方便直接求递推项的
+符号约定：
+\[
+c_0=-1\pmod P,\qquad
+s_t=\sum_{j=1}^{k}c_j s_{t-j}\pmod P.
+\]
+因此实际存储的 \texttt{c[0]} 为 \(P-1\)。例如 Fibonacci 数列对应
+\[
+\texttt{c}=(P-1,1,1).
+\]
+
+算法内部维护首项为 \(1\) 的连接多项式
+\[
+C(x)=1+C_1x+\cdots+C_kx^k,
+\qquad
+\sum_{j=0}^{k}C_j s_{t-j}=0.
+\]
+扫描到第 \(t\) 项时计算 discrepancy；若其非零，就用上一次改变递推阶数
+时保存的连接多项式，乘上 discrepancy 之比并平移相应距离，修正当前
+连接多项式。接口最后返回 \(-C\)，从而与
+\texttt{linearRecurrence} 的系数方向一致。
+
+若真实最小递推阶数为 \(k\)，应准备至少前 \(2k\) 项。样本不足时，
+函数仍会返回能解释当前前缀的最短递推，但不能保证它能外推后续项。
+
+求第 \(n\) 项时，取
+\[
+\texttt{a}=(s_0,s_1,\ldots,s_{k-1}),
+\]
+再调用
+\[
+\texttt{linearRecurrence(a,c,n)}.
+\]
+其中 \(n\) 从 \(0\) 开始，\(\texttt{a.size()}=k\)，
+\(\texttt{c.size()}=k+1\)。该函数通过 Bostan--Mori 求生成函数的第
+\(n\) 项，且可以直接使用 \texttt{berlekampMassey} 的返回值。
+若输入前缀全为零，则 BM 返回 \(\{P-1\}\)，即 \(k=0\)；此时所求项
+直接为零，不调用 \texttt{linearRecurrence}。
+
+设输入前缀长度为 \(N\)，BM 的复杂度为
+\[
+O(Nk),
+\]
+最坏为 \(O(N^2)\)，空间复杂度为 \(O(k)\)。已知递推后，
+\texttt{linearRecurrence} 的复杂度为
+\[
+O(M(k)\log n),
+\]
+使用本模板的 NTT 多项式乘法时通常为
+\(O(k\log k\log n)\)。

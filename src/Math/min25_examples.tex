@@ -1,0 +1,141 @@
+\paragraph*{实例化时要替换的量}
+
+套用代码时依次确定
+\[
+f(p),\qquad f(p^c),\qquad f(1),\qquad
+f(p)=\sum_t\lambda_t b_t(p).
+\]
+对每个基函数 \(b_t\)，在第一阶段填写
+\[
+\widetilde B_t(x)=\sum_{i=2}^{x}b_t(i)
+\]
+以及筛转移中的 \(b_t(p)\)；筛完后按线性组合得到
+\[
+F_{\mathbb P}(x)=\sum_{p\le x}f(p).
+\]
+第二阶段只需填写 \(f(p^c)\)、\(f(p^{c+1})\)，最后补回 \(f(1)\)。
+下面四例分别对应训练代码中的
+\texttt{P5325.cpp}、\texttt{P4213.cpp}、\texttt{LOJ6053.cpp} 和
+\texttt{LOJ6682.cpp}。
+
+\paragraph*{P5325}
+
+定义
+\[
+f(p^c)=p^c(p^c-1)=p^{2c}-p^c,
+\qquad f(p)=p^2-p.
+\]
+因此取 \(b_1(p)=p\)、\(b_2(p)=p^2\)，第一阶段初值为
+\[
+\widetilde B_1(x)=\frac{x(x+1)}2-1,\qquad
+\widetilde B_2(x)=\frac{x(x+1)(2x+1)}6-1.
+\]
+筛转移中分别使用 \(b_1(p)=p\)、\(b_2(p)=p^2\)，筛完后拼成
+\[
+F_{\mathbb P}(x)=G_2(x)-G_1(x).
+\]
+第二阶段维护 \(q=p^c\)，填写
+\[
+f(p^c)=q(q-1),\qquad
+f(p^{c+1})=pq(pq-1).
+\]
+本题 \(f(1)=1\)，答案为 \(F(1,0)+1\)。
+
+\paragraph*{P4213}
+
+欧拉函数满足
+\[
+\varphi(p)=p-1,\qquad
+\varphi(p^c)=p^c-p^{c-1}.
+\]
+第一阶段只需 \(b_1(p)=p\)、\(b_2(p)=1\)，对应初值
+\[
+\widetilde B_1(x)=\frac{x(x+1)}2-1,\qquad
+\widetilde B_2(x)=x-1,
+\]
+并拼成
+\[
+\Phi_{\mathbb P}(x)=\sum_{p\le x}p-\pi(x).
+\]
+若维护 \(q=p^c\)，第二阶段填写
+\[
+\varphi(p^c)=q-\frac qp,\qquad
+\varphi(p^{c+1})=pq-q.
+\]
+
+莫比乌斯函数满足
+\[
+\mu(p)=-1,\qquad \mu(p^c)=0\quad(c\ge2).
+\]
+故它只需要质数计数链
+\[
+M_{\mathbb P}(x)=-\pi(x).
+\]
+由于所有高次质数幂的点值均为零，第二阶段不必枚举指数：对每个满足
+\(p_i^2x\le N\) 的质数，只加入
+\[
+-F_\mu(xp_i,i+1).
+\]
+两函数均有 \(f(1)=1\)，所以最后分别补 \(1\)。
+
+\paragraph*{LOJ 6053}
+
+定义
+\[
+f(p^c)=p\mathbin{\mathrm{xor}}c.
+\]
+当 \(c=1\) 时，
+\[
+f(p)=
+\begin{cases}
+p-1,&p\ne2,\\
+3,&p=2.
+\end{cases}
+\]
+因此第一阶段仍只筛 \(\sum p\) 与 \(\pi(x)\)，但素数前缀必须写成
+\[
+F_{\mathbb P}(x)
+=\sum_{p\le x}p-\pi(x)+2\mathbf 1_{x\ge2}.
+\]
+修正项把 \(p=2\) 从错误的 \(2-1=1\) 改为
+\(2\mathbin{\mathrm{xor}}1=3\)；压缩值域取到 \(x=1\) 时该项应为零。
+
+第二阶段直接填写
+\[
+f(p^c)=p\mathbin{\mathrm{xor}}c,\qquad
+f(p^{c+1})=p\mathbin{\mathrm{xor}}(c+1).
+\]
+本题 \(f(1)=1\)，答案为 \(F(1,0)+1\)。
+
+\paragraph*{LOJ 6682}
+
+记 \(\tau(n)\) 为约数个数。质数幂处有
+\[
+\tau(p^c)=c+1,\qquad
+\tau^2(p^c)=(c+1)^2.
+\]
+特别地，
+\[
+\tau(p)=2,\qquad \tau^2(p)=4.
+\]
+所以两个函数的第一阶段都只需要同一条质数计数链 \(\pi(x)\)，素数前缀为
+\[
+T_{\mathbb P}(x)=2\pi(x),\qquad
+Q_{\mathbb P}(x)=4\pi(x).
+\]
+第二阶段分别填写
+\[
+\begin{aligned}
+\tau(p^c)&=c+1,&
+\tau(p^{c+1})&=c+2,\\
+\tau^2(p^c)&=(c+1)^2,&
+\tau^2(p^{c+1})&=(c+2)^2.
+\end{aligned}
+\]
+若目标为
+\[
+\sum_{i=1}^{N}\binom{\tau(i)}2
+=\frac12\sum_{i=1}^{N}\bigl(\tau^2(i)-\tau(i)\bigr),
+\]
+则两边的 \(f(1)=1\) 正好相消，可以直接用两个不含 \(f(1)\) 的递归主体
+作差后除以 \(2\)。
