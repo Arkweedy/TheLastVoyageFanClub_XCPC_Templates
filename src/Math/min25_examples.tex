@@ -1,141 +1,408 @@
-\paragraph*{实例化时要替换的量}
+\paragraph*{四道实例怎样套进模板}
 
-套用代码时依次确定
-\[
-f(p),\qquad f(p^c),\qquad f(1),\qquad
-f(p)=\sum_t\lambda_t b_t(p).
-\]
-对每个基函数 \(b_t\)，在第一阶段填写
-\[
-\widetilde B_t(x)=\sum_{i=2}^{x}b_t(i)
-\]
-以及筛转移中的 \(b_t(p)\)；筛完后按线性组合得到
-\[
-F_{\mathbb P}(x)=\sum_{p\le x}f(p).
-\]
-第二阶段只需填写 \(f(p^c)\)、\(f(p^{c+1})\)，最后补回 \(f(1)\)。
-下面四例分别对应训练代码中的
-\texttt{P5325.cpp}、\texttt{P4213.cpp}、\texttt{LOJ6053.cpp} 和
-\texttt{LOJ6682.cpp}。
+下面每题都先写清要求计算的量，再按模板中真正需要替换的六个位置给出代码：
+
+\begin{enumerate}
+    \item 结果类型 \texttt{Z} 与函数返回类型；
+    \item 普通整数前缀和的初值 \texttt{g0/g1/h0/h1}；
+    \item 枚举质数时的权值 \texttt{gp/hp}；
+    \item 筛完后如何拼出 \texttt{fprime0/fprime1}；
+    \item 第二阶段如何填写 \(f(p^c)\) 与 \(f(p^{c+1})\)；
+    \item 最终是否补回 \(f(1)\)。
+\end{enumerate}
+
+第一阶段的两组筛转移和第二阶段的公共递归框架仍使用前面的模板；以下代码只
+展示每题应替换或增删的部分。
 
 \paragraph*{P5325}
 
-定义
+\textbf{求解目标}\quad 给定积性函数 \(f\)，规定
 \[
-f(p^c)=p^c(p^c-1)=p^{2c}-p^c,
-\qquad f(p)=p^2-p.
+f(1)=1,\qquad f(p^c)=p^c(p^c-1)
 \]
-因此取 \(b_1(p)=p\)、\(b_2(p)=p^2\)，第一阶段初值为
+（\(p\) 为质数，\(c\ge1\)）。给定 \(1\le n\le10^{10}\)，求
 \[
-\widetilde B_1(x)=\frac{x(x+1)}2-1,\qquad
-\widetilde B_2(x)=\frac{x(x+1)(2x+1)}6-1.
+\sum_{i=1}^{n}f(i)\pmod {10^9+7}.
 \]
-筛转移中分别使用 \(b_1(p)=p\)、\(b_2(p)=p^2\)，筛完后拼成
-\[
-F_{\mathbb P}(x)=G_2(x)-G_1(x).
-\]
-第二阶段维护 \(q=p^c\)，填写
-\[
-f(p^c)=q(q-1),\qquad
-f(p^{c+1})=pq(pq-1).
-\]
-本题 \(f(1)=1\)，答案为 \(F(1,0)+1\)。
 
+质数处
+\[
+f(p)=p^2-p,
+\]
+所以第一阶段分别筛 \(\sum p\) 与 \(\sum p^2\)。
+
+\textbf{位置 1--3：类型、初值和筛转移权}
+
+\begin{minted}{cpp}
+constexpr int P = 1000000007;
+using Z = MInt<P>;
+
+vector<Z> g0(m + 1), g1(m + 1);
+vector<Z> h0(m + 1), h1(m + 1);
+for (int i = 1; i <= m; i++) {
+    ll x = n / i;
+    g0[i] = Z(i) * (i + 1) / 2 - 1;
+    g1[i] = Z(x) * (x + 1) / 2 - 1;
+    h0[i] = Z(i) * (i + 1) * (2 * i + 1) / 6 - 1;
+    h1[i] = Z(x) * (x + 1) * (2 * x + 1) / 6 - 1;
+}
+
+// 写在 for (auto p : prime) 内：
+Z gp = p;
+Z hp = Z(p) * p;
+\end{minted}
+
+这里的 \(-1\) 是从普通幂和中删掉 \(i=1\)，不是 \(f(1)\)。
+
+\textbf{位置 4：拼质数前缀}
+
+\begin{minted}{cpp}
+vector<Z> fprime0(m + 1), fprime1(m + 1);
+for (int i = 1; i <= m; i++) {
+    fprime0[i] = h0[i] - g0[i];
+    fprime1[i] = h1[i] - g1[i];
+}
+\end{minted}
+
+\textbf{位置 5--6：质数幂递归与返回}
+
+\begin{minted}{cpp}
+// pc 始终保存数值 p^c。
+res += Z(pc) * (pc - 1) * self(self, x * pc, i + 1)
+     + Z(pc * p) * (pc * p - 1);
+
+return F(F, 1, 0) + 1;
+\end{minted}
+
+\textbf{注意}
+
+\begin{itemize}
+    \item \texttt{pc} 同时参与循环终止和下一层的 \texttt{x*pc}，不要拿它保存
+          \(f(p^c)\)。
+    \item 循环条件已经保证 \(\texttt{pc*p}\le n\)，本题范围内可放入
+          \texttt{long long}。
+    \item 最后的 \(+1\) 才是在补 \(f(1)=1\)。
+\end{itemize}
+
+\Needspace{28\baselineskip}
 \paragraph*{P4213}
 
-欧拉函数满足
+\textbf{求解目标}\quad 每组给定 \(1\le n<2^{31}\)，同时求两个精确整数
 \[
-\varphi(p)=p-1,\qquad
+\Phi(n)=\sum_{i=1}^{n}\varphi(i),\qquad
+M(n)=\sum_{i=1}^{n}\mu(i),
+\]
+并按 \(\Phi(n),M(n)\) 的顺序输出，不取模。这里
+\(\varphi(i)\) 是欧拉函数；\(\mu(1)=1\)，含平方质因子时 \(\mu=0\)，
+否则 \(\mu=(-1)^{\omega(i)}\)。
+
+\textbf{位置 1--3：返回类型与共同的第一阶段}
+
+\begin{minted}{cpp}
+using Z = long long;
+
+pair<Z, Z> min_25(ll n) {
+    int m = floorl(sqrtl(n));
+    vector<Z> g0(m + 1), g1(m + 1); // sum p
+    vector<Z> h0(m + 1), h1(m + 1); // prime count
+
+    for (int i = 1; i <= m; i++) {
+        ll x = n / i;
+        g0[i] = Z(i) * (i + 1) / 2 - 1;
+        g1[i] = Z(x) * (x + 1) / 2 - 1;
+        h0[i] = Z(i) - 1;
+        h1[i] = Z(x) - 1;
+    }
+
+    // 写在 for (auto p : prime) 内：
+    Z gp = p;
+    Z hp = 1;
+    // 后接模板原有的 g/h 两组筛转移。
+\end{minted}
+
+训练代码中的一行旧注释把 \(g,h\) 说反了；应以实际代码为准：
+\texttt{g} 链筛 \(\sum p\)，\texttt{h} 链筛 \(\pi(x)\)。
+
+\textbf{位置 4：同一批结果拼出两种质数前缀}
+
+\begin{minted}{cpp}
+vector<Z> mu0(m + 1), mu1(m + 1);
+vector<Z> phi0(m + 1), phi1(m + 1);
+for (int i = 1; i <= m; i++) {
+    mu0[i] = -h0[i];
+    mu1[i] = -h1[i];
+    phi0[i] = g0[i] - h0[i];
+    phi1[i] = g1[i] - h1[i];
+}
+\end{minted}
+
+\textbf{位置 5：\(\mu\) 的完整第二阶段}
+
+\(\mu(p)=-1\)，而 \(\mu(p^c)=0\ (c\ge2)\)，所以高次质数幂循环整个删掉：
+
+\begin{minted}{cpp}
+auto Mu = [&](auto &&self, ll x, int k) -> Z {
+    Z res = 0;
+    if (k > 0) res -= mu0[prime[k - 1]];
+    if (x <= m) res += mu1[x]; else res += mu0[n / x];
+
+    for (int i = k, p = prime[i];
+         1LL * p * p * x <= n;
+         ++i, p = prime[i]) {
+        res -= self(self, x * p, i + 1);
+    }
+    return res;
+};
+\end{minted}
+
+\textbf{位置 5：\(\varphi\) 的完整第二阶段}
+
+\[
 \varphi(p^c)=p^c-p^{c-1}.
 \]
-第一阶段只需 \(b_1(p)=p\)、\(b_2(p)=1\)，对应初值
-\[
-\widetilde B_1(x)=\frac{x(x+1)}2-1,\qquad
-\widetilde B_2(x)=x-1,
-\]
-并拼成
-\[
-\Phi_{\mathbb P}(x)=\sum_{p\le x}p-\pi(x).
-\]
-若维护 \(q=p^c\)，第二阶段填写
-\[
-\varphi(p^c)=q-\frac qp,\qquad
-\varphi(p^{c+1})=pq-q.
-\]
 
-莫比乌斯函数满足
-\[
-\mu(p)=-1,\qquad \mu(p^c)=0\quad(c\ge2).
-\]
-故它只需要质数计数链
-\[
-M_{\mathbb P}(x)=-\pi(x).
-\]
-由于所有高次质数幂的点值均为零，第二阶段不必枚举指数：对每个满足
-\(p_i^2x\le N\) 的质数，只加入
-\[
--F_\mu(xp_i,i+1).
-\]
-两函数均有 \(f(1)=1\)，所以最后分别补 \(1\)。
+\Needspace{24\baselineskip}
+\begin{minted}{cpp}
+auto Phi = [&](auto &&self, ll x, int k) -> Z {
+    Z res = 0;
+    if (k > 0) res -= phi0[prime[k - 1]];
+    if (x <= m) res += phi1[x];
+    else res += phi0[n / x];
+
+    for (int i = k, p = prime[i];
+         1LL * p * p * x <= n;
+         ++i, p = prime[i]) {
+        ll pc = p;
+        for (int c = 1; pc * p * x <= n; c++, pc *= p) {
+            res += (pc - pc / p) * self(self, x * pc, i + 1)
+                 + (pc * p - pc);
+        }
+    }
+    return res;
+};
+\end{minted}
+
+\textbf{位置 6：返回顺序}
+
+\begin{minted}{cpp}
+return {Phi(Phi, 1, 0) + 1, Mu(Mu, 1, 0) + 1};
+}
+\end{minted}
+
+\textbf{注意}
+
+\begin{itemize}
+    \item 这里使用 \texttt{long long}，不能继续使用模整数。
+    \item 两个递归共用同一次第一阶段筛，无需分别再筛一遍。
+    \item 输出顺序是 \(\varphi\) 在前、\(\mu\) 在后。
+    \item 多组询问只在 \texttt{main} 中调用一次 \texttt{seive()}，每组重新
+          调用 \texttt{min\_25(n)}。
+\end{itemize}
 
 \paragraph*{LOJ 6053}
 
-定义
+\textbf{求解目标}\quad 定义积性函数
 \[
-f(p^c)=p\mathbin{\mathrm{xor}}c.
+f(1)=1,\qquad
+f(p^c)=p\mathbin{\mathrm{xor}}c,
 \]
-当 \(c=1\) 时，
+其中 \(\mathrm{xor}\) 是整数按位异或。给定 \(1\le n\le10^{10}\)，求
 \[
-f(p)=
-\begin{cases}
-p-1,&p\ne2,\\
-3,&p=2.
-\end{cases}
+\sum_{i=1}^{n}f(i)\pmod {10^9+7}.
 \]
-因此第一阶段仍只筛 \(\sum p\) 与 \(\pi(x)\)，但素数前缀必须写成
-\[
-F_{\mathbb P}(x)
-=\sum_{p\le x}p-\pi(x)+2\mathbf 1_{x\ge2}.
-\]
-修正项把 \(p=2\) 从错误的 \(2-1=1\) 改为
-\(2\mathbin{\mathrm{xor}}1=3\)；压缩值域取到 \(x=1\) 时该项应为零。
 
-第二阶段直接填写
-\[
-f(p^c)=p\mathbin{\mathrm{xor}}c,\qquad
-f(p^{c+1})=p\mathbin{\mathrm{xor}}(c+1).
-\]
-本题 \(f(1)=1\)，答案为 \(F(1,0)+1\)。
+对奇质数 \(p\)，\(p\mathbin{\mathrm{xor}}1=p-1\)；但
+\(2\mathbin{\mathrm{xor}}1=3\)，所以 \(p=2\) 需要单独修正。
+
+\textbf{位置 1--3：第一阶段}
+
+\begin{minted}{cpp}
+constexpr int P = 1000000007;
+using Z = MInt<P>;
+
+vector<Z> g0(m + 1), g1(m + 1); // sum p
+vector<Z> h0(m + 1), h1(m + 1); // prime count
+for (int i = 1; i <= m; i++) {
+    ll x = n / i;
+    g0[i] = Z(i) * (i + 1) / 2 - 1;
+    g1[i] = Z(x) * (x + 1) / 2 - 1;
+    h0[i] = Z(i) - 1;
+    h1[i] = Z(x) - 1;
+}
+
+// 写在 for (auto p : prime) 内：
+Z gp = p;
+Z hp = 1;
+\end{minted}
+
+\textbf{位置 4：修正 \(p=2\) 后的质数前缀}
+
+\begin{minted}{cpp}
+vector<Z> fprime0(m + 1), fprime1(m + 1);
+for (int i = 1; i <= m; i++) {
+    ll x = n / i;
+    fprime0[i] = g0[i] - h0[i] + (i >= 2 ? 2 : 0);
+    fprime1[i] = g1[i] - h1[i] + (x >= 2 ? 2 : 0);
+}
+\end{minted}
+
+修正项 \(+2\) 把 \(p=2\) 的贡献从错误的 \(2-1=1\) 改为 \(3\)。
+不能对上界 \(1\) 也无条件加 \(2\)。
+
+\textbf{位置 5--6：质数幂递归与返回}
+
+\begin{minted}{cpp}
+res += Z(p ^ c) * self(self, x * pc, i + 1)
+     + Z(p ^ (c + 1));
+
+return F(F, 1, 0) + 1;
+\end{minted}
+
+\textbf{注意}
+
+\begin{itemize}
+    \item C++ 的 \texttt{\textasciicircum} 在这里是按位异或，不是乘方。
+    \item \texttt{p\textasciicircum c} 是函数值；\texttt{pc} 仍保存真正的 \(p^c\)，负责
+          循环终止与递归参数，二者不能混用。
+    \item \(2\mathbin{\mathrm{xor}}2=0\) 是合法函数值，不能因其为零而删掉
+          质数幂循环。
+    \item 最终 \(+1\) 补回 \(f(1)\)。
+\end{itemize}
 
 \paragraph*{LOJ 6682}
 
-记 \(\tau(n)\) 为约数个数。质数幂处有
+\textbf{求解目标}\quad 给定 \(1\le n\le10^{10}\)，计算
 \[
-\tau(p^c)=c+1,\qquad
+\sum_{i=1}^{n}\sum_{j=1}^{n}\sum_{k=1}^{n}
+[\,j\mid i\ \land\ (j+k)\mid i\,]\pmod {998244353}.
+\]
+对固定 \(i\)，令 \(d_1=j,d_2=j+k\)。因为 \(k\ge1\)，条件恰好是在 \(i\)
+的正因子中选择 \(d_1<d_2\)，所以原式等于
+\[
+\sum_{i=1}^{n}\binom{\tau(i)}2
+=\frac12\left(
+\sum_{i=1}^{n}\tau(i)^2-\sum_{i=1}^{n}\tau(i)
+\right),
+\]
+其中 \(\tau(i)\) 是正约数个数。
+
+\textbf{位置 1--4：只保留一条质数计数链}
+
+\[
+\tau(p)=2,\qquad \tau^2(p)=4,
+\]
+两个函数都只需要 \(\pi(x)\)，所以模板中的 \(h\) 链可以全部删除：
+
+\begin{minted}{cpp}
+constexpr int P = 998244353;
+using Z = MInt<P>;
+
+vector<Z> g0(m + 1), g1(m + 1);
+for (int i = 1; i <= m; i++) {
+    ll x = n / i;
+    g0[i] = Z(i) - 1;
+    g1[i] = Z(x) - 1;
+}
+
+for (auto p : prime) {
+    ll pp = 1LL * p * p;
+    Z gp = 1;
+    if (pp > n) break;
+
+    for (int j = 1; j <= m && j * pp <= n; j++) {
+        g1[j] += gp * g0[p - 1];
+        if (1LL * p * j <= m)
+            g1[j] -= gp * g1[p * j];
+        else
+            g1[j] -= gp * g0[n / p / j];
+    }
+    for (int j = m; j >= pp; j--)
+        g0[j] -= gp * (g0[j / p] - g0[p - 1]);
+}
+
+vector<Z> fprime0 = g0;
+vector<Z> fprime1 = g1;
+\end{minted}
+
+\textbf{位置 5：\(\tau^2\) 的完整第二阶段}
+
+\[
 \tau^2(p^c)=(c+1)^2.
 \]
-特别地，
+
+\begin{minted}{cpp}
+auto Tau2 = [&](auto &&self, ll x, int k) -> Z {
+    Z res = 0;
+    if (k > 0) res -= fprime0[prime[k - 1]] * 4;
+    if (x <= m) res += fprime1[x] * 4; else res += fprime0[n / x] * 4;
+
+    for (int i = k, p = prime[i];
+         1LL * p * p * x <= n;
+         ++i, p = prime[i]) {
+        ll pc = p;
+        for (int c = 1; pc * p * x <= n; ++c, pc *= p) {
+            res += Z(c + 1) * (c + 1)
+                     * self(self, x * pc, i + 1)
+                 + Z(c + 2) * (c + 2);
+        }
+    }
+    return res;
+};
+\end{minted}
+
+\Needspace{24\baselineskip}
+\textbf{位置 5：\(\tau\) 的完整第二阶段}
+
 \[
-\tau(p)=2,\qquad \tau^2(p)=4.
+\tau(p^c)=c+1.
 \]
-所以两个函数的第一阶段都只需要同一条质数计数链 \(\pi(x)\)，素数前缀为
-\[
-T_{\mathbb P}(x)=2\pi(x),\qquad
-Q_{\mathbb P}(x)=4\pi(x).
-\]
-第二阶段分别填写
-\[
-\begin{aligned}
-\tau(p^c)&=c+1,&
-\tau(p^{c+1})&=c+2,\\
-\tau^2(p^c)&=(c+1)^2,&
-\tau^2(p^{c+1})&=(c+2)^2.
-\end{aligned}
-\]
-若目标为
-\[
-\sum_{i=1}^{N}\binom{\tau(i)}2
-=\frac12\sum_{i=1}^{N}\bigl(\tau^2(i)-\tau(i)\bigr),
-\]
-则两边的 \(f(1)=1\) 正好相消，可以直接用两个不含 \(f(1)\) 的递归主体
-作差后除以 \(2\)。
+
+\begin{minted}{cpp}
+auto Tau = [&](auto &&self, ll x, int k) -> Z {
+    Z res = 0;
+    if (k > 0) res -= fprime0[prime[k - 1]] * 2;
+    if (x <= m) res += fprime1[x] * 2;
+    else res += fprime0[n / x] * 2;
+
+    for (int i = k, p = prime[i];
+         1LL * p * p * x <= n;
+         ++i, p = prime[i]) {
+        ll pc = p;
+        for (int c = 1; pc * p * x <= n; ++c, pc *= p) {
+            res += Z(c + 1) * self(self, x * pc, i + 1)
+                 + Z(c + 2);
+        }
+    }
+    return res;
+};
+\end{minted}
+
+\textbf{位置 6：作差}
+
+\begin{minted}{cpp}
+return (Tau2(Tau2, 1, 0) - Tau(Tau, 1, 0)) / 2;
+\end{minted}
+
+\textbf{注意}
+
+\begin{itemize}
+    \item \(\tau(i)^2\) 是函数值的平方，不是狄利克雷卷积。
+    \item 两个函数的 \(f(1)\) 都是 \(1\)，作差时正好抵消，不能再给任一侧
+          单独 \(+1\)。
+    \item \(P=998244353\)，所以除以 \(2\) 使用模逆。
+    \item 训练代码中的两行 \texttt{cerr} 是调试输出，会令两个递归各多跑一次；
+          赛场代码只保留上面的最终返回式。
+\end{itemize}
+
+\paragraph*{赛场套用检查}
+
+\begin{enumerate}
+    \item 令筛表上界覆盖 \(\lfloor\sqrt{\max n}\rfloor\) 并留出余量；
+          \texttt{seive()} 只调用一次。
+    \item \texttt{g0[i]/h0[i]} 的实际上界是 \(i\)，
+          \texttt{g1[i]/h1[i]} 的实际上界是 \(\lfloor n/i\rfloor\)。
+    \item \texttt{fprime} 保存的是质数前缀和，不是单个质数处的函数值。
+    \item \texttt{pc} 始终保存真正的 \(p^c\)，不要拿它保存 \(f(p^c)\)。
+    \item 最后检查 \(f(1)\) 是补回、为零，还是在两个答案作差时抵消。
+    \item 新增题目参数不要使用模板内部已有的 \texttt{m/k/c}。
+\end{enumerate}
