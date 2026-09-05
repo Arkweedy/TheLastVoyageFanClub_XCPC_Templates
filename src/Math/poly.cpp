@@ -74,6 +74,7 @@ Poly operator-(Poly a, Poly b) { return a -= b; }
 void DFT(Poly& a) { NTT::DIF(a.data(), a.size()); }
 void IDFT(Poly& a) { NTT::IDIT(a.data(), a.size()); }
 int norm(int n) {
+    if (n <= 1) return 1;
     return 1 << (32 - __builtin_clz(n - 1));
 }  // 返回大于等于n的最小2的整数次幂
 void norm(Poly& a) {
@@ -84,6 +85,7 @@ Poly& dot(Poly& a, Poly& b) {
     return a;
 }
 Poly operator*(Poly a, Poly b) {
+    if (a.empty() || b.empty()) return {};
     int n = a.size() + b.size() - 1, L = norm(n);
     if (a.size() <= 8 || b.size() <= 8) {
         Poly c(n);
@@ -111,22 +113,6 @@ Poly Inv(Poly a) {
     int n = a.size();
     norm(a), a = Inv2k(a);
     return a.resize(n), a;
-}
-
-// Poly div/mod
-Poly operator/(Poly a, Poly b) {
-    int k = a.size() - b.size() + 1;
-    if (k < 0) return {0};
-    reverse(a.begin(), a.end());
-    reverse(b.begin(), b.end());
-    b.resize(k), a = a * Inv(b);
-    a.resize(k), reverse(a.begin(), a.end());
-    return a;
-}
-pair<Poly, Poly> operator%(Poly a, const Poly& b) {
-    Poly c = a / b;
-    a -= b * c, a.resize(b.size() - 1);
-    return {c, a};
 }
 
 // 求导和积分
@@ -167,19 +153,6 @@ Poly Exp(Poly a) {
 }
 
 Poly Pow(Poly& a, int b) { return Exp(Ln(a) * b); }  // a[0] = 1,多项式快速幂
-
-Poly Sqrt(Poly a) {
-    int n = a.size(), k = norm(n);
-
-    Poly b = {(int)(new Cipolla)->sqrt(a[0], mod)}, c;
-    a.resize(k * 2, 0);
-    for (int L = 2; L <= k; L <<= 1) {
-        b.resize(2 * L, 0), c = Poly(a.begin(), a.begin() + L) * Inv(b);
-        for (int i = 0; i <= 2 * L; i++)
-            b[i] = 1ll * (b[i] + c[i]) * (mod + 1 >> 1) % mod;
-    }
-    return b.resize(n), b;
-}
 
 }  // namespace Polynomial
 using namespace Polynomial;

@@ -8,9 +8,10 @@ void fwt(int* a, int k, int type) {
           tmp[t] = a[j + t * i + low];
         for (int t = 0; t < k; t++){
           int x = j + t * i + low;
-          a[x] = 0;
+          long long sum = 0;
           for (int y = 0; y < k; y++)
-            a[x] = int(a[x] + 1ll * tmp[y] * omega[(k + type) * t * y % k] % MOD);
+            sum = (sum + 1LL * tmp[y] * omega[(k + type) * t * y % k]) % MOD;
+          a[x] = sum;
         }
       }
   if (type == -1)

@@ -80,25 +80,6 @@
 					\TemplateCode{cpp}{src/Math/NTT_big.cpp}
 				\TemplateSubsection[K0E510E990E990702CBDC2BCFF837C90B49CCF4C4C64E16C5AFCA0101121212010100]{MTT 任意模数卷积}
 					\TemplateCode{cpp}{src/Math/MTT.cpp}
-				\TemplateSubsection[KC3680DCF1319CCD931D07416CD64250101010100]{多项式运算}
-					\TemplateSubsubsection{多项式求逆\ 开根\ ln exp}
-						\TemplateCode{cpp}{src/Math/多项式运算.cpp}
-					\TemplateSubsubsection{多项式除法\ 取模}
-						需要抄求逆。
-						\TemplateCode{cpp}{src/Math/多项式取模.cpp}
-					\TemplateSubsubsection{多点求值}
-						需要抄取模。
-						\TemplateCode{cpp}{src/Math/多点求值.cpp}
-					\TemplateSubsubsection{插值}
-						\TemplateNote{src/Math/插值.tex}
-				\TemplateSubsection[KCF062BCF481CC2EA76CE490D0101010100]{线性递推}
-					\TemplateSubsubsectionStar{$O(k^2 \log n)$}
-						\TemplateCode{cpp}{src/Math/线性递推.cpp}
-					\TemplateSubsubsectionStar{$O(k \log k \log n)$ - Bostan-Mori}
-						\TemplateCode{cpp}{src/Math/快速线性递推-bostan-mori.cpp}
-					\TemplateSubsubsectionStar{$O(k \log k \log n)$ - 多项式取模}
-						需要抄前面的多项式取模。预处理 $O(k \log k \log n)$，固定 $n$ 和系数只改变初始值的话，询问一次 $O(k)$。注意只询问一次的话不如 Bostan-Mori 快。
-						\TemplateCode{cpp}{src/Math/快速线性递推-多项式取模.cpp}
 				\TemplateSubsection[K0E090E210E8A0E480E210E360E020E510E7E0E510E020E910E910E210EA70702D1E62BCF1E0DC3680DCF1319CCD9310101120202020202020202120101FFF6821200]{Berlekamp-Massey 最小多项式}
 					\TemplateNote{src/Math/Berlekamp-Massey.tex}
 				\TemplateSubsection[K0E230EA40E990101121212010100]{FWT}
@@ -106,12 +87,8 @@
 					\TemplateCode{cpp}{src/Math/myFWT.cpp}
 				\TemplateSubsection[K0E360702C61516D1416707020E230EA40E9901011202020202121212010100]{K 进制 FWT}
 					\TemplateCode{cpp}{src/Math/K进制FWT.cpp}
-				\TemplateSubsection[K0E910E320E510E7E0E480E210EA60702C2AE3AC22F19CF4216010112010100]{Simplex 单纯形}
-					\TemplateCode{cpp}{src/Math/Simplex.cpp}
 				\TemplateSubsection[KC43B19CD2F79CF165ED0560DD1E62BCF1E0DC3B346CCF4C4C6071F0101010100]{高斯消元最小范数解}
 					\TemplateCode{cpp}{src/Geometry/minnorm_gauss.cpp}
-				\TemplateSubsection[K0E7E0E210E480E480702C3B610C1B0AC010112010100]{Pell 方程}
-					\TemplateCode{cpp}{src/Math/Pell方程.cpp}
 				\TemplateSubsection[KC6071FCFE60DD0560DCC3E0DC24516C3B610C1B0AC0101010100]{解一元三次方程}
 					\TemplateCode{cpp}{src/Math/解一元三次方程.cpp}
 				\TemplateSubsection[KD1B510CCD9AFD0101207020E910E320E510E7E0E910E7C0E7001010202020212010100]{自适应 Simpson}

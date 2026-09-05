@@ -1,7 +1,7 @@
 #define eps 1e-7
 int n;
 long double a[N][N];
-int guess()  // 只接受方阵，0：无解，1：有解
+int guess()  // 只接受方阵，0：无唯一解，1：唯一解
 {
     for (int i = 1; i <= n; i++) {
         for (int j = i; j <= n; j++)

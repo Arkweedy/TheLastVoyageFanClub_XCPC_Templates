@@ -47,7 +47,10 @@ void FWTxor(poly& a, bool rev) {
 }  // namespace FWT
 // Binary convolution for | , & , ^
 namespace Poly {
-int norm(int n) { return 1 << (__lg(n - 1) + 1); }
+int norm(int n) {
+    if (n <= 1) return 1;
+    return 1 << (__lg(n - 1) + 1);
+}
 poly operator|(poly a, poly b) {
     int n = std::max(a.size(), b.size()), nn = norm(n);
     a.resize(nn);

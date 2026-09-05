@@ -45,7 +45,10 @@ void IDIT(ll* a, ll n) {
 }
 
 using Poly = std::vector<ll>;
-int norm(int n) { return 1 << (32 - __builtin_clz(n - 1)); }
+int norm(int n) {
+    if (n <= 1) return 1;
+    return 1 << (32 - __builtin_clz(n - 1));
+}
 
 Poly& dot(Poly& a, Poly& b) {
     for (int i = 0; i < a.size(); i++) a[i] = mul(a[i], b[i]);
@@ -55,6 +58,7 @@ void DFT(Poly& a) { DIF(a.data(), a.size()); }
 void IDFT(Poly& a) { IDIT(a.data(), a.size()); }
 
 Poly operator*(Poly a, Poly b) {
+    if (a.empty() || b.empty()) return {};
     int n = a.size() + b.size() - 1, L = norm(n);
     if (a.size() <= 8 || b.size() <= 8) {
         Poly c(n);
