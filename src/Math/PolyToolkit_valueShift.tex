@@ -1,0 +1,19 @@
+\paragraph*{\texttt{valueShift} 的适用范围}
+
+设 \(P\) 为素数，\(v_i=f(i)\ (0\le i\le n)\)、\(\deg f\le n\)，且输入
+\(v_i\) 已规范到 \([0,P)\)。函数
+\[
+\texttt{valueShift(v,c)}
+\]
+返回
+\[
+f(c),f(c+1),\ldots,f(c+n).
+\]
+要求 \(v\) 非空，调用前已将 \(c\) 规范到 \(0\le c<P\)，并满足
+\[
+2n+1<P,\qquad n<c<P-n.
+\]
+等价地，已知点集 \(\{0,\ldots,n\}\) 与目标点集
+\(\{c,\ldots,c+n\}\) 在 \(\mathbb F_P\) 中不相交。当前实现不支持两个
+点集重叠的平移；此时 Lagrange 公式会出现需要先消去的零因子，不能直接
+计算模逆。时间复杂度为 \(O(M(n))\)，空间复杂度为 \(O(n)\)。
