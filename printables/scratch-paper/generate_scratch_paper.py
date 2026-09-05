@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate an A4 review set of special-purpose XCPC scratch paper."""
+"""Generate A4 review and print sets of special-purpose XCPC scratch paper."""
 
 from __future__ import annotations
 
@@ -18,6 +18,9 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 OUTPUT_DIR = REPO_ROOT / "output" / "pdf"
 PREVIEW_DIR = OUTPUT_DIR / "previews"
 PDF_PATH = OUTPUT_DIR / "xcpc-specialized-scratch-paper-preview.pdf"
+PRINT_PDF_PATH = OUTPUT_DIR / "xcpc-specialized-scratch-paper-print-70-sides.pdf"
+PRINT_STYLE_COUNT = 7
+PRINT_COPIES = 10
 
 PAGE_WIDTH, PAGE_HEIGHT = A4
 LEFT = 10 * mm
@@ -39,7 +42,7 @@ PAGES = (
 )
 
 
-def draw_page_frame(pdf: canvas.Canvas, title: str, detail: str, page_no: int) -> None:
+def draw_page_frame(pdf: canvas.Canvas, title: str, detail: str, marker: str) -> None:
     """Draw a small identification strip without taking much writing space."""
     pdf.saveState()
     pdf.setFillGray(0.12)
@@ -54,7 +57,7 @@ def draw_page_frame(pdf: canvas.Canvas, title: str, detail: str, page_no: int) -
     pdf.drawRightString(
         RIGHT,
         PAGE_HEIGHT - 14.2 * mm,
-        f"PROBLEM: ______   SHEET: ______   {page_no}/{len(PAGES)}",
+        f"PROBLEM: ______   SHEET: ______   {marker}",
     )
 
     pdf.setStrokeGray(0.72)
@@ -447,14 +450,8 @@ def draw_graph_nodes(pdf: canvas.Canvas) -> None:
     pdf.restoreState()
 
 
-def generate_pdf() -> None:
-    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
-    pdf = canvas.Canvas(str(PDF_PATH), pagesize=A4, pageCompression=1)
-    pdf.setTitle("XCPC Special-purpose Scratch Paper Preview")
-    pdf.setAuthor("XCPC Templates")
-    pdf.setSubject("A4 grayscale review set: grid, checker, hex, triangular")
-
-    drawers = (
+def paper_drawers() -> tuple:
+    return (
         draw_grid,
         draw_checker,
         draw_hex,
@@ -466,10 +463,44 @@ def generate_pdf() -> None:
         draw_mixed,
         draw_graph_nodes,
     )
+
+
+def generate_pdf() -> None:
+    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    pdf = canvas.Canvas(str(PDF_PATH), pagesize=A4, pageCompression=1)
+    pdf.setTitle("XCPC Special-purpose Scratch Paper Preview")
+    pdf.setAuthor("XCPC Templates")
+    pdf.setSubject("A4 grayscale review set: ten scratch-paper styles")
+
+    drawers = paper_drawers()
     for page_no, ((_, title, detail), drawer) in enumerate(zip(PAGES, drawers), start=1):
-        draw_page_frame(pdf, title, detail, page_no)
+        draw_page_frame(pdf, title, detail, f"{page_no}/{len(PAGES)}")
         drawer(pdf)
         pdf.showPage()
+    pdf.save()
+
+
+def generate_print_pdf() -> None:
+    """Generate ten consecutive printable sides for each accepted paper style."""
+    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    pdf = canvas.Canvas(str(PRINT_PDF_PATH), pagesize=A4, pageCompression=1)
+    pdf.setTitle("XCPC Special-purpose Scratch Paper - 70 Printable Sides")
+    pdf.setAuthor("XCPC Templates")
+    pdf.setSubject("Seven accepted A4 grayscale styles, ten sides per style")
+
+    accepted_pages = PAGES[:PRINT_STYLE_COUNT]
+    accepted_drawers = paper_drawers()[:PRINT_STYLE_COUNT]
+    for style_no, ((_, title, detail), drawer) in enumerate(
+        zip(accepted_pages, accepted_drawers), start=1
+    ):
+        for copy_no in range(1, PRINT_COPIES + 1):
+            if copy_no == 1:
+                bookmark = f"style-{style_no}"
+                pdf.bookmarkPage(bookmark)
+                pdf.addOutlineEntry(title, bookmark, level=0, closed=False)
+            draw_page_frame(pdf, title, detail, f"COPY {copy_no}/{PRINT_COPIES}")
+            drawer(pdf)
+            pdf.showPage()
     pdf.save()
 
 
@@ -508,6 +539,28 @@ def render_previews() -> bool:
     make_contact_sheet(preview_entries, "contact-sheet.png")
     make_contact_sheet(preview_entries[:4], "contact-sheet-core.png")
     make_contact_sheet(preview_entries[4:], "contact-sheet-additions.png")
+
+    print_checks = (
+        (1, "print-pack-page-01-grid"),
+        (PRINT_STYLE_COUNT * PRINT_COPIES, "print-pack-page-70-cartesian"),
+    )
+    for page_no, filename in print_checks:
+        subprocess.run(
+            [
+                renderer,
+                "-png",
+                "-r",
+                "150",
+                "-f",
+                str(page_no),
+                "-l",
+                str(page_no),
+                "-singlefile",
+                str(PRINT_PDF_PATH),
+                str(PREVIEW_DIR / filename),
+            ],
+            check=True,
+        )
     return True
 
 
@@ -558,8 +611,10 @@ def make_contact_sheet(preview_entries: list[tuple[Path, str]], filename: str) -
 
 def main() -> None:
     generate_pdf()
+    generate_print_pdf()
     rendered = render_previews()
-    print(f"Generated: {PDF_PATH}")
+    print(f"Generated preview: {PDF_PATH}")
+    print(f"Generated print pack: {PRINT_PDF_PATH}")
     if rendered:
         print(f"Rendered previews: {PREVIEW_DIR}")
 
