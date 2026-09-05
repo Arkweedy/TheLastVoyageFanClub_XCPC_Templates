@@ -30,6 +30,12 @@ PAGES = (
     ("02-checker", "CHECKER", "8 mm cells / 16% gray"),
     ("03-hex", "HEX", "6 mm side length"),
     ("04-triangular", "TRIANGULAR", "6 mm side / 30 mm guides"),
+    ("05-dot-grid", "DOT GRID", "5 mm spacing / 25 mm anchors"),
+    ("06-isometric-dots", "ISOMETRIC DOTS", "6 mm triangular spacing"),
+    ("07-cartesian", "CARTESIAN", "1 cell = 1 unit / 5 mm cells"),
+    ("08-polar", "POLAR", "10 mm rings / 15 degree spokes"),
+    ("09-mixed", "MIXED", "blank upper half / 5 mm lower grid"),
+    ("10-graph-nodes", "GRAPH NODES", "15 mm staggered hollow nodes"),
 )
 
 
@@ -42,11 +48,13 @@ def draw_page_frame(pdf: canvas.Canvas, title: str, detail: str, page_no: int) -
 
     pdf.setFillGray(0.42)
     pdf.setFont("Helvetica", 7.5)
-    pdf.drawString(LEFT + 27 * mm, PAGE_HEIGHT - 14.2 * mm, detail)
+    title_width = pdf.stringWidth(title, "Helvetica-Bold", 9)
+    detail_x = max(LEFT + 27 * mm, LEFT + title_width + 7 * mm)
+    pdf.drawString(detail_x, PAGE_HEIGHT - 14.2 * mm, detail)
     pdf.drawRightString(
         RIGHT,
         PAGE_HEIGHT - 14.2 * mm,
-        f"PROBLEM: ______   SHEET: ______   {page_no}/4",
+        f"PROBLEM: ______   SHEET: ______   {page_no}/{len(PAGES)}",
     )
 
     pdf.setStrokeGray(0.72)
@@ -243,6 +251,202 @@ def draw_triangular(pdf: canvas.Canvas) -> None:
     pdf.restoreState()
 
 
+def draw_dot_grid(pdf: canvas.Canvas) -> None:
+    step = 5 * mm
+    x0, y0, columns, rows = centered_lattice(step)
+
+    pdf.saveState()
+    for row in range(rows + 1):
+        for column in range(columns + 1):
+            major = row % 5 == 0 and column % 5 == 0
+            pdf.setFillGray(0.38 if major else 0.59)
+            radius = (0.28 if major else 0.18) * mm
+            pdf.circle(x0 + column * step, y0 + row * step, radius, stroke=0, fill=1)
+    pdf.setStrokeGray(0.78)
+    pdf.setLineWidth(0.45)
+    pdf.rect(x0, y0, columns * step, rows * step, stroke=1, fill=0)
+    pdf.restoreState()
+
+
+def draw_isometric_dots(pdf: canvas.Canvas) -> None:
+    side = 6 * mm
+    row_height = math.sqrt(3) * side / 2
+    rows = int((TOP - BOTTOM) // row_height)
+    y0 = BOTTOM + ((TOP - BOTTOM) - rows * row_height) / 2
+
+    pdf.saveState()
+    for row in range(rows + 1):
+        offset = (row & 1) * side / 2
+        column = 0
+        x = LEFT + offset
+        while x <= RIGHT + 0.01:
+            major = row % 5 == 0 and column % 5 == 0
+            pdf.setFillGray(0.38 if major else 0.59)
+            radius = (0.28 if major else 0.18) * mm
+            pdf.circle(x, y0 + row * row_height, radius, stroke=0, fill=1)
+            column += 1
+            x = LEFT + offset + column * side
+    pdf.setStrokeGray(0.78)
+    pdf.setLineWidth(0.45)
+    pdf.rect(LEFT, BOTTOM, RIGHT - LEFT, TOP - BOTTOM, stroke=1, fill=0)
+    pdf.restoreState()
+
+
+def draw_cartesian(pdf: canvas.Canvas) -> None:
+    step = 5 * mm
+    columns = 38
+    rows = 50
+    x0 = LEFT
+    y0 = BOTTOM + ((TOP - BOTTOM) - rows * step) / 2
+    x1 = x0 + columns * step
+    y1 = y0 + rows * step
+    origin_x = x0 + (columns // 2) * step
+    origin_y = y0 + (rows // 2) * step
+
+    pdf.saveState()
+    pdf.setStrokeGray(0.81)
+    pdf.setLineWidth(0.24)
+    for index in range(columns + 1):
+        if index % 5 and index != columns // 2:
+            x = x0 + index * step
+            pdf.line(x, y0, x, y1)
+    for index in range(rows + 1):
+        if index % 5 and index != rows // 2:
+            y = y0 + index * step
+            pdf.line(x0, y, x1, y)
+
+    pdf.setStrokeGray(0.58)
+    pdf.setLineWidth(0.52)
+    for index in range(0, columns + 1, 5):
+        if index != columns // 2:
+            x = x0 + index * step
+            pdf.line(x, y0, x, y1)
+    for index in range(0, rows + 1, 5):
+        if index != rows // 2:
+            y = y0 + index * step
+            pdf.line(x0, y, x1, y)
+
+    pdf.setStrokeGray(0.24)
+    pdf.setLineWidth(0.92)
+    pdf.line(x0, origin_y, x1, origin_y)
+    pdf.line(origin_x, y0, origin_x, y1)
+    arrow = 2.2 * mm
+    pdf.line(x1, origin_y, x1 - arrow, origin_y + arrow / 2)
+    pdf.line(x1, origin_y, x1 - arrow, origin_y - arrow / 2)
+    pdf.line(origin_x, y1, origin_x - arrow / 2, y1 - arrow)
+    pdf.line(origin_x, y1, origin_x + arrow / 2, y1 - arrow)
+
+    pdf.setFillGray(0.30)
+    pdf.setFont("Helvetica", 5.5)
+    for value in range(-15, 16, 5):
+        if value:
+            pdf.drawCentredString(origin_x + value * step, origin_y - 2.5 * mm, str(value))
+    for value in range(-20, 21, 5):
+        if value:
+            pdf.drawRightString(origin_x - 1.6 * mm, origin_y + value * step - 0.7 * mm, str(value))
+    pdf.drawRightString(origin_x - 1.3 * mm, origin_y - 2.5 * mm, "0")
+    pdf.setFont("Helvetica-Bold", 6.5)
+    pdf.drawString(x1 - 3.8 * mm, origin_y + 1.5 * mm, "x")
+    pdf.drawString(origin_x + 1.5 * mm, y1 - 3.8 * mm, "y")
+
+    pdf.setStrokeGray(0.32)
+    pdf.setLineWidth(0.72)
+    pdf.rect(x0, y0, x1 - x0, y1 - y0, stroke=1, fill=0)
+    pdf.restoreState()
+
+
+def draw_polar(pdf: canvas.Canvas) -> None:
+    center_x = (LEFT + RIGHT) / 2
+    center_y = (BOTTOM + TOP) / 2
+    outer_radius = 90 * mm
+
+    pdf.saveState()
+    for radius_mm in range(10, 91, 10):
+        major = radius_mm % 30 == 0
+        pdf.setStrokeGray(0.53 if major else 0.78)
+        pdf.setLineWidth(0.55 if major else 0.25)
+        pdf.circle(center_x, center_y, radius_mm * mm, stroke=1, fill=0)
+
+    for angle in range(0, 180, 15):
+        radians = math.radians(angle)
+        major = angle % 45 == 0
+        pdf.setStrokeGray(0.46 if major else 0.75)
+        pdf.setLineWidth(0.62 if major else 0.28)
+        dx = outer_radius * math.cos(radians)
+        dy = outer_radius * math.sin(radians)
+        pdf.line(center_x - dx, center_y - dy, center_x + dx, center_y + dy)
+
+    pdf.setFillGray(0.32)
+    pdf.setFont("Helvetica", 6)
+    label_gap = 2.3 * mm
+    pdf.drawString(center_x + outer_radius + label_gap, center_y - 0.8 * mm, "0")
+    pdf.drawCentredString(center_x, center_y + outer_radius + label_gap, "90")
+    pdf.drawRightString(center_x - outer_radius - label_gap, center_y - 0.8 * mm, "180")
+    pdf.drawCentredString(center_x, center_y - outer_radius - label_gap - 1.5 * mm, "270")
+    pdf.setStrokeGray(0.30)
+    pdf.setLineWidth(0.72)
+    pdf.circle(center_x, center_y, outer_radius, stroke=1, fill=0)
+    pdf.restoreState()
+
+
+def draw_mixed(pdf: canvas.Canvas) -> None:
+    step = 5 * mm
+    grid_rows = 25
+    split_y = BOTTOM + grid_rows * step
+
+    pdf.saveState()
+    pdf.setStrokeGray(0.80)
+    pdf.setLineWidth(0.25)
+    columns = int((RIGHT - LEFT) // step)
+    for index in range(columns + 1):
+        if index % 5:
+            x = LEFT + index * step
+            pdf.line(x, BOTTOM, x, split_y)
+    for index in range(grid_rows + 1):
+        if index % 5:
+            y = BOTTOM + index * step
+            pdf.line(LEFT, y, RIGHT, y)
+
+    pdf.setStrokeGray(0.52)
+    pdf.setLineWidth(0.56)
+    for index in range(0, columns + 1, 5):
+        x = LEFT + index * step
+        pdf.line(x, BOTTOM, x, split_y)
+    for index in range(0, grid_rows + 1, 5):
+        y = BOTTOM + index * step
+        pdf.line(LEFT, y, RIGHT, y)
+
+    pdf.setStrokeGray(0.32)
+    pdf.setLineWidth(0.72)
+    pdf.rect(LEFT, BOTTOM, RIGHT - LEFT, TOP - BOTTOM, stroke=1, fill=0)
+    pdf.line(LEFT, split_y, RIGHT, split_y)
+    pdf.restoreState()
+
+
+def draw_graph_nodes(pdf: canvas.Canvas) -> None:
+    step = 15 * mm
+    columns = 12
+    rows = 17
+    used_width = (columns - 1) * step + step / 2
+    used_height = (rows - 1) * step
+    x0 = LEFT + ((RIGHT - LEFT) - used_width) / 2
+    y0 = BOTTOM + ((TOP - BOTTOM) - used_height) / 2
+
+    pdf.saveState()
+    pdf.setStrokeGray(0.57)
+    pdf.setLineWidth(0.42)
+    for row in range(rows):
+        offset = (row & 1) * step / 2
+        for column in range(columns):
+            x = x0 + offset + column * step
+            y = y0 + row * step
+            pdf.circle(x, y, 1.35 * mm, stroke=1, fill=0)
+    pdf.setStrokeGray(0.84)
+    pdf.setLineWidth(0.45)
+    pdf.rect(LEFT, BOTTOM, RIGHT - LEFT, TOP - BOTTOM, stroke=1, fill=0)
+    pdf.restoreState()
+
+
 def generate_pdf() -> None:
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     pdf = canvas.Canvas(str(PDF_PATH), pagesize=A4, pageCompression=1)
@@ -250,7 +454,18 @@ def generate_pdf() -> None:
     pdf.setAuthor("XCPC Templates")
     pdf.setSubject("A4 grayscale review set: grid, checker, hex, triangular")
 
-    drawers = (draw_grid, draw_checker, draw_hex, draw_triangular)
+    drawers = (
+        draw_grid,
+        draw_checker,
+        draw_hex,
+        draw_triangular,
+        draw_dot_grid,
+        draw_isometric_dots,
+        draw_cartesian,
+        draw_polar,
+        draw_mixed,
+        draw_graph_nodes,
+    )
     for page_no, ((_, title, detail), drawer) in enumerate(zip(PAGES, drawers), start=1):
         draw_page_frame(pdf, title, detail, page_no)
         drawer(pdf)
@@ -266,50 +481,67 @@ def render_previews() -> bool:
 
     PREVIEW_DIR.mkdir(parents=True, exist_ok=True)
     temporary_prefix = PREVIEW_DIR / "page"
+    for stale_preview in PREVIEW_DIR.glob("page-*.png"):
+        stale_preview.unlink()
     subprocess.run(
         [renderer, "-png", "-r", "150", str(PDF_PATH), str(temporary_prefix)],
         check=True,
     )
 
-    preview_paths: list[Path] = []
-    for page_no, (slug, _, _) in enumerate(PAGES, start=1):
-        rendered = PREVIEW_DIR / f"page-{page_no}.png"
+    rendered_pages = sorted(
+        PREVIEW_DIR.glob("page-*.png"),
+        key=lambda path: int(path.stem.rsplit("-", 1)[1]),
+    )
+    if len(rendered_pages) != len(PAGES):
+        raise RuntimeError(
+            f"Expected {len(PAGES)} rendered pages, found {len(rendered_pages)}"
+        )
+
+    preview_entries: list[tuple[Path, str]] = []
+    for rendered, (slug, title, _) in zip(rendered_pages, PAGES):
         target = PREVIEW_DIR / f"{slug}.png"
         if target.exists():
             target.unlink()
         rendered.replace(target)
-        preview_paths.append(target)
+        preview_entries.append((target, title))
 
-    make_contact_sheet(preview_paths)
+    make_contact_sheet(preview_entries, "contact-sheet.png")
+    make_contact_sheet(preview_entries[:4], "contact-sheet-core.png")
+    make_contact_sheet(preview_entries[4:], "contact-sheet-additions.png")
     return True
 
 
-def make_contact_sheet(preview_paths: list[Path]) -> None:
+def make_contact_sheet(preview_entries: list[tuple[Path, str]], filename: str) -> None:
     thumb_width = 780
     gap = 34
     label_height = 54
     outer = 40
     font = ImageFont.load_default(size=26)
-    pages: list[Image.Image] = []
+    pages: list[tuple[Image.Image, str]] = []
 
-    for path in preview_paths:
+    for path, title in preview_entries:
         with Image.open(path) as source:
             page = source.convert("RGB")
             page.thumbnail((thumb_width, 1120), Image.Resampling.LANCZOS)
-            pages.append(page.copy())
+            pages.append((page.copy(), title))
 
-    cell_width = max(page.width for page in pages)
-    cell_height = max(page.height for page in pages) + label_height
+    columns = 2
+    rows = math.ceil(len(pages) / columns)
+    cell_width = max(page.width for page, _ in pages)
+    cell_height = max(page.height for page, _ in pages) + label_height
     sheet = Image.new(
         "RGB",
-        (outer * 2 + cell_width * 2 + gap, outer * 2 + cell_height * 2 + gap),
+        (
+            outer * 2 + cell_width * columns + gap * (columns - 1),
+            outer * 2 + cell_height * rows + gap * (rows - 1),
+        ),
         "#e9e9e9",
     )
     draw = ImageDraw.Draw(sheet)
 
-    for index, (page, (_, title, _)) in enumerate(zip(pages, PAGES)):
-        column = index % 2
-        row = index // 2
+    for index, (page, title) in enumerate(pages):
+        column = index % columns
+        row = index // columns
         x = outer + column * (cell_width + gap)
         y = outer + row * (cell_height + gap)
         draw.rectangle(
@@ -321,7 +553,7 @@ def make_contact_sheet(preview_paths: list[Path]) -> None:
         sheet.paste(page, (x, y))
         draw.text((x, y + page.height + 12), title, fill="#222222", font=font)
 
-    sheet.save(PREVIEW_DIR / "contact-sheet.png", optimize=True)
+    sheet.save(PREVIEW_DIR / filename, optimize=True)
 
 
 def main() -> None:
