@@ -15,7 +15,7 @@ int lc = lca(x, y);
 q[++tot].t = t;
 q[tot].id = tot;
 if (in[x] > in[y]) swap(x, y);  // 先x后y
-if (lca == x) {                 // 直链情况
+if (lc == x) {                  // 直链情况
     q[tot].l = in[x];
     q[tot].r = in[y];
 } else {  // 折链情况

@@ -9,7 +9,7 @@ struct LiChao {
     int k;
     vector<vector<line>> a;
     LiChao() {}
-    LiChao(int n, int k) { init(n, k) };
+    LiChao(int n, int k) { init(n, k); }
     void init(int n, int k) {
         this->n = n;
         this->k = k;

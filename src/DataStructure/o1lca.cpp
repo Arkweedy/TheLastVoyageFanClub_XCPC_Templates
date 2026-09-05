@@ -7,6 +7,13 @@ void dfs(int u, int f) {
     for (int v : e[u])
         if (v != f) dfs(v, u);
 }
+void build(int rt) {
+    tot = 0;
+    dfs(rt, 0);
+    for (int d = 1; d < 20; d++)
+        for (int i = 1; i + (1 << d) - 1 <= tot; i++)
+            mi[d][i] = get(mi[d - 1][i], mi[d - 1][i + (1 << (d - 1))]);
+}
 int lca(int u, int v) {
     if (u == v) return u;
     u = dfn[u], v = dfn[v];
