@@ -303,29 +303,35 @@ def draw_cartesian(pdf: canvas.Canvas) -> None:
     y0 = BOTTOM + ((TOP - BOTTOM) - rows * step) / 2
     x1 = x0 + columns * step
     y1 = y0 + rows * step
-    origin_x = x0 + (columns // 2) * step
-    origin_y = y0 + (rows // 2) * step
+    center_column = columns // 2
+    center_row = rows // 2
+    origin_x = x0 + center_column * step
+    origin_y = y0 + center_row * step
 
     pdf.saveState()
     pdf.setStrokeGray(0.81)
     pdf.setLineWidth(0.24)
-    for index in range(columns + 1):
-        if index % 5 and index != columns // 2:
+    for index in range(1, columns):
+        coordinate = index - center_column
+        if coordinate % 5:
             x = x0 + index * step
             pdf.line(x, y0, x, y1)
-    for index in range(rows + 1):
-        if index % 5 and index != rows // 2:
+    for index in range(1, rows):
+        coordinate = index - center_row
+        if coordinate % 5:
             y = y0 + index * step
             pdf.line(x0, y, x1, y)
 
     pdf.setStrokeGray(0.58)
     pdf.setLineWidth(0.52)
-    for index in range(0, columns + 1, 5):
-        if index != columns // 2:
+    for index in range(1, columns):
+        coordinate = index - center_column
+        if coordinate and coordinate % 5 == 0:
             x = x0 + index * step
             pdf.line(x, y0, x, y1)
-    for index in range(0, rows + 1, 5):
-        if index != rows // 2:
+    for index in range(1, rows):
+        coordinate = index - center_row
+        if coordinate and coordinate % 5 == 0:
             y = y0 + index * step
             pdf.line(x0, y, x1, y)
 
