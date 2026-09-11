@@ -98,8 +98,10 @@ main.pdf
 - 编译两遍 `cover/src/cover.tex`，生成 `cover/dist/cover.pdf`。
 - 编译两遍 `cover/src/signature.tex`，生成 `cover/dist/signature.pdf`。
 - 为 C++ 代码生成彩虹括号文件。
-- 编译两遍 `main.tex`。
+- 编译 `main.tex`，至少两遍，并在目录、引用、PDF 页码标签和索引数据稳定后结束（最多六遍；未稳定时报错并保留辅助文件）。
 - 默认清理 LaTeX 辅助文件和 minted 缓存。
+
+主文档不能简单固定为两遍：minted 在无缓存时可能先用占位块生成代码高亮缓存，下一遍才排入完整代码，此时目录仍引用上一遍的页码。XeLaTeX 的 PDF 页码标签也需要读取上一遍的辅助数据。脚本会比较连续两遍的 `.aux`、`.toc`、`.out`、`.idx` 和 `.ind`，确认它们不再变化后才报告构建成功。
 
 如果需要保留辅助文件用于排查问题：
 
@@ -117,7 +119,7 @@ main.pdf
 
 ### 手动编译
 
-一般不需要手动敲完整命令；脚本是日常维护入口。确实需要手动编译时，可以参考：
+一般不需要手动敲完整命令；脚本是日常维护入口。下面展示底层命令，但末尾两遍主文档编译只是起点，不能保证得到可发布的 PDF：
 
 ```powershell
 $env:PYTHONIOENCODING = "utf-8"
@@ -132,6 +134,8 @@ python scripts/rainbow_brackets.py
 xelatex -shell-escape -synctex=1 -interaction=nonstopmode -halt-on-error -file-line-error main.tex
 xelatex -shell-escape -synctex=1 -interaction=nonstopmode -halt-on-error -file-line-error main.tex
 ```
+
+需要手动排查时，应继续比较上述五个辅助文件，直到连续两遍内容一致，再检查目录、页眉和阅读器页码标签。日常生成或发布请直接运行 `scripts/build.ps1`，由脚本自动完成此检查。
 
 ## 发布 PDF
 

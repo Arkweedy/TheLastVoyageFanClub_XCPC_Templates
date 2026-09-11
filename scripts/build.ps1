@@ -116,9 +116,44 @@ try {
 
     Invoke-Checked "python" @("scripts/rainbow_brackets.py")
 
-    Invoke-Checked "xelatex" $xelatexMain
+    # minted may use short placeholders on a cold first pass. The next pass
+    # typesets the code, but its TOC and PDF page labels still use earlier data.
+    # Keep compiling until the reference files used by the PDF stop changing.
+    $ReferenceFiles = @("main.aux", "main.toc", "main.out", "main.idx", "main.ind")
+    $PreviousReferences = @{}
+    $MaxMainPasses = 6
+    $ReferencesStable = $false
 
-    Invoke-Checked "xelatex" $xelatexMain
+    for ($Pass = 1; $Pass -le $MaxMainPasses; $Pass++) {
+        Write-Host "Main document pass $Pass/$MaxMainPasses"
+        Invoke-Checked "xelatex" $xelatexMain
+
+        $CurrentReferences = @{}
+        $ChangedReferences = @(
+            foreach ($ReferenceFile in $ReferenceFiles) {
+                if (-not (Test-Path -LiteralPath $ReferenceFile)) {
+                    throw "Expected reference file was not generated: $ReferenceFile"
+                }
+                $CurrentReferences[$ReferenceFile] = (Get-FileHash -LiteralPath $ReferenceFile -Algorithm SHA256).Hash
+                if ($CurrentReferences[$ReferenceFile] -ne $PreviousReferences[$ReferenceFile]) {
+                    $ReferenceFile
+                }
+            }
+        )
+
+        if ($Pass -ge 2 -and $ChangedReferences.Count -eq 0) {
+            $ReferencesStable = $true
+            Write-Host "References stabilized after $Pass main document passes."
+            break
+        }
+
+        Write-Host "Reference files changed: $($ChangedReferences -join ', ')"
+        $PreviousReferences = $CurrentReferences
+    }
+
+    if (-not $ReferencesStable) {
+        throw "References did not stabilize after $MaxMainPasses passes. main.pdf is not ready for release; auxiliary files were kept for diagnosis."
+    }
 
     if (-not $KeepAux) {
         Remove-IfExists @(
