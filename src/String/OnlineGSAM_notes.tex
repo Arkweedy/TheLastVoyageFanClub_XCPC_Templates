@@ -1,0 +1,6 @@
+\noindent\textbf{整串插入：}\verb|OnlineGSAM g;| 每个小写串调用 \verb|g.insert(s)|，从根插入。
+用 \verb|g.init()| 清空。\par
+\noindent\textbf{逐字符追加：}换串时令 \verb|last = g.root|。
+对当前串逐字执行 \verb|last = g.extend(last, c - 'a')|，返回值是新前缀的状态。\par
+\noindent\textbf{子串查询：}每次追加后，从 \verb|p = g.root| 按查询串逐字取
+\verb|p = g.t[p].nxt[c - 'a']|。遇到 $0$ 即失败，全部走完即出现过。\par
