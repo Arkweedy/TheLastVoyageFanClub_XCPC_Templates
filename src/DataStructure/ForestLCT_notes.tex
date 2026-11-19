@@ -1,0 +1,12 @@
+\verb|ForestLCT f(n)| 创建 $n$ 个孤立点，编号为 $1$ 到 $n$。
+\verb|link(u,v)| 加无向边，若会成环则返回 \verb|false|。
+\verb|cut(u,v)| 删除两点间的直接边，若边不存在则返回 \verb|false|。
+两者成功时均返回 \verb|true|。\verb|connected(u,v)| 判断两点是否连通。三个操作均摊 $O(\log n)$。
+
+\begin{minted}[linenos=false]{cpp}
+ForestLCT f(3);
+f.link(1, 2);
+f.link(2, 3);
+f.cut(1, 3);        // false，1 和 3 之间没有直接边
+f.connected(1, 3);  // true
+\end{minted}

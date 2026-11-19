@@ -1,0 +1,13 @@
+\verb|PathLCT<Op> tr(n)| 的编号和加边、删边、连通性接口同上。
+\verb|set(u,x)| 将点权赋为 $x$。\verb|pathQuery(u,v)| 按 $u$ 到 $v$ 的顺序合并点权，包含两个端点；
+两点不连通时返回 \verb|std::nullopt|（C++17）。
+自定义 \verb|Op| 时提供值类型 \verb|T|、单位元 \verb|id()| 和满足结合律的 \verb|join(a,b)|，
+其中 $a$ 在 $b$ 之前。初始点权均为单位元。合并与复制为 $O(1)$ 时，各操作均摊 $O(\log n)$。
+
+\begin{minted}[linenos=false]{cpp}
+PathLCT<XorOp> tr(2);
+tr.set(1, 5);
+tr.set(2, 6);
+tr.link(1, 2);
+if (auto ans = tr.pathQuery(1, 2)) std::cout << *ans; // 3
+\end{minted}
